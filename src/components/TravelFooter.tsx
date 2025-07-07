@@ -35,7 +35,7 @@ const TravelFooter = () => {
             </div>
           </div>
 
-        {/*  {/* Quick Links */}
+ {/* 
           <div>
             <h3 className="font-semibold mb-4">빠른 링크</h3>
             <ul className="space-y-2 text-sm">
@@ -47,7 +47,7 @@ const TravelFooter = () => {
             </ul>
           </div>
 
-          {/* Categories */}
+       
           <div>
             <h3 className="font-semibold mb-4">인기 카테고리</h3>
             <ul className="space-y-2 text-sm">
@@ -59,7 +59,7 @@ const TravelFooter = () => {
             </ul>
           </div>
 
-          {/* Newsletter */}
+      
           <div>
             <h3 className="font-semibold mb-4">뉴스레터 구독</h3>
             <p className="text-background/80 text-sm mb-4">
@@ -75,7 +75,9 @@ const TravelFooter = () => {
               </Button>
             </div>
           </div>
-        </div> */}
+        </div>
+
+*/}        
 
 
         {/* Contact Info */}
