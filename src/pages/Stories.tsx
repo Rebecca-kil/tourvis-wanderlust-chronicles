@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, MapPin, Utensils, Camera, Search, Filter, ThumbsUp, MessageCircle, Share2, Send } from "lucide-react";
+import { Heart, MapPin, Utensils, Camera, Search, Filter, ThumbsUp, MessageCircle, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
@@ -8,14 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Textarea } from "@/components/ui/textarea";
 
 const Stories = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [likedStories, setLikedStories] = useState<Set<number>>(new Set());
-  const [newComment, setNewComment] = useState("");
-  const [showCommentForm, setShowCommentForm] = useState<number | null>(null);
 
   const categories = ["전체", "숙소", "맛집", "액티비티", "문화체험", "쇼핑", "교통"];
 
@@ -185,27 +181,6 @@ const Stories = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const handleLikeToggle = (storyId: number) => {
-    setLikedStories(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(storyId)) {
-        newSet.delete(storyId);
-      } else {
-        newSet.add(storyId);
-      }
-      return newSet;
-    });
-  };
-
-  const handleCommentSubmit = (storyId: number) => {
-    if (newComment.trim()) {
-      // 실제로는 API 호출을 해야 하지만, 지금은 UI만 처리
-      console.log('댓글 작성:', storyId, newComment);
-      setNewComment("");
-      setShowCommentForm(null);
-    }
-  };
-
   return (
     <div className="min-h-screen">
       <TravelHeader />
@@ -362,29 +337,18 @@ const Stories = () => {
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleLikeToggle(story.id);
-                            }}
-                            className={`text-muted-foreground hover:text-red-500 ${likedStories.has(story.id) ? 'text-red-500' : ''}`}
+                            className="text-muted-foreground hover:text-red-500"
                           >
-                            <Heart className={`w-4 h-4 mr-1 ${likedStories.has(story.id) ? 'fill-current' : ''}`} />
-                            {story.likes + (likedStories.has(story.id) ? 1 : 0)}
+                            <Heart className="w-4 h-4 mr-1" />
+                            {story.likes}
                           </Button>
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setShowCommentForm(showCommentForm === story.id ? null : story.id);
-                            }}
                             className="text-muted-foreground hover:text-primary"
                           >
                             <MessageCircle className="w-4 h-4 mr-1" />
                             {story.comments}
-                          </Button>
-                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                            <Share2 className="w-4 h-4" />
                           </Button>
                         </div>
                         <Button variant="cta" size="sm">
@@ -393,49 +357,6 @@ const Stories = () => {
                       </div>
                     </CardContent>
                   </div>
-                  
-                  {/* 댓글 작성 폼 */}
-                  {showCommentForm === story.id && (
-                    <div className="border-t p-4 bg-muted/20">
-                      <div className="flex gap-3">
-                        <Avatar className="w-8 h-8">
-                          <AvatarFallback>나</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <Textarea
-                            placeholder="댓글을 작성해보세요..."
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            className="mb-2 min-h-[80px]"
-                          />
-                          <div className="flex justify-end gap-2">
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setShowCommentForm(null);
-                                setNewComment("");
-                              }}
-                            >
-                              취소
-                            </Button>
-                            <Button 
-                              size="sm"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleCommentSubmit(story.id);
-                              }}
-                              disabled={!newComment.trim()}
-                            >
-                              <Send className="w-4 h-4 mr-1" />
-                              댓글 달기
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </Card>
               </Link>
             ))}

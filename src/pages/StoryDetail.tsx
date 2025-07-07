@@ -1,4 +1,5 @@
-import { ArrowLeft, MapPin, Star, Heart, MessageCircle } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, MapPin, Star, Heart, MessageCircle, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
@@ -9,6 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 const StoryDetail = () => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const handleCommentSubmit = () => {
+    if (newComment.trim()) {
+      console.log('댓글 작성:', newComment);
+      setNewComment("");
+    }
+  };
+
   const story = {
     title: "제주도 한라산 근처 펜션에서 보낸 완벽한 3일",
     location: "제주도, 한국",
@@ -90,19 +100,24 @@ const StoryDetail = () => {
               </div>
               <span className="text-sm text-muted-foreground">{story.date}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-destructive" />
-                  <span className="text-sm font-medium">{story.likes}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsLiked(!isLiked)}
+                    className={`flex items-center gap-2 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500`}
+                  >
+                    <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+                    <span className="text-sm font-medium">{story.likes + (isLiked ? 1 : 0)}</span>
+                  </Button>
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">댓글 3</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">댓글 3</span>
-                </div>
+                <ShareButtons title={story.title} />
               </div>
-              <ShareButtons title={story.title} />
-            </div>
           </div>
 
           <div className="prose max-w-none">
@@ -117,8 +132,29 @@ const StoryDetail = () => {
             
             {/* 댓글 작성 */}
             <div className="mb-6">
-              <Textarea placeholder="댓글을 작성해보세요..." className="mb-2" />
-              <Button size="sm">댓글 달기</Button>
+              <div className="flex gap-3">
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback>나</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <Textarea 
+                    placeholder="댓글을 작성해보세요..." 
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className="mb-2 min-h-[80px]" 
+                  />
+                  <div className="flex justify-end">
+                    <Button 
+                      size="sm"
+                      onClick={handleCommentSubmit}
+                      disabled={!newComment.trim()}
+                    >
+                      <Send className="w-4 h-4 mr-1" />
+                      댓글 달기
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* 댓글 목록 */}
