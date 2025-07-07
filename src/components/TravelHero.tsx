@@ -23,14 +23,7 @@ const TravelHero = () => {
           완벽한 여행을 위한 모든 것을 한곳에서 만나보세요.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button size="lg" variant="secondary" className="text-lg px-8 py-3">
-            여행지 둘러보기
-          </Button>
-          <Button size="lg" variant="outline" className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary">
-            여행 가이드 보기
-          </Button>
-        </div>
+ 
         
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
