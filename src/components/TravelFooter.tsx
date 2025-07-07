@@ -73,15 +73,15 @@ const TravelFooter = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div className="flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-background/60" />
-              <span className="text-background/80">서울특별시 강남구 테헤란로</span>
+              <span className="text-background/80">서울특별시 중구 남대문로 78, 8층 에이호(명동1가, 타임워크명동빌딩)</span>
             </div>
             <div className="flex items-center space-x-2">
               <Mail className="w-4 h-4 text-background/60" />
-              <span className="text-background/80">contact@tourvis.com</span>
+              <span className="text-background/80">info@tidesquare.com</span>
             </div>
             <div className="flex items-center space-x-2">
               <Phone className="w-4 h-4 text-background/60" />
-              <span className="text-background/80">02-1234-5678</span>
+              <span className="text-background/80">1522-5149</span>
             </div>
           </div>
         </div>
