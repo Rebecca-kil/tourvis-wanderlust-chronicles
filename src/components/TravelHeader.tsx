@@ -41,8 +41,10 @@ const TravelHeader = () => {
           </nav>
 
           {/* Search and Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            <div className="relative">
+      <section className="py-8 bg-muted/20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="여행지나 키워드 검색..."
