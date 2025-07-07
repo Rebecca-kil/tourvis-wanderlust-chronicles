@@ -19,24 +19,10 @@ const TravelFooter = () => {
             <p className="text-background/80 text-sm leading-relaxed">
              당신의 완벽한 여행을 위한 모든 것을 제공합니다.
             </p>
-        {/*     
-            <div className="flex space-x-3">
-              <Button variant="ghost" size="icon" className="text-background/80 hover:text-background hover:bg-background/10">
-                <Facebook className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-background/80 hover:text-background hover:bg-background/10">
-                <Instagram className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-background/80 hover:text-background hover:bg-background/10">
-                <Youtube className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-background/80 hover:text-background hover:bg-background/10">
-                <Twitter className="w-5 h-5" />
-              </Button>
-            </div>
+           
           </div>
 
-   
+       {/* 
           <div>
             <h3 className="font-semibold mb-4">빠른 링크</h3>
             <ul className="space-y-2 text-sm">
