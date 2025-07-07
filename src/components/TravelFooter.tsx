@@ -34,7 +34,7 @@ const TravelFooter = () => {
               </Button>
             </div>
           </div>
-          {/*}
+{/* 
           {/* Quick Links */}
           <div>
             <h3 className="font-semibold mb-4">빠른 링크</h3>
