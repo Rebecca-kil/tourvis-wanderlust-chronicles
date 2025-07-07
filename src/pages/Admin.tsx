@@ -12,10 +12,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useBlog } from "@/contexts/BlogContext";
 
 const Admin = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("destinations");
+  const { addDestination, addGuide, addStory, addBenefit } = useBlog();
   
   // Tags management
   const [tags, setTags] = useState({
@@ -34,6 +36,75 @@ const Admin = () => {
 
   const handleSubmit = (e: React.FormEvent, contentType: string) => {
     e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    
+    if (contentType === "여행지") {
+      addDestination({
+        title: formData.get('dest-title') as string,
+        city: formData.get('dest-city') as string,
+        image: formData.get('dest-image') as string,
+        description: formData.get('dest-description') as string,
+        price: formData.get('dest-price') ? Number(formData.get('dest-price')) : undefined,
+        duration: formData.get('dest-duration') as string || undefined,
+        tags: selectedTags
+      });
+    } else if (contentType === "가이드") {
+      const contentText = formData.get('guide-content') as string;
+      const tipsText = formData.get('guide-tips') as string;
+      
+      // Parse content sections
+      const contentSections = contentText.split('\n\n').map(section => {
+        const lines = section.trim().split('\n');
+        return {
+          title: lines[0],
+          content: lines.slice(1).join(' ')
+        };
+      }).filter(section => section.title && section.content);
+      
+      addGuide({
+        title: formData.get('guide-title') as string,
+        author: formData.get('guide-author') as string,
+        category: formData.get('guide-category') as string,
+        difficulty: formData.get('guide-difficulty') as string,
+        image: formData.get('guide-image') as string,
+        content: contentSections,
+        tips: tipsText.split(',').map(tip => tip.trim()).filter(tip => tip),
+        tags: selectedTags
+      });
+    } else if (contentType === "여행 이야기") {
+      addStory({
+        title: formData.get('story-title') as string,
+        author: formData.get('story-author') as string,
+        city: formData.get('story-city') as string || undefined,
+        category: formData.get('story-category') as string,
+        image: formData.get('story-image') as string,
+        excerpt: formData.get('story-excerpt') as string,
+        content: formData.get('story-content') as string,
+        tags: selectedTags
+      });
+    } else if (contentType === "혜택") {
+      const featuresText = formData.get('benefit-features') as string;
+      const conditionsText = formData.get('benefit-conditions') as string;
+      
+      addBenefit({
+        title: formData.get('benefit-title') as string,
+        category: formData.get('benefit-category') as string,
+        type: formData.get('benefit-type') as string,
+        discount: formData.get('benefit-discount') as string || undefined,
+        originalPrice: formData.get('benefit-original-price') as string || undefined,
+        salePrice: formData.get('benefit-sale-price') as string || undefined,
+        validUntil: formData.get('benefit-valid-until') as string || undefined,
+        image: formData.get('benefit-image') as string,
+        description: formData.get('benefit-description') as string,
+        features: featuresText.split(',').map(feature => feature.trim()).filter(feature => feature),
+        conditions: conditionsText.split(',').map(condition => condition.trim()).filter(condition => condition),
+        tags: selectedTags
+      });
+    }
+    
+    setSelectedTags([]);
+    (e.target as HTMLFormElement).reset();
+    
     toast({
       title: "콘텐츠 저장됨",
       description: `${contentType} 콘텐츠가 성공적으로 저장되었습니다.`,
@@ -104,29 +175,29 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="dest-title">제목</Label>
-                      <Input id="dest-title" placeholder="여행지 이름" required />
+                      <Input id="dest-title" name="dest-title" placeholder="여행지 이름" required />
                     </div>
                     <div>
                       <Label htmlFor="dest-city">도시/국가</Label>
-                      <Input id="dest-city" placeholder="서울, 대한민국" required />
+                      <Input id="dest-city" name="dest-city" placeholder="서울, 대한민국" required />
                     </div>
                   </div>
                   <div>
                     <Label htmlFor="dest-image">이미지 URL</Label>
-                    <Input id="dest-image" type="url" placeholder="https://example.com/image.jpg" required />
+                    <Input id="dest-image" name="dest-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
                   <div>
                     <Label htmlFor="dest-description">설명</Label>
-                    <Textarea id="dest-description" placeholder="여행지에 대한 상세 설명..." required />
+                    <Textarea id="dest-description" name="dest-description" placeholder="여행지에 대한 상세 설명..." required />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="dest-price">가격 (원)</Label>
-                      <Input id="dest-price" type="number" placeholder="500000" />
+                      <Input id="dest-price" name="dest-price" type="number" placeholder="500000" />
                     </div>
                     <div>
                       <Label htmlFor="dest-duration">소요 시간</Label>
-                      <Input id="dest-duration" placeholder="3박 4일" />
+                      <Input id="dest-duration" name="dest-duration" placeholder="3박 4일" />
                     </div>
                   </div>
                   <div>
@@ -164,17 +235,17 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="guide-title">제목</Label>
-                      <Input id="guide-title" placeholder="가이드 제목" required />
+                      <Input id="guide-title" name="guide-title" placeholder="가이드 제목" required />
                     </div>
                     <div>
                       <Label htmlFor="guide-author">작성자</Label>
-                      <Input id="guide-author" placeholder="작성자 이름" required />
+                      <Input id="guide-author" name="guide-author" placeholder="작성자 이름" required />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="guide-category">카테고리</Label>
-                      <Select>
+                      <Select name="guide-category">
                         <SelectTrigger>
                           <SelectValue placeholder="카테고리 선택" />
                         </SelectTrigger>
@@ -188,7 +259,7 @@ const Admin = () => {
                     </div>
                     <div>
                       <Label htmlFor="guide-difficulty">난이도</Label>
-                      <Select>
+                      <Select name="guide-difficulty">
                         <SelectTrigger>
                           <SelectValue placeholder="난이도 선택" />
                         </SelectTrigger>
@@ -202,15 +273,15 @@ const Admin = () => {
                   </div>
                   <div>
                     <Label htmlFor="guide-image">이미지 URL</Label>
-                    <Input id="guide-image" type="url" placeholder="https://example.com/image.jpg" required />
+                    <Input id="guide-image" name="guide-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
                   <div>
                     <Label htmlFor="guide-content">가이드 내용 (섹션별로 구분해서 작성)</Label>
-                    <Textarea id="guide-content" placeholder="1. 첫 번째 섹션 제목&#10;내용 설명...&#10;&#10;2. 두 번째 섹션 제목&#10;내용 설명..." rows={8} required />
+                    <Textarea id="guide-content" name="guide-content" placeholder="1. 첫 번째 섹션 제목&#10;내용 설명...&#10;&#10;2. 두 번째 섹션 제목&#10;내용 설명..." rows={8} required />
                   </div>
                   <div>
                     <Label htmlFor="guide-tips">핵심 팁 (쉼표로 구분)</Label>
-                    <Textarea id="guide-tips" placeholder="팁1, 팁2, 팁3" rows={3} />
+                    <Textarea id="guide-tips" name="guide-tips" placeholder="팁1, 팁2, 팁3" rows={3} />
                   </div>
                   <div>
                     <Label>추가 태그</Label>
@@ -247,21 +318,21 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="story-title">제목</Label>
-                      <Input id="story-title" placeholder="여행 이야기 제목" required />
+                      <Input id="story-title" name="story-title" placeholder="여행 이야기 제목" required />
                     </div>
                     <div>
                       <Label htmlFor="story-author">작성자</Label>
-                      <Input id="story-author" placeholder="작성자 이름" required />
+                      <Input id="story-author" name="story-author" placeholder="작성자 이름" required />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="story-city">도시/국가</Label>
-                      <Input id="story-city" placeholder="파리, 프랑스" />
+                      <Input id="story-city" name="story-city" placeholder="파리, 프랑스" />
                     </div>
                     <div>
                       <Label htmlFor="story-category">여행 타입</Label>
-                      <Select>
+                      <Select name="story-category">
                         <SelectTrigger>
                           <SelectValue placeholder="여행 타입 선택" />
                         </SelectTrigger>
@@ -278,15 +349,15 @@ const Admin = () => {
                   </div>
                   <div>
                     <Label htmlFor="story-image">이미지 URL</Label>
-                    <Input id="story-image" type="url" placeholder="https://example.com/image.jpg" required />
+                    <Input id="story-image" name="story-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
                   <div>
                     <Label htmlFor="story-excerpt">요약</Label>
-                    <Textarea id="story-excerpt" placeholder="여행 이야기의 간단한 요약..." rows={3} required />
+                    <Textarea id="story-excerpt" name="story-excerpt" placeholder="여행 이야기의 간단한 요약..." rows={3} required />
                   </div>
                   <div>
                     <Label htmlFor="story-content">본문</Label>
-                    <Textarea id="story-content" placeholder="여행 이야기의 상세한 내용을 작성해주세요..." rows={10} required />
+                    <Textarea id="story-content" name="story-content" placeholder="여행 이야기의 상세한 내용을 작성해주세요..." rows={10} required />
                   </div>
                   <div>
                     <Label>카테고리 태그</Label>
@@ -322,12 +393,12 @@ const Admin = () => {
                 <form onSubmit={(e) => handleSubmit(e, "혜택")} className="space-y-4">
                   <div>
                     <Label htmlFor="benefit-title">제목</Label>
-                    <Input id="benefit-title" placeholder="혜택 제목" required />
+                    <Input id="benefit-title" name="benefit-title" placeholder="혜택 제목" required />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="benefit-category">카테고리</Label>
-                      <Select>
+                      <Select name="benefit-category">
                         <SelectTrigger>
                           <SelectValue placeholder="카테고리 선택" />
                         </SelectTrigger>
@@ -341,7 +412,7 @@ const Admin = () => {
                     </div>
                     <div>
                       <Label htmlFor="benefit-type">타입</Label>
-                      <Select>
+                      <Select name="benefit-type">
                         <SelectTrigger>
                           <SelectValue placeholder="타입 선택" />
                         </SelectTrigger>
@@ -354,38 +425,38 @@ const Admin = () => {
                     </div>
                     <div>
                       <Label htmlFor="benefit-discount">할인율</Label>
-                      <Input id="benefit-discount" placeholder="30%" />
+                      <Input id="benefit-discount" name="benefit-discount" placeholder="30%" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="benefit-original-price">원가</Label>
-                      <Input id="benefit-original-price" placeholder="150,000원" />
+                      <Input id="benefit-original-price" name="benefit-original-price" placeholder="150,000원" />
                     </div>
                     <div>
                       <Label htmlFor="benefit-sale-price">할인가</Label>
-                      <Input id="benefit-sale-price" placeholder="105,000원" />
+                      <Input id="benefit-sale-price" name="benefit-sale-price" placeholder="105,000원" />
                     </div>
                   </div>
                   <div>
                     <Label htmlFor="benefit-valid-until">유효기간</Label>
-                    <Input id="benefit-valid-until" placeholder="2024.03.31" />
+                    <Input id="benefit-valid-until" name="benefit-valid-until" placeholder="2024.03.31" />
                   </div>
                   <div>
                     <Label htmlFor="benefit-image">이미지 URL</Label>
-                    <Input id="benefit-image" type="url" placeholder="https://example.com/image.jpg" required />
+                    <Input id="benefit-image" name="benefit-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
                   <div>
                     <Label htmlFor="benefit-description">설명</Label>
-                    <Textarea id="benefit-description" placeholder="혜택에 대한 상세 설명..." required />
+                    <Textarea id="benefit-description" name="benefit-description" placeholder="혜택에 대한 상세 설명..." required />
                   </div>
                   <div>
                     <Label htmlFor="benefit-features">주요 혜택 (쉼표로 구분)</Label>
-                    <Textarea id="benefit-features" placeholder="혜택1, 혜택2, 혜택3" rows={3} />
+                    <Textarea id="benefit-features" name="benefit-features" placeholder="혜택1, 혜택2, 혜택3" rows={3} />
                   </div>
                   <div>
                     <Label htmlFor="benefit-conditions">이용 조건 (쉼표로 구분)</Label>
-                    <Textarea id="benefit-conditions" placeholder="조건1, 조건2, 조건3" rows={3} />
+                    <Textarea id="benefit-conditions" name="benefit-conditions" placeholder="조건1, 조건2, 조건3" rows={3} />
                   </div>
                   <div>
                     <Label>카테고리 태그</Label>
