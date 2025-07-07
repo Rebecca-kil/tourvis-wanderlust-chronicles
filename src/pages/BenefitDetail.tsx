@@ -1,4 +1,5 @@
-import { ArrowLeft, Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Clock, CheckCircle, AlertCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
@@ -8,6 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 const BenefitDetail = () => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(234);
+
+  const handleLikeToggle = () => {
+    setIsLiked(!isLiked);
+    setLikes(prev => isLiked ? prev - 1 : prev + 1);
+  };
+
   const benefit = {
     title: "제주항공 국내선 항공료 30% 할인",
     category: "항공",
@@ -64,11 +73,20 @@ const BenefitDetail = () => {
                 {benefit.isHot && <Badge className="bg-red-500 text-white">🔥 HOT</Badge>}
               </div>
               <h1 className="text-3xl font-bold mb-2">{benefit.title}</h1>
-              <div className="flex items-start justify-between">
-                <p className="text-muted-foreground leading-relaxed flex-1">{benefit.description}</p>
-                <div className="ml-4 flex-shrink-0">
-                  <ShareButtons title={benefit.title} />
+              <p className="text-muted-foreground leading-relaxed mb-4">{benefit.description}</p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleLikeToggle}
+                    className={`flex items-center gap-2 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500`}
+                  >
+                    <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+                    <span className="text-sm font-medium">{likes}</span>
+                  </Button>
                 </div>
+                <ShareButtons title={benefit.title} />
               </div>
             </div>
 

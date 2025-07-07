@@ -60,11 +60,10 @@ const GuideDetail = () => {
               <Badge variant="outline">{guide.difficulty}</Badge>
             </div>
             <h1 className="text-3xl font-bold mb-2">{guide.title}</h1>
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-sm text-muted-foreground">by {guide.author}</span>
+            </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>by {guide.author}</span>
-                <span>{guide.readTime} 읽기</span>
-              </div>
               <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
@@ -75,8 +74,8 @@ const GuideDetail = () => {
                   <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
                   <span className="text-sm font-medium">{likes}</span>
                 </Button>
-                <ShareButtons title={guide.title} />
               </div>
+              <ShareButtons title={guide.title} />
             </div>
           </div>
 
