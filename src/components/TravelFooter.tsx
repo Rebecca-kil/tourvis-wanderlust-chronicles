@@ -14,11 +14,10 @@ const TravelFooter = () => {
               <div className="w-8 h-8 gradient-hero rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">T</span>
               </div>
-              <span className="text-xl font-bold">투어비스 블로그</span>
+              <span className="text-xl font-bold">투어비스 트레블로그</span>
             </div>
             <p className="text-background/80 text-sm leading-relaxed">
-              전 세계 여행자들과 함께하는 여행 정보 플랫폼입니다. 
-              당신의 완벽한 여행을 위한 모든 것을 제공합니다.
+             당신의 완벽한 여행을 위한 모든 것을 제공합니다.
             </p>
             <div className="flex space-x-3">
               <Button variant="ghost" size="icon" className="text-background/80 hover:text-background hover:bg-background/10">
@@ -35,7 +34,7 @@ const TravelFooter = () => {
               </Button>
             </div>
           </div>
-
+          {/*}
           {/* Quick Links */}
           <div>
             <h3 className="font-semibold mb-4">빠른 링크</h3>
@@ -77,6 +76,7 @@ const TravelFooter = () => {
             </div>
           </div>
         </div>
+*/}
 
         {/* Contact Info */}
         <div className="border-t border-background/20 pt-8 mb-8">
