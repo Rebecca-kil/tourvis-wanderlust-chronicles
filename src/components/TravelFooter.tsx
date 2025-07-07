@@ -91,11 +91,13 @@ const TravelFooter = () => {
           <div className="mb-4 md:mb-0">
             <p>&copy; 2024 투어비스 블로그. All rights reserved.</p>
           </div>
+          {/*}
           <div className="flex space-x-6">
             <a href="#" className="hover:text-background transition-travel">이용약관</a>
             <a href="#" className="hover:text-background transition-travel">개인정보처리방침</a>
             <a href="#" className="hover:text-background transition-travel">고객센터</a>
           </div>
+          */}
         </div>
       </div>
     </footer>
