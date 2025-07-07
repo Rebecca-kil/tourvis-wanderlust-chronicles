@@ -74,8 +74,9 @@ const TravelFooter = () => {
                 구독하기
               </Button>
             </div>
-            */}
+          
           </div>
+            */}
         </div>
 
 
