@@ -2,6 +2,7 @@ import { ArrowLeft, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
+import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +64,12 @@ const BenefitDetail = () => {
                 {benefit.isHot && <Badge className="bg-red-500 text-white">🔥 HOT</Badge>}
               </div>
               <h1 className="text-3xl font-bold mb-2">{benefit.title}</h1>
-              <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
+              <div className="flex items-start justify-between">
+                <p className="text-muted-foreground leading-relaxed flex-1">{benefit.description}</p>
+                <div className="ml-4 flex-shrink-0">
+                  <ShareButtons title={benefit.title} />
+                </div>
+              </div>
             </div>
 
             {/* Features */}

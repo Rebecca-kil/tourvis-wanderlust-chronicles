@@ -3,6 +3,7 @@ import { MapPin, Star, Clock, Users, Calendar, DollarSign, Info, ArrowLeft } fro
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
+import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,6 +83,9 @@ const DestinationDetail = () => {
                   <span>•</span>
                   <span>{destination.region}</span>
                 </div>
+              </div>
+              <div className="flex-shrink-0 ml-4">
+                <ShareButtons title={destination.name} />
               </div>
             </div>
           </div>

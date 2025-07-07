@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
+import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -49,9 +50,12 @@ const GuideDetail = () => {
               <Badge variant="outline">{guide.difficulty}</Badge>
             </div>
             <h1 className="text-3xl font-bold mb-2">{guide.title}</h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>by {guide.author}</span>
-              <span>{guide.readTime} 읽기</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span>by {guide.author}</span>
+                <span>{guide.readTime} 읽기</span>
+              </div>
+              <ShareButtons title={guide.title} />
             </div>
           </div>
 

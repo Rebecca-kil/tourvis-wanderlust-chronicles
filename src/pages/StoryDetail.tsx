@@ -1,9 +1,12 @@
-import { ArrowLeft, MapPin, Star } from "lucide-react";
+import { ArrowLeft, MapPin, Star, Heart, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
+import ShareButtons from "@/components/ShareButtons";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const StoryDetail = () => {
   const story = {
@@ -11,6 +14,7 @@ const StoryDetail = () => {
     location: "제주도, 한국",
     category: "숙소",
     rating: 5,
+    likes: 142,
     author: {
       name: "여행러버 김민지",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b332c108?w=40&h=40&fit=crop&crop=face"
@@ -86,11 +90,86 @@ const StoryDetail = () => {
               </div>
               <span className="text-sm text-muted-foreground">{story.date}</span>
             </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-destructive" />
+                  <span className="text-sm font-medium">{story.likes}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">댓글 3</span>
+                </div>
+              </div>
+              <ShareButtons title={story.title} />
+            </div>
           </div>
 
           <div className="prose max-w-none">
             <div className="whitespace-pre-line leading-relaxed">
               {story.content}
+            </div>
+          </div>
+
+          {/* 댓글 섹션 */}
+          <div className="mt-8 pt-8 border-t border-border">
+            <h3 className="text-lg font-semibold mb-4">댓글 (3)</h3>
+            
+            {/* 댓글 작성 */}
+            <div className="mb-6">
+              <Textarea placeholder="댓글을 작성해보세요..." className="mb-2" />
+              <Button size="sm">댓글 달기</Button>
+            </div>
+
+            {/* 댓글 목록 */}
+            <div className="space-y-4">
+              <div className="border-b border-border pb-4">
+                <div className="flex items-start gap-3">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" />
+                    <AvatarFallback>김</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-medium">김여행</span>
+                      <span className="text-xs text-muted-foreground">2024.01.16</span>
+                    </div>
+                    <p className="text-sm">정말 유익한 정보네요! 저도 제주도 여행 계획 중인데 많은 도움이 됐어요.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="border-b border-border pb-4">
+                <div className="flex items-start gap-3">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" />
+                    <AvatarFallback>이</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-medium">이모험</span>
+                      <span className="text-xs text-muted-foreground">2024.01.17</span>
+                    </div>
+                    <p className="text-sm">펜션 이름이 궁금해요! 혹시 알려주실 수 있나요?</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex items-start gap-3">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" />
+                    <AvatarFallback>박</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-medium">박탐험</span>
+                      <span className="text-xs text-muted-foreground">2024.01.18</span>
+                    </div>
+                    <p className="text-sm">한라산 등반 후 바비큐 정말 맛있겠네요! 다음에 꼭 가보겠습니다.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </article>
