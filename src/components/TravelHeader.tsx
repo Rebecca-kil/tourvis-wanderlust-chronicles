@@ -24,7 +24,7 @@ const TravelHeader = () => {
             <div className="w-8 h-8 gradient-hero rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">T</span>
             </div>
-            <span className="text-xl font-bold text-foreground">투어비스 블로그</span>
+            <span className="text-xl font-bold text-foreground">투어비스 트레블로그</span>
           </Link>
 
           {/* Desktop Navigation */}
