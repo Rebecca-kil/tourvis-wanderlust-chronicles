@@ -1,12 +1,22 @@
-import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const GuideDetail = () => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(856);
+
+  const handleLikeToggle = () => {
+    setIsLiked(!isLiked);
+    setLikes(prev => isLiked ? prev - 1 : prev + 1);
+  };
+
   const guide = {
     title: "항공료 50% 절약하는 예약 타이밍과 팁",
     category: "교통",
@@ -55,7 +65,18 @@ const GuideDetail = () => {
                 <span>by {guide.author}</span>
                 <span>{guide.readTime} 읽기</span>
               </div>
-              <ShareButtons title={guide.title} />
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLikeToggle}
+                  className={`flex items-center gap-2 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500`}
+                >
+                  <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+                  <span className="text-sm font-medium">{likes}</span>
+                </Button>
+                <ShareButtons title={guide.title} />
+              </div>
             </div>
           </div>
 

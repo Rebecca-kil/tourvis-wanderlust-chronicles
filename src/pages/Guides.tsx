@@ -300,33 +300,25 @@ const Guides = () => {
                     </p>
                     
                     <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center space-x-4">
-                        <span className="flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
-                          {guide.readTime}
-                        </span>
-                      </div>
-                      <span className="text-xs">👍 {guide.likes}</span>
+                      <span className="text-xs">by {guide.author}</span>
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleLikeToggle(guide.id);
-                          }}
-                          className="text-muted-foreground hover:text-red-500"
-                        >
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        className="text-muted-foreground hover:text-red-500"
+                        asChild
+                      >
+                        <Link to={`/guides/${guide.id}`} className="flex items-center">
                           <Heart className={`w-4 h-4 mr-1 ${likedGuides.has(guide.id) ? 'fill-red-500 text-red-500' : ''}`} />
                           {guide.likes}
-                        </Button>
-                        <span className="text-sm text-muted-foreground">
-                          by {guide.author}
-                        </span>
-                      </div>
+                        </Link>
+                      </Button>
                       <Button variant="cta" size="sm">
                         읽어보기
                       </Button>
