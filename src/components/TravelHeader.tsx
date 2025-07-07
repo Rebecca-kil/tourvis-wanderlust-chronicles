@@ -54,6 +54,11 @@ const TravelHeader = () => {
             <Button variant="ghost" size="icon">
               <Share2 className="w-4 h-4" />
             </Button>
+            <Link to="/admin">
+              <Button variant="outline" size="sm">
+                관리자
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,6 +99,13 @@ const TravelHeader = () => {
                     {item.name}
                   </Link>
                 ))}
+                <Link
+                  to="/admin"
+                  className="block text-foreground hover:text-primary transition-travel font-medium py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  관리자
+                </Link>
               </nav>
             </div>
           </div>
