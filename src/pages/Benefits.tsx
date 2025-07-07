@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Gift, Percent, Calendar, Ticket, Search, Filter, Clock, AlertCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -341,9 +342,11 @@ const Benefits = () => {
                     </div>
                   </div>
                   
-                  <Button variant="cta" size="lg" className="w-full">
-                    지금 예약하기
-                  </Button>
+                  <Link to={`/benefits/${benefit.id}`}>
+                    <Button variant="cta" size="lg" className="w-full">
+                      상세보기
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}

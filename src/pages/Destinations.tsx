@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { MapPin, Star, Clock, Users, Filter, Search, X, Calendar, DollarSign, Info } from "lucide-react";
+import { MapPin, Star, Clock, Users, Filter, Search } from "lucide-react";
+import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 const Destinations = () => {
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDestination, setSelectedDestination] = useState<any>(null);
 
   const regions = ["전체", "아시아", "유럽", "북미", "남미", "오세아니아", "국내"];
 
@@ -250,13 +250,11 @@ const Destinations = () => {
                       <span className="text-muted-foreground">최적 시기: </span>
                       <span className="font-medium">{destination.bestTime}</span>
                     </div>
-                    <Button 
-                      variant="cta" 
-                      size="sm"
-                      onClick={() => setSelectedDestination(destination)}
-                    >
-                      상세보기
-                    </Button>
+                    <Link to={`/destinations/${destination.id}`}>
+                      <Button variant="cta" size="sm">
+                        상세보기
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -272,88 +270,6 @@ const Destinations = () => {
           )}
         </div>
       </section>
-
-      {/* Destination Detail Modal */}
-      {selectedDestination && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="relative">
-              <img 
-                src={selectedDestination.image} 
-                alt={selectedDestination.name}
-                className="w-full h-64 object-cover"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-4 right-4 bg-white/80 hover:bg-white"
-                onClick={() => setSelectedDestination(null)}
-              >
-                <X className="w-4 h-4" />
-              </Button>
-              <div className="absolute bottom-4 left-4">
-                <h1 className="text-3xl font-bold text-white mb-2">{selectedDestination.name}</h1>
-                <p className="text-white/90">{selectedDestination.country}</p>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold mb-1">추천 기간</h3>
-                    <p className="text-sm text-muted-foreground">{selectedDestination.duration}</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold mb-1">예산 수준</h3>
-                    <p className="text-sm text-muted-foreground">{selectedDestination.budget}</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold mb-1">최적 시기</h3>
-                    <p className="text-sm text-muted-foreground">{selectedDestination.bestTime}</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold mb-3">주요 명소</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {selectedDestination.detailInfo?.attractions.map((attraction: any, idx: number) => (
-                      <Card key={idx}>
-                        <CardContent className="p-4">
-                          <h4 className="font-semibold mb-2">{attraction.name}</h4>
-                          <p className="text-sm text-muted-foreground mb-2">{attraction.description}</p>
-                          <Badge variant="outline" className="text-xs">소요시간: {attraction.time}</Badge>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold mb-3">여행 팁</h3>
-                  <div className="space-y-2">
-                    {selectedDestination.detailInfo?.tips.map((tip: string, idx: number) => (
-                      <div key={idx} className="flex items-start">
-                        <Info className="w-4 h-4 mr-2 mt-1 text-primary flex-shrink-0" />
-                        <p className="text-sm">{tip}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       <TravelFooter />
     </div>

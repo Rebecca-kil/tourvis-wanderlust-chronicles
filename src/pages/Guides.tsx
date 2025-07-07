@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock, X, CheckCircle } from "lucide-react";
+import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const Guides = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [selectedGuide, setSelectedGuide] = useState<any>(null);
 
   const categories = ["전체", "교통", "일정", "준비물", "실용 팁", "트렌드", "FAQ"];
 
@@ -300,13 +300,11 @@ const Guides = () => {
                     <span className="text-sm text-muted-foreground">
                       by {guide.author}
                     </span>
-                    <Button 
-                      variant="cta" 
-                      size="sm"
-                      onClick={() => setSelectedGuide(guide)}
-                    >
-                      읽어보기
-                    </Button>
+                    <Link to={`/guides/${guide.id}`}>
+                      <Button variant="cta" size="sm">
+                        읽어보기
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -322,68 +320,6 @@ const Guides = () => {
           )}
         </div>
       </section>
-
-      {/* Guide Detail Modal */}
-      {selectedGuide && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="relative">
-              <img 
-                src={selectedGuide.image} 
-                alt={selectedGuide.title}
-                className="w-full h-64 object-cover"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-4 right-4 bg-white/80 hover:bg-white"
-                onClick={() => setSelectedGuide(null)}
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            <div className="p-6">
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="secondary">{selectedGuide.category}</Badge>
-                  <Badge variant="outline">{selectedGuide.difficulty}</Badge>
-                </div>
-                <h1 className="text-2xl font-bold mb-2">{selectedGuide.title}</h1>
-                <p className="text-muted-foreground mb-4">{selectedGuide.summary}</p>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span>by {selectedGuide.author}</span>
-                  <span>{selectedGuide.readTime} 읽기</span>
-                  <span>{selectedGuide.views} 조회</span>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                {selectedGuide.content?.sections.map((section: any, idx: number) => (
-                  <Card key={idx}>
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold mb-3">{section.title}</h3>
-                      <p className="text-sm leading-relaxed">{section.content}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-
-                <div>
-                  <h3 className="text-xl font-bold mb-3">💡 핵심 팁</h3>
-                  <div className="space-y-2">
-                    {selectedGuide.content?.tips.map((tip: string, idx: number) => (
-                      <div key={idx} className="flex items-start">
-                        <CheckCircle className="w-4 h-4 mr-2 mt-1 text-primary flex-shrink-0" />
-                        <p className="text-sm">{tip}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       <TravelFooter />
     </div>

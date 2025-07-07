@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Heart, MapPin, Utensils, Camera, Search, Filter, ThumbsUp, MessageCircle, Share2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -345,9 +346,11 @@ const Stories = () => {
                           <Share2 className="w-4 h-4" />
                         </Button>
                       </div>
-                      <Button variant="cta" size="sm">
-                        전체 읽기
-                      </Button>
+                      <Link to={`/stories/${story.id}`}>
+                        <Button variant="cta" size="sm">
+                          전체 읽기
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </div>
