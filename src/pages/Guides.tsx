@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock } from "lucide-react";
+import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock, X, CheckCircle } from "lucide-react";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const Guides = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [selectedGuide, setSelectedGuide] = useState<any>(null);
 
   const categories = ["전체", "교통", "일정", "준비물", "실용 팁", "트렌드", "FAQ"];
 
@@ -71,7 +72,24 @@ const Guides = () => {
       summary: "항공료를 최대 50%까지 절약할 수 있는 예약 타이밍, 항공사 선택 요령, 숨겨진 할인 혜택 활용법까지 완벽 정리",
       author: "여행 전문가 김철수",
       views: "12.3k",
-      likes: "856"
+      likes: "856",
+      content: {
+        sections: [
+          {
+            title: "1. 최적의 예약 타이밍",
+            content: "국내선: 출발 1-2개월 전, 국제선: 2-3개월 전이 가장 저렴합니다. 화요일 오후 3시경이 항공료가 가장 낮은 시간대입니다."
+          },
+          {
+            title: "2. 항공사 선택 요령",
+            content: "LCC(저비용항공사) vs FSC(일반항공사) 비교, 수하물 정책, 좌석 선택비, 기내식 등 부가비용까지 계산해서 총 비용을 비교하세요."
+          },
+          {
+            title: "3. 할인 혜택 활용법",
+            content: "항공사 멤버십, 신용카드 적립, 마일리지 활용, 얼리버드/라스트미닛 특가 등을 적극 활용하면 50% 이상 절약 가능합니다."
+          }
+        ],
+        tips: ["주중 출발이 주말보다 20-30% 저렴", "직항보다 경유가 더 저렴할 수 있음", "취소 가능한 항공권도 고려해보세요"]
+      }
     },
     {
       id: 2,
@@ -282,7 +300,11 @@ const Guides = () => {
                     <span className="text-sm text-muted-foreground">
                       by {guide.author}
                     </span>
-                    <Button variant="cta" size="sm">
+                    <Button 
+                      variant="cta" 
+                      size="sm"
+                      onClick={() => setSelectedGuide(guide)}
+                    >
                       읽어보기
                     </Button>
                   </div>
@@ -300,6 +322,68 @@ const Guides = () => {
           )}
         </div>
       </section>
+
+      {/* Guide Detail Modal */}
+      {selectedGuide && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-background rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="relative">
+              <img 
+                src={selectedGuide.image} 
+                alt={selectedGuide.title}
+                className="w-full h-64 object-cover"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-4 right-4 bg-white/80 hover:bg-white"
+                onClick={() => setSelectedGuide(null)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            
+            <div className="p-6">
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="secondary">{selectedGuide.category}</Badge>
+                  <Badge variant="outline">{selectedGuide.difficulty}</Badge>
+                </div>
+                <h1 className="text-2xl font-bold mb-2">{selectedGuide.title}</h1>
+                <p className="text-muted-foreground mb-4">{selectedGuide.summary}</p>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span>by {selectedGuide.author}</span>
+                  <span>{selectedGuide.readTime} 읽기</span>
+                  <span>{selectedGuide.views} 조회</span>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {selectedGuide.content?.sections.map((section: any, idx: number) => (
+                  <Card key={idx}>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold mb-3">{section.title}</h3>
+                      <p className="text-sm leading-relaxed">{section.content}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+
+                <div>
+                  <h3 className="text-xl font-bold mb-3">💡 핵심 팁</h3>
+                  <div className="space-y-2">
+                    {selectedGuide.content?.tips.map((tip: string, idx: number) => (
+                      <div key={idx} className="flex items-start">
+                        <CheckCircle className="w-4 h-4 mr-2 mt-1 text-primary flex-shrink-0" />
+                        <p className="text-sm">{tip}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <TravelFooter />
     </div>

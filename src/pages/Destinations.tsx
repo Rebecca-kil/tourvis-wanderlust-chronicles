@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Star, Clock, Users, Filter, Search } from "lucide-react";
+import { MapPin, Star, Clock, Users, Filter, Search, X, Calendar, DollarSign, Info } from "lucide-react";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 const Destinations = () => {
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDestination, setSelectedDestination] = useState<any>(null);
 
   const regions = ["전체", "아시아", "유럽", "북미", "남미", "오세아니아", "국내"];
 
@@ -27,7 +28,25 @@ const Destinations = () => {
       image: "https://images.unsplash.com/photo-1539650116574-75c0c6d73def?w=400&h=300&fit=crop",
       description: "한국의 대표 힐링 여행지, 아름다운 자연과 독특한 문화가 어우러진 섬",
       highlights: ["한라산", "성산일출봉", "우도", "협재해수욕장"],
-      bestTime: "4-6월, 9-11월"
+      bestTime: "4-6월, 9-11월",
+      detailInfo: {
+        transportation: "김포공항에서 1시간 30분, KTX + 버스 4시간",
+        accommodation: "리조트, 펜션, 게스트하우스 다양",
+        currency: "원화(KRW)",
+        language: "한국어",
+        attractions: [
+          { name: "한라산", description: "한국 최고봉으로 등반과 트레킹 코스가 유명", time: "6-8시간" },
+          { name: "성산일출봉", description: "유네스코 세계자연유산, 일출 명소", time: "2시간" },
+          { name: "우도", description: "제주 동쪽 작은 섬, 자전거 투어 인기", time: "반나절" },
+          { name: "협재해수욕장", description: "에메랄드빛 바다와 하얀 모래사장", time: "2-3시간" }
+        ],
+        tips: [
+          "렌터카 예약은 미리 하는 것이 좋습니다",
+          "날씨 변화가 심하니 여러 벌의 옷을 준비하세요",
+          "현지 흑돼지와 해산물을 꼭 맛보세요",
+          "성수기에는 숙박비가 2-3배 오를 수 있습니다"
+        ]
+      }
     },
     {
       id: 2,
@@ -231,7 +250,11 @@ const Destinations = () => {
                       <span className="text-muted-foreground">최적 시기: </span>
                       <span className="font-medium">{destination.bestTime}</span>
                     </div>
-                    <Button variant="cta" size="sm">
+                    <Button 
+                      variant="cta" 
+                      size="sm"
+                      onClick={() => setSelectedDestination(destination)}
+                    >
                       상세보기
                     </Button>
                   </div>
@@ -249,6 +272,88 @@ const Destinations = () => {
           )}
         </div>
       </section>
+
+      {/* Destination Detail Modal */}
+      {selectedDestination && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-background rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="relative">
+              <img 
+                src={selectedDestination.image} 
+                alt={selectedDestination.name}
+                className="w-full h-64 object-cover"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-4 right-4 bg-white/80 hover:bg-white"
+                onClick={() => setSelectedDestination(null)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+              <div className="absolute bottom-4 left-4">
+                <h1 className="text-3xl font-bold text-white mb-2">{selectedDestination.name}</h1>
+                <p className="text-white/90">{selectedDestination.country}</p>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
+                    <h3 className="font-semibold mb-1">추천 기간</h3>
+                    <p className="text-sm text-muted-foreground">{selectedDestination.duration}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-primary" />
+                    <h3 className="font-semibold mb-1">예산 수준</h3>
+                    <p className="text-sm text-muted-foreground">{selectedDestination.budget}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
+                    <h3 className="font-semibold mb-1">최적 시기</h3>
+                    <p className="text-sm text-muted-foreground">{selectedDestination.bestTime}</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold mb-3">주요 명소</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {selectedDestination.detailInfo?.attractions.map((attraction: any, idx: number) => (
+                      <Card key={idx}>
+                        <CardContent className="p-4">
+                          <h4 className="font-semibold mb-2">{attraction.name}</h4>
+                          <p className="text-sm text-muted-foreground mb-2">{attraction.description}</p>
+                          <Badge variant="outline" className="text-xs">소요시간: {attraction.time}</Badge>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold mb-3">여행 팁</h3>
+                  <div className="space-y-2">
+                    {selectedDestination.detailInfo?.tips.map((tip: string, idx: number) => (
+                      <div key={idx} className="flex items-start">
+                        <Info className="w-4 h-4 mr-2 mt-1 text-primary flex-shrink-0" />
+                        <p className="text-sm">{tip}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <TravelFooter />
     </div>
