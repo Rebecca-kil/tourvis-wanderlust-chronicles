@@ -25,24 +25,6 @@ const TravelHero = () => {
         
  
         
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-          <div className="flex flex-col items-center">
-            <MapPin className="w-8 h-8 mb-2" />
-            <div className="text-2xl font-bold">150+</div>
-            <div className="text-white/80">여행지 정보</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <Calendar className="w-8 h-8 mb-2" />
-            <div className="text-2xl font-bold">500+</div>
-            <div className="text-white/80">여행 가이드</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <Users className="w-8 h-8 mb-2" />
-            <div className="text-2xl font-bold">10K+</div>
-            <div className="text-white/80">여행 후기</div>
-          </div>
-        </div>
       </div>
     </section>
   );
