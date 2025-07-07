@@ -34,8 +34,8 @@ const TravelFooter = () => {
               </Button>
             </div>
           </div>
-{/* 
-          {/* Quick Links */}
+
+        {/*  {/* Quick Links */}
           <div>
             <h3 className="font-semibold mb-4">빠른 링크</h3>
             <ul className="space-y-2 text-sm">
@@ -75,8 +75,8 @@ const TravelFooter = () => {
               </Button>
             </div>
           </div>
-        </div>
-*/}
+        </div> */}
+
 
         {/* Contact Info */}
         <div className="border-t border-background/20 pt-8 mb-8">
