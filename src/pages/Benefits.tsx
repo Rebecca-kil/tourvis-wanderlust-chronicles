@@ -263,7 +263,8 @@ const Benefits = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredBenefits.map((benefit) => (
-              <Card key={benefit.id} className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden relative">
+              <Link key={benefit.id} to={`/benefits/${benefit.id}`}>
+                <Card className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden relative">
                 {benefit.isHot && (
                   <div className="absolute top-4 left-4 z-10">
                     <Badge className="bg-red-500 text-white font-medium">
@@ -342,13 +343,12 @@ const Benefits = () => {
                     </div>
                   </div>
                   
-                  <Link to={`/benefits/${benefit.id}`}>
-                    <Button variant="cta" size="lg" className="w-full">
-                      상세보기
-                    </Button>
-                  </Link>
+                  <Button variant="cta" size="lg" className="w-full">
+                    상세보기
+                  </Button>
                 </CardContent>
-              </Card>
+                </Card>
+              </Link>
             ))}
           </div>
           

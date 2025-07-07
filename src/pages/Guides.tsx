@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock } from "lucide-react";
+import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const Guides = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [likedGuides, setLikedGuides] = useState<Set<number>>(new Set());
 
   const categories = ["전체", "교통", "일정", "준비물", "실용 팁", "트렌드", "FAQ"];
 
@@ -165,6 +166,18 @@ const Guides = () => {
     return matchesCategory && matchesSearch;
   });
 
+  const handleLikeToggle = (guideId: number) => {
+    setLikedGuides(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(guideId)) {
+        newSet.delete(guideId);
+      } else {
+        newSet.add(guideId);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <div className="min-h-screen">
       <TravelHeader />
@@ -297,9 +310,23 @@ const Guides = () => {
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        by {guide.author}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleLikeToggle(guide.id);
+                          }}
+                          className="text-muted-foreground hover:text-red-500"
+                        >
+                          <Heart className={`w-4 h-4 mr-1 ${likedGuides.has(guide.id) ? 'fill-red-500 text-red-500' : ''}`} />
+                          {guide.likes}
+                        </Button>
+                        <span className="text-sm text-muted-foreground">
+                          by {guide.author}
+                        </span>
+                      </div>
                       <Button variant="cta" size="sm">
                         읽어보기
                       </Button>
