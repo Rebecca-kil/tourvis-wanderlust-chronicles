@@ -35,7 +35,7 @@ const TravelFooter = () => {
             </div>
           </div>
 
- {/* 
+       {/* 
           <div>
             <h3 className="font-semibold mb-4">빠른 링크</h3>
             <ul className="space-y-2 text-sm">
@@ -73,10 +73,9 @@ const TravelFooter = () => {
               <Button variant="secondary" size="sm" className="w-full">
                 구독하기
               </Button>
-            </div>
-          
+            </div>       
           </div>
-            */}
+       */}
         </div>
 
 
