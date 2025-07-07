@@ -24,7 +24,12 @@ const Admin = () => {
     stories: ["국내여행", "해외여행", "배낭여행", "가족여행", "혼행", "커플여행"],
     benefits: ["항공", "숙박", "관광", "쇼핑", "카드", "포인트"]
   });
-  const [newTag, setNewTag] = useState("");
+  const [newTagInputs, setNewTagInputs] = useState({
+    destinations: "",
+    guides: "",
+    stories: "",
+    benefits: ""
+  });
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const handleSubmit = (e: React.FormEvent, contentType: string) => {
@@ -36,12 +41,16 @@ const Admin = () => {
   };
 
   const addTag = (category: keyof typeof tags) => {
-    if (newTag.trim() && !tags[category].includes(newTag.trim())) {
+    const newTagValue = newTagInputs[category].trim();
+    if (newTagValue && !tags[category].includes(newTagValue)) {
       setTags(prev => ({
         ...prev,
-        [category]: [...prev[category], newTag.trim()]
+        [category]: [...prev[category], newTagValue]
       }));
-      setNewTag("");
+      setNewTagInputs(prev => ({
+        ...prev,
+        [category]: ""
+      }));
     }
   };
 
@@ -421,8 +430,11 @@ const Admin = () => {
                     <div className="flex gap-2">
                       <Input
                         placeholder="새 태그 입력..."
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
+                        value={newTagInputs[category as keyof typeof newTagInputs]}
+                        onChange={(e) => setNewTagInputs(prev => ({
+                          ...prev,
+                          [category]: e.target.value
+                        }))}
                         onKeyPress={(e) => e.key === 'Enter' && addTag(category as keyof typeof tags)}
                       />
                       <Button 
