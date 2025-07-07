@@ -1,6 +1,7 @@
 import { MapPin, Compass, Heart, Gift } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const CategoryGrid = () => {
   const categories = [
@@ -9,28 +10,32 @@ const CategoryGrid = () => {
       description: "국가·도시·지역별 여행 정보와 추천 코스를 만나보세요",
       icon: MapPin,
       color: "from-travel-ocean to-travel-sky",
-      items: ["도시 가이드", "추천 코스", "숨은 명소", "계절별 여행지"]
+      items: ["도시 가이드", "추천 코스", "숨은 명소", "계절별 여행지"],
+      link: "/destinations"
     },
     {
       title: "여행 가이드",
       description: "교통, 일정, 준비물 등 실용적인 여행 팁을 확인하세요",
       icon: Compass,
       color: "from-travel-sunset to-travel-sand",
-      items: ["교통 가이드", "일정 계획", "준비물 리스트", "여행 트렌드"]
+      items: ["교통 가이드", "일정 계획", "준비물 리스트", "여행 트렌드"],
+      link: "/guides"
     },
     {
       title: "여행 이야기",
       description: "실제 여행자들의 생생한 경험과 후기를 읽어보세요",
       icon: Heart,
       color: "from-travel-forest to-travel-sky",
-      items: ["숙소 후기", "맛집 추천", "액티비티", "현지 체험"]
+      items: ["숙소 후기", "맛집 추천", "액티비티", "현지 체험"],
+      link: "/stories"
     },
     {
       title: "혜택",
       description: "할인 정보와 특가 이벤트로 더 저렴하게 여행하세요",
       icon: Gift,
       color: "from-secondary to-travel-sunset",
-      items: ["할인 항공권", "호텔 특가", "투어 쿠폰", "시즌 이벤트"]
+      items: ["할인 항공권", "호텔 특가", "투어 쿠폰", "시즌 이벤트"],
+      link: "/benefits"
     }
   ];
 
@@ -71,9 +76,11 @@ const CategoryGrid = () => {
                   ))}
                 </ul>
                 
-                <Button variant="ghost" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-travel">
-                  자세히 보기
-                </Button>
+                <Link to={category.link}>
+                  <Button variant="ghost" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-travel">
+                    자세히 보기
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
