@@ -183,81 +183,81 @@ const Destinations = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDestinations.map((destination) => (
-              <Card key={destination.id} className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={destination.image} 
-                    alt={destination.name}
-                    className="w-full h-56 object-cover group-hover:scale-105 transition-travel"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
-                      {destination.region}
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <div className="bg-black/50 text-white px-2 py-1 rounded text-sm flex items-center">
-                      <Star className="w-4 h-4 mr-1 fill-yellow-400 text-yellow-400" />
-                      {destination.rating}
+              <Link key={destination.id} to={`/destinations/${destination.id}`}>
+                <Card className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden">
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src={destination.image} 
+                      alt={destination.name}
+                      className="w-full h-56 object-cover group-hover:scale-105 transition-travel"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
+                        {destination.region}
+                      </Badge>
                     </div>
-                  </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-bold group-hover:text-primary transition-travel">
-                      {destination.name}
-                    </h3>
-                    <span className="text-muted-foreground text-sm">{destination.country}</span>
-                  </div>
-                  
-                  <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                    {destination.description}
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                    <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-2 text-muted-foreground" />
-                      <span>{destination.duration}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2 text-muted-foreground" />
-                      <span>{destination.reviewCount} 리뷰</span>
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-black/50 text-white px-2 py-1 rounded text-sm flex items-center">
+                        <Star className="w-4 h-4 mr-1 fill-yellow-400 text-yellow-400" />
+                        {destination.rating}
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="mb-4">
-                    <p className="text-sm text-muted-foreground mb-2">주요 명소:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {destination.highlights.slice(0, 3).map((highlight, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {highlight}
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-2xl font-bold group-hover:text-primary transition-travel">
+                        {destination.name}
+                      </h3>
+                      <span className="text-muted-foreground text-sm">{destination.country}</span>
+                    </div>
+                    
+                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                      {destination.description}
+                    </p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                      <div className="flex items-center">
+                        <Clock className="w-4 h-4 mr-2 text-muted-foreground" />
+                        <span>{destination.duration}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="w-4 h-4 mr-2 text-muted-foreground" />
+                        <span>{destination.reviewCount} 리뷰</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">주요 명소:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {destination.highlights.slice(0, 3).map((highlight, idx) => (
+                          <Badge key={idx} variant="outline" className="text-xs">
+                            {highlight}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {destination.tags.map((tag, idx) => (
+                        <Badge key={idx} variant="secondary" className="text-xs">
+                          #{tag}
                         </Badge>
                       ))}
                     </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {destination.tags.map((tag, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        #{tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm">
-                      <span className="text-muted-foreground">최적 시기: </span>
-                      <span className="font-medium">{destination.bestTime}</span>
-                    </div>
-                    <Link to={`/destinations/${destination.id}`}>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm">
+                        <span className="text-muted-foreground">최적 시기: </span>
+                        <span className="font-medium">{destination.bestTime}</span>
+                      </div>
                       <Button variant="cta" size="sm">
                         상세보기
                       </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
           

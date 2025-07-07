@@ -131,7 +131,7 @@ const StoryDetail = () => {
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-medium">김여행</span>
+                      <span className="text-sm font-medium">김**</span>
                       <span className="text-xs text-muted-foreground">2024.01.16</span>
                     </div>
                     <p className="text-sm">정말 유익한 정보네요! 저도 제주도 여행 계획 중인데 많은 도움이 됐어요.</p>
@@ -147,7 +147,7 @@ const StoryDetail = () => {
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-medium">이모험</span>
+                      <span className="text-sm font-medium">이**</span>
                       <span className="text-xs text-muted-foreground">2024.01.17</span>
                     </div>
                     <p className="text-sm">펜션 이름이 궁금해요! 혹시 알려주실 수 있나요?</p>
@@ -163,7 +163,7 @@ const StoryDetail = () => {
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-medium">박탐험</span>
+                      <span className="text-sm font-medium">박**</span>
                       <span className="text-xs text-muted-foreground">2024.01.18</span>
                     </div>
                     <p className="text-sm">한라산 등반 후 바비큐 정말 맛있겠네요! 다음에 꼭 가보겠습니다.</p>

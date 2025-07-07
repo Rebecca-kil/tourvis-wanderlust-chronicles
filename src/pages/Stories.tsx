@@ -69,7 +69,7 @@ const Stories = () => {
       summary: "한라산이 창문 너머로 보이는 펜션에서의 힐링 타임. 조용하고 깨끗한 환경, 친절한 사장님, 그리고 아침에 보는 일출까지! 제주도 여행에서 가장 만족스러웠던 숙소 경험을 공유합니다.",
       likes: 156,
       comments: 23,
-      views: "2.3k"
+      
     },
     {
       id: 2,
@@ -89,7 +89,7 @@ const Stories = () => {
       summary: "자갈치시장에서 30년 장사하신 할머니가 추천해주신 진짜 맛집들! 관광객은 모르는 현지인만 아는 숨은 맛집 3곳을 다녀왔습니다. 가격도 저렴하고 맛은 정말 끝내줘요!",
       likes: 289,
       comments: 45,
-      views: "4.1k"
+      
     },
     {
       id: 3,
@@ -109,7 +109,7 @@ const Stories = () => {
       summary: "담넌사두억 플로팅 마켓에서의 특별한 하루! 새벽 5시에 출발해서 보트를 타고 시장을 돌아다니며 현지 음식을 맛보는 경험. 코코넛 껍질에 파는 아이스크림이 정말 별미였어요!",
       likes: 194,
       comments: 31,
-      views: "3.2k"
+      
     },
     {
       id: 4,
@@ -129,7 +129,7 @@ const Stories = () => {
       summary: "교토의 전통 료칸에서 하룻밤. 다다미 방에서 잠자기, 노천온천에서 힐링, 그리고 정성스럽게 차려진 카이세키 요리까지. 일본의 전통 문화를 온몸으로 느낄 수 있었던 소중한 경험이었습니다.",
       likes: 267,
       comments: 38,
-      views: "3.8k"
+      
     },
     {
       id: 5,
@@ -149,7 +149,7 @@ const Stories = () => {
       summary: "하롱베이 2박 3일 크루즈 투어의 진실! 예쁜 사진 뒤에 숨겨진 현실과 바가지 피하는 방법, 그리고 정말 추천할 만한 크루즈 업체까지. 솔직하고 디테일한 후기입니다.",
       likes: 142,
       comments: 67,
-      views: "5.1k"
+      
     },
     {
       id: 6,
@@ -169,7 +169,7 @@ const Stories = () => {
       summary: "파리 현지인처럼 살아보기 프로젝트! 몽마르트르 언덕의 작은 아파트에서 1주일간 머물며 느낀 진짜 파리 생활. 동네 베이커리, 마르셰, 그리고 현지인들과의 소소한 일상까지.",
       likes: 203,
       comments: 29,
-      views: "2.7k"
+      
     }
   ];
 
@@ -269,92 +269,91 @@ const Stories = () => {
         <div className="container mx-auto px-4">
           <div className="space-y-8">
             {filteredStories.map((story) => (
-              <Card key={story.id} className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden">
-                <div className="md:flex">
-                  <div className="md:w-1/3 relative overflow-hidden">
-                    <img 
-                      src={story.image} 
-                      alt={story.title}
-                      className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-travel"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
-                        {story.category}
-                      </Badge>
+              <Link key={story.id} to={`/stories/${story.id}`}>
+                <Card className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden">
+                  <div className="md:flex">
+                    <div className="md:w-1/3 relative overflow-hidden">
+                      <img 
+                        src={story.image} 
+                        alt={story.title}
+                        className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-travel"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
+                          {story.category}
+                        </Badge>
+                      </div>
+                      <div className="absolute top-4 right-4">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <div key={i} className={`w-3 h-3 ${i < story.rating ? 'text-yellow-400' : 'text-gray-300'}`}>
+                              ⭐
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <div className="absolute top-4 right-4">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <div key={i} className={`w-3 h-3 ${i < story.rating ? 'text-yellow-400' : 'text-gray-300'}`}>
-                            ⭐
-                          </div>
+                    
+                    <CardContent className="md:w-2/3 p-6">
+                      <div className="flex items-center space-x-3 mb-4">
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage src={story.author.avatar} />
+                          <AvatarFallback>{story.author.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium text-sm">{story.author.name}</p>
+                          <p className="text-xs text-muted-foreground">{story.author.level}</p>
+                        </div>
+                        <div className="text-xs text-muted-foreground ml-auto">
+                          📍 {story.location}
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {story.tags.map((tag, idx) => (
+                          <Badge key={idx} variant="outline" className="text-xs">
+                            #{tag}
+                          </Badge>
                         ))}
                       </div>
-                    </div>
-                  </div>
-                  
-                  <CardContent className="md:w-2/3 p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src={story.author.avatar} />
-                        <AvatarFallback>{story.author.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium text-sm">{story.author.name}</p>
-                        <p className="text-xs text-muted-foreground">{story.author.level}</p>
+                      
+                      <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-travel">
+                        {story.title}
+                      </h3>
+                      
+                      <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
+                        {story.summary}
+                      </p>
+                      
+                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center space-x-4">
+                          <span>{story.date}</span>
+                          <span>{story.readTime} 읽기</span>
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground ml-auto">
-                        📍 {story.location}
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {story.tags.map((tag, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          #{tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-travel">
-                      {story.title}
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
-                      {story.summary}
-                    </p>
-                    
-                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center space-x-4">
-                        <span>{story.date}</span>
-                        <span>{story.readTime} 읽기</span>
-                        <span>{story.views} 조회</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                          <ThumbsUp className="w-4 h-4 mr-1" />
-                          {story.likes}
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                          <MessageCircle className="w-4 h-4 mr-1" />
-                          {story.comments}
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                          <Share2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      <Link to={`/stories/${story.id}`}>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+                            <ThumbsUp className="w-4 h-4 mr-1" />
+                            {story.likes}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+                            <MessageCircle className="w-4 h-4 mr-1" />
+                            {story.comments}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+                            <Share2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                         <Button variant="cta" size="sm">
                           전체 읽기
                         </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </div>
-              </Card>
+                      </div>
+                    </CardContent>
+                  </div>
+                </Card>
+              </Link>
             ))}
           </div>
           

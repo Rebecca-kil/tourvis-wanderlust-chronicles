@@ -71,7 +71,7 @@ const Guides = () => {
       image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=240&fit=crop",
       summary: "항공료를 최대 50%까지 절약할 수 있는 예약 타이밍, 항공사 선택 요령, 숨겨진 할인 혜택 활용법까지 완벽 정리",
       author: "여행 전문가 김철수",
-      views: "12.3k",
+      
       likes: "856",
       content: {
         sections: [
@@ -101,7 +101,7 @@ const Guides = () => {
       image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=240&fit=crop",
       summary: "첫 일본 여행자를 위한 최적화된 3박 4일 일정표. 교통패스, 숙소 위치, 맛집까지 상세히 안내",
       author: "일본 여행 전문가 이영희",
-      views: "18.7k",
+      
       likes: "1.2k"
     },
     {
@@ -114,7 +114,7 @@ const Guides = () => {
       image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=240&fit=crop",
       summary: "20일 유럽 배낭여행에 필요한 모든 준비물을 정리. 계절별 의류, 전자기기, 약품까지 놓치지 말아야 할 필수템들",
       author: "배낭여행러 박민수",
-      views: "15.1k",
+      
       likes: "967"
     },
     {
@@ -127,7 +127,7 @@ const Guides = () => {
       image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=240&fit=crop",
       summary: "여행지에서 실수하지 않기 위한 기본 문화 에티켓. 아시아, 유럽, 아메리카 대륙별 주의사항과 팁",
       author: "문화 연구가 최지원",
-      views: "9.8k",
+      
       likes: "634"
     },
     {
@@ -140,7 +140,7 @@ const Guides = () => {
       image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop",
       summary: "올해 가장 주목받는 여행 트렌드들을 분석. 웰니스 여행, 지속 가능한 여행, 디지털 디톡스 여행의 모든 것",
       author: "트렌드 분석가 정서연",
-      views: "7.2k",
+      
       likes: "423"
     },
     {
@@ -153,7 +153,7 @@ const Guides = () => {
       image: "https://images.unsplash.com/photo-1454391304352-2bf4678b1a7a?w=400&h=240&fit=crop",
       summary: "여행 보험의 모든 것. 보장 범위, 보험료 비교, 실제 사례를 통한 필수 체크 포인트까지",
       author: "보험 전문가 한진우",
-      views: "11.5k",
+      
       likes: "789"
     }
   ];
@@ -249,65 +249,64 @@ const Guides = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredGuides.map((guide) => (
-              <Card key={guide.id} className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={guide.image} 
-                    alt={guide.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-travel"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
-                      {guide.category}
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <Badge variant="outline" className="bg-white/90 text-xs">
-                      {guide.difficulty}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {guide.tags.map((tag, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
-                        #{tag}
+              <Link key={guide.id} to={`/guides/${guide.id}`}>
+                <Card className="group hover:shadow-travel-medium transition-travel cursor-pointer overflow-hidden">
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src={guide.image} 
+                      alt={guide.title}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-travel"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
+                        {guide.category}
                       </Badge>
-                    ))}
-                  </div>
-                  
-                  <h3 className="text-lg font-bold mb-3 line-clamp-2 group-hover:text-primary transition-travel leading-tight">
-                    {guide.title}
-                  </h3>
-                  
-                  <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
-                    {guide.summary}
-                  </p>
-                  
-                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center space-x-4">
-                      <span className="flex items-center">
-                        <Clock className="w-4 h-4 mr-1" />
-                        {guide.readTime}
-                      </span>
-                      <span>{guide.views} 조회</span>
                     </div>
-                    <span className="text-xs">👍 {guide.likes}</span>
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="outline" className="bg-white/90 text-xs">
+                        {guide.difficulty}
+                      </Badge>
+                    </div>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">
-                      by {guide.author}
-                    </span>
-                    <Link to={`/guides/${guide.id}`}>
+                  <CardContent className="p-6">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {guide.tags.map((tag, idx) => (
+                        <Badge key={idx} variant="outline" className="text-xs">
+                          #{tag}
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <h3 className="text-lg font-bold mb-3 line-clamp-2 group-hover:text-primary transition-travel leading-tight">
+                      {guide.title}
+                    </h3>
+                    
+                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
+                      {guide.summary}
+                    </p>
+                    
+                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center space-x-4">
+                        <span className="flex items-center">
+                          <Clock className="w-4 h-4 mr-1" />
+                          {guide.readTime}
+                        </span>
+                      </div>
+                      <span className="text-xs">👍 {guide.likes}</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">
+                        by {guide.author}
+                      </span>
                       <Button variant="cta" size="sm">
                         읽어보기
                       </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
           
