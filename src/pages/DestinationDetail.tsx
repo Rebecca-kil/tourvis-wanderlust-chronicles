@@ -148,33 +148,6 @@ const DestinationDetail = () => {
       <TravelFooter />
     </div>
   );
-                </div>
-              </div>
-              <div className="flex-shrink-0 ml-4">
-                <ShareButtons title={destinationData.name} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Info */}
-      <section className="py-8 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
-                <h3 className="font-semibold mb-1">추천 기간</h3>
-                <p className="text-sm text-muted-foreground">{destinationData.duration}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <DollarSign className="w-8 h-8 mx-auto mb-2 text-primary" />
-                <h3 className="font-semibold mb-1">예산 수준</h3>
-                <p className="text-sm text-muted-foreground">{destinationData.budget}</p>
-              </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
