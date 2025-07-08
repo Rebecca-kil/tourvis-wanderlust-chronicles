@@ -14,7 +14,7 @@ const Guides = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [likedGuides, setLikedGuides] = useState<Set<number>>(new Set());
 
-  const categories = ["전체", "교통", "일정", "준비물", "실용 팁", "트렌드", "FAQ"];
+  const categories = ["전체", "교통", "일정", "준비물", "팁", "FAQ"];
 
   const guideCategories = [
     {
@@ -40,7 +40,7 @@ const Guides = () => {
     },
     {
       id: "tips",
-      title: "실용 팁",
+      title: "팁",
       icon: Compass,
       description: "현지에서 유용한 생활 팁과 문화 에티켓",
       color: "from-secondary to-travel-sunset"
