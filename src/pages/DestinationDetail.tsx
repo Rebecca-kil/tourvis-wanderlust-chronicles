@@ -112,36 +112,6 @@ const DestinationDetail = () => {
   }
 
   const destinationData = normalizeDestination(destinationRaw);
-    id: destinationRaw.id,
-    name: destinationRaw.title || '-', // name → title
-    country: destinationRaw.city || '-', // country → city
-    region: destinationRaw.tags?.[0] || '-', // region → tags[0]
-    rating: 4.8, // not in Destination, use default
-    reviewCount: 0, // not in Destination, use default
-    duration: destinationRaw.duration || '-',
-    budget: destinationRaw.dailyBudget
-      ? `${destinationRaw.dailyBudget.accommodation || ''} / ${destinationRaw.dailyBudget.food || ''} / ${destinationRaw.dailyBudget.transport || ''}`
-      : '-',
-    tags: destinationRaw.tags || [],
-    image: destinationRaw.image || '',
-    description: destinationRaw.description || '',
-    highlights: [], // not in Destination
-    bestTime: destinationRaw.quickInfo || '-', // bestTime → quickInfo
-    detailInfo: {
-      transportation: '-', // not in Destination
-      accommodation: '-', // not in Destination
-      currency: '-', // not in Destination
-      language: '-', // not in Destination
-      attractions: [], // not in Destination
-      tips: destinationRaw.travelTips || [],
-      dailyBudget: {
-        accommodation: destinationRaw.dailyBudget?.accommodation || '-',
-        food: destinationRaw.dailyBudget?.food || '-',
-        transport: destinationRaw.dailyBudget?.transport || '-',
-        activity: '-', // not in Destination
-      },
-    },
-  };
 
 
   // 이하 렌더링은 destinationData를 기준으로 진행
