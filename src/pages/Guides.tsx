@@ -18,7 +18,7 @@ const Guides = () => {
 
   const categories = ["전체", "교통", "일정", "준비물", "팁", "FAQ"];
 
-  const guideCategories = [
+  {/* const guideCategories = [
     {
       id: "transport",
       title: "교통 가이드",
@@ -62,6 +62,7 @@ const Guides = () => {
       color: "from-travel-sand to-travel-forest"
     }
   ];
+  */}
 
   const filteredGuides = guides.filter(guide => {
     const matchesCategory = selectedCategory === "전체" || guide.category === selectedCategory;
