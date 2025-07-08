@@ -17,7 +17,7 @@ import { useBlog } from "@/contexts/BlogContext";
 const Admin = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("destinations");
-  const { addDestination, addGuide, addStory, addBenefit } = useBlog();
+  const { addDestination, addGuide, addStory, addBenefit, destinations } = useBlog();
   
   // Tags management
   const [tags, setTags] = useState({
@@ -547,31 +547,25 @@ const Admin = () => {
 
       <TravelFooter />
     </div>
-  );
-};
-// --- 여행지 상세/수정 모달 컴포넌트 ---
-import React, { useState } from "react";
-
-const DestinationModal = ({ open, onClose, destination, onEdit, isEditMode, onSave }) => {
   const [editData, setEditData] = useState(destination);
-  React.useEffect(() => { setEditData(destination); }, [destination]);
+  useEffect(() => { setEditData(destination); }, [destination]);
   if (!open || !destination) return null;
 
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name.startsWith("dailyBudget.")) {
-      setEditData(prev => ({
+      setEditData((prev: any) => ({
         ...prev,
         dailyBudget: { ...prev.dailyBudget, [name.split(".")[1]]: value }
       }));
     } else if (name === "travelTips") {
-      setEditData(prev => ({ ...prev, travelTips: value.split('\n') }));
+      setEditData((prev: any) => ({ ...prev, travelTips: value.split('\n') }));
     } else {
-      setEditData(prev => ({ ...prev, [name]: value }));
+      setEditData((prev: any) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(editData);
   };
@@ -645,7 +639,7 @@ const DestinationModal = ({ open, onClose, destination, onEdit, isEditMode, onSa
             <div className="mb-2">
               <b>Travel Tips:</b>
               <ul className="list-disc pl-5">
-                {(destination.travelTips || []).map((tip, idx) => <li key={idx}>{tip}</li>)}
+                {(destination.travelTips || []).map((tip: string, idx: number) => <li key={idx}>{tip}</li>)}
               </ul>
             </div>
             <div className="mb-2">
@@ -670,7 +664,8 @@ const DestinationModal = ({ open, onClose, destination, onEdit, isEditMode, onSa
 
 // ... (기존 코드)
 
-// 목록, 상세/수정 모달 상태 추가
+// 목록, 상세/수정 모달 상태 및 탭 상태 추가
+const [activeTab, setActiveTab] = useState("destinations");
 const [modalOpen, setModalOpen] = useState(false);
 const [editMode, setEditMode] = useState(false);
 const [selectedDestination, setSelectedDestination] = useState(null);
@@ -729,4 +724,5 @@ const handleEditSave = (updated) => {
     />
   </div>
 )}
+
 export default Admin;
