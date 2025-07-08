@@ -15,6 +15,7 @@ export interface Destination {
   accommodation: string;
   food: string;
   transport: string;
+  };
 }
 
 export interface Guide {
