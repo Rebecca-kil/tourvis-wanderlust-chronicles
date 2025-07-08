@@ -99,7 +99,7 @@ const Guides = () => {
         </div>
       </section>
 
-      {/* Category Overview */}
+      {/* Category Overview 
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -111,7 +111,7 @@ const Guides = () => {
             </p>
           </div>
           
-          {/*} <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {guideCategories.map((category) => (
               <Card key={category.id} className="group hover:shadow-travel-medium transition-travel cursor-pointer">
                 <CardContent className="p-6">
@@ -130,9 +130,10 @@ const Guides = () => {
               </Card>
             ))}
           </div>
-          */} 
+    
         </div>
       </section>
+      */}
 
       {/* Search and Filter */}
       <section className="py-8 bg-muted/20">
