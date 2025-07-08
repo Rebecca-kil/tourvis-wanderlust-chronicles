@@ -17,7 +17,7 @@ import { useBlog } from "@/contexts/BlogContext";
 const Admin = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("destinations");
-  const { addDestination, addGuide, addStory, addBenefit, destinations } = useBlog();
+  const { addDestination, addGuide, addStory, addBenefit } = useBlog();
   
   // Tags management
   const [tags, setTags] = useState({
@@ -46,14 +46,7 @@ const Admin = () => {
         description: formData.get('dest-description') as string,
         price: formData.get('dest-price') ? Number(formData.get('dest-price')) : undefined,
         duration: formData.get('dest-duration') as string || undefined,
-        tags: selectedTags,
-        quickInfo: formData.get('dest-quickinfo') as string,
-        travelTips: (formData.get('dest-tips') as string)?.split('\n').map(tip => tip.trim()).filter(Boolean),
-        dailyBudget: {
-          accommodation: formData.get('dest-budget-accommodation') as string,
-          food: formData.get('dest-budget-food') as string,
-          transport: formData.get('dest-budget-transport') as string
-        }
+        tags: selectedTags
       });
     } else if (contentType === "가이드") {
       const contentText = formData.get('guide-content') as string;
@@ -549,187 +542,5 @@ const Admin = () => {
     </div>
   );
 };
-
-
-// --- 여행지 상세/수정 모달 컴포넌트 ---
-import React, { useState } from "react";
-
-const DestinationModal = ({ open, onClose, destination, onEdit, isEditMode, onSave }) => {
-  const [editData, setEditData] = useState(destination);
-  React.useEffect(() => { setEditData(destination); }, [destination]);
-  if (!open || !destination) return null;
-
-  const handleChange = e => {
-    const { name, value } = e.target;
-    if (name.startsWith("dailyBudget.")) {
-      setEditData(prev => ({
-        ...prev,
-        dailyBudget: { ...prev.dailyBudget, [name.split(".")[1]]: value }
-      }));
-    } else if (name === "travelTips") {
-      setEditData(prev => ({ ...prev, travelTips: value.split('\n') }));
-    } else {
-      setEditData(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    onSave(editData);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl p-6 relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">✕</button>
-        {isEditMode ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-2xl font-bold mb-2">여행지 정보 수정</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="edit-title">제목</Label>
-                <Input id="edit-title" name="title" value={editData.title} onChange={handleChange} required />
-              </div>
-              <div>
-                <Label htmlFor="edit-city">도시/국가</Label>
-                <Input id="edit-city" name="city" value={editData.city} onChange={handleChange} required />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="edit-image">이미지 URL</Label>
-              <Input id="edit-image" name="image" value={editData.image} onChange={handleChange} required />
-            </div>
-            <div>
-              <Label htmlFor="edit-description">설명</Label>
-              <Textarea id="edit-description" name="description" value={editData.description} onChange={handleChange} required />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="edit-price">가격</Label>
-                <Input id="edit-price" name="price" value={editData.price || ''} onChange={handleChange} type="number" />
-              </div>
-              <div>
-                <Label htmlFor="edit-duration">소요 시간</Label>
-                <Input id="edit-duration" name="duration" value={editData.duration || ''} onChange={handleChange} />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="edit-quickinfo">Quick Info</Label>
-              <Textarea id="edit-quickinfo" name="quickInfo" value={editData.quickInfo || ''} onChange={handleChange} />
-            </div>
-            <div>
-              <Label htmlFor="edit-tips">Travel Tips (한 줄에 하나씩)</Label>
-              <Textarea id="edit-tips" name="travelTips" value={(editData.travelTips || []).join('\n')} onChange={handleChange} />
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="edit-budget-accommodation">숙박</Label>
-                <Input id="edit-budget-accommodation" name="dailyBudget.accommodation" value={editData.dailyBudget?.accommodation || ''} onChange={handleChange} />
-              </div>
-              <div>
-                <Label htmlFor="edit-budget-food">식비</Label>
-                <Input id="edit-budget-food" name="dailyBudget.food" value={editData.dailyBudget?.food || ''} onChange={handleChange} />
-              </div>
-              <div>
-                <Label htmlFor="edit-budget-transport">교통</Label>
-                <Input id="edit-budget-transport" name="dailyBudget.transport" value={editData.dailyBudget?.transport || ''} onChange={handleChange} />
-              </div>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={onClose}>취소</Button>
-              <Button type="submit">저장</Button>
-            </div>
-          </form>
-        ) : (
-          <div>
-            <h2 className="text-2xl font-bold mb-2">여행지 상세 정보</h2>
-            <div className="mb-2"><b>Quick Info:</b> {destination.quickInfo || '-'}</div>
-            <div className="mb-2">
-              <b>Travel Tips:</b>
-              <ul className="list-disc pl-5">
-                {(destination.travelTips || []).map((tip, idx) => <li key={idx}>{tip}</li>)}
-              </ul>
-            </div>
-            <div className="mb-2">
-              <b>Budget Guide:</b>
-              <ul>
-                <li>숙박: {destination.dailyBudget?.accommodation || '-'}</li>
-                <li>식비: {destination.dailyBudget?.food || '-'}</li>
-                <li>교통: {destination.dailyBudget?.transport || '-'}</li>
-              </ul>
-            </div>
-            <div className="flex justify-end">
-              <Button onClick={onClose}>닫기</Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// --- 메인 Admin 컴포넌트 내 여행지 목록 추가 ---
-
-// ... (기존 코드)
-
-// 목록, 상세/수정 모달 상태 추가
-const [modalOpen, setModalOpen] = useState(false);
-const [editMode, setEditMode] = useState(false);
-const [selectedDestination, setSelectedDestination] = useState(null);
-
-// 여행지 정보 수정 함수
-const { destinations, setDestinations } = useBlog();
-const handleEditSave = (updated) => {
-  setDestinations(prev => prev.map(d => d.id === updated.id ? { ...d, ...updated } : d));
-  setModalOpen(false);
-};
-
-// 여행지 목록 UI (여행지 탭 하단에 추가)
-{activeTab === "destinations" && (
-  <div className="mt-8">
-    <h2 className="text-xl font-semibold mb-4">여행지 목록</h2>
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b">제목</th>
-            <th className="px-4 py-2 border-b">도시/국가</th>
-            <th className="px-4 py-2 border-b">Quick Info</th>
-            <th className="px-4 py-2 border-b">상세</th>
-            <th className="px-4 py-2 border-b">수정</th>
-          </tr>
-        </thead>
-        <tbody>
-          {destinations.length === 0 ? (
-            <tr>
-              <td colSpan={5} className="text-center py-4 text-muted-foreground">등록된 여행지가 없습니다.</td>
-            </tr>
-          ) : (
-            destinations.map(dest => (
-              <tr key={dest.id} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{dest.title}</td>
-                <td className="px-4 py-2">{dest.city}</td>
-                <td className="px-4 py-2">{dest.quickInfo || '-'}</td>
-                <td className="px-4 py-2">
-                  <Button size="sm" variant="outline" onClick={() => { setSelectedDestination(dest); setEditMode(false); setModalOpen(true); }}>상세보기</Button>
-                </td>
-                <td className="px-4 py-2">
-                  <Button size="sm" variant="secondary" onClick={() => { setSelectedDestination(dest); setEditMode(true); setModalOpen(true); }}>수정</Button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
-    <DestinationModal
-      open={modalOpen}
-      onClose={() => setModalOpen(false)}
-      destination={selectedDestination}
-      isEditMode={editMode}
-      onSave={handleEditSave}
-    />
-  </div>
-)}
 
 export default Admin;

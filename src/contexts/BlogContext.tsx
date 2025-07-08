@@ -9,13 +9,6 @@ export interface Destination {
   price?: number;
   duration?: string;
   tags: string[];
-  quickInfo?: string;
-  travelTips?: string[];
-  dailyBudget?: {
-    accommodation: string;
-    food: string;
-    transport: string;
-  };
 }
 
 export interface Guide {
