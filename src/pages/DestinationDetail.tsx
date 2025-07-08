@@ -149,9 +149,6 @@ const DestinationDetail = () => {
     </div>
   );
 
-    <div className="min-h-screen">
-      <TravelHeader />
-      
       {/* Hero Section */}
       <section className="relative h-[60vh] overflow-hidden">
         <img 
