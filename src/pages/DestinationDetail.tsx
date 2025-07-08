@@ -7,12 +7,14 @@ import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useBlog } from "@/contexts/BlogContext";
 
 const DestinationDetail = () => {
   const { id } = useParams();
 
-  // Mock data - 실제로는 API에서 가져올 데이터
-  const destination = {
+  // 기존 mock data: 실제로는 API에서 가져올 데이터 (삭제 금지, 참고용)
+  /*
+  const mockDestination = {
     id: 1,
     name: "제주도",
     country: "대한민국",
@@ -51,8 +53,58 @@ const DestinationDetail = () => {
       }
     }
   };
+  */
 
-  return (
+  // 실제 context 데이터 구조를 mock data와 통일 (필드가 없을 경우 fallback 값 적용)
+  const destinationRaw = destinations.find(
+    (dest) => String(dest.id) === String(id)
+  );
+
+  if (!destinationRaw) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <TravelHeader />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-xl text-muted-foreground">여행지 정보를 찾을 수 없습니다.</div>
+        </div>
+        <TravelFooter />
+      </div>
+    );
+  }
+
+  // 데이터 구조 통일: 모든 렌더링은 destinationData 객체만 사용
+  const destinationData = {
+    id: destinationRaw.id,
+    name: destinationRaw.name || destinationRaw.title || '-',
+    country: destinationRaw.country || destinationRaw.city || '-',
+    region: destinationRaw.region || (destinationRaw.tags ? destinationRaw.tags[0] : '-') || '-',
+    rating: destinationRaw.rating || 4.8,
+    reviewCount: destinationRaw.reviewCount || 0,
+    duration: destinationRaw.duration || '-',
+    budget: destinationRaw.budget || (destinationRaw.dailyBudget ? `${destinationRaw.dailyBudget.accommodation || ''} / ${destinationRaw.dailyBudget.food || ''} / ${destinationRaw.dailyBudget.transport || ''}` : '-') || '-',
+    tags: destinationRaw.tags || [],
+    image: destinationRaw.image || '',
+    description: destinationRaw.description || '',
+    highlights: destinationRaw.highlights || [],
+    bestTime: destinationRaw.bestTime || destinationRaw.quickInfo || '-',
+    detailInfo: destinationRaw.detailInfo || {
+      transportation: destinationRaw.transportation || '-',
+      accommodation: destinationRaw.accommodation || '-',
+      currency: destinationRaw.currency || '-',
+      language: destinationRaw.language || '-',
+      attractions: destinationRaw.attractions || [],
+      tips: destinationRaw.travelTips || [],
+      dailyBudget: destinationRaw.dailyBudget || {
+        accommodation: '-',
+        food: '-',
+        transport: '-',
+        activity: '-',
+      }
+    }
+  };
+
+  // 이하 렌더링은 destinationData를 기준으로 진행
+
     <div className="min-h-screen">
       <TravelHeader />
       
