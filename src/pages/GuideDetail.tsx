@@ -1,44 +1,42 @@
+
 import { useState } from "react";
 import { ArrowLeft, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useBlog } from "@/contexts/BlogContext";
 
 const GuideDetail = () => {
+  const { id } = useParams();
+  const { guides } = useBlog();
   const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(856);
+
+  const guide = guides.find(g => g.id === id);
+
+  if (!guide) {
+    return (
+      <div className="min-h-screen">
+        <TravelHeader />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <h1 className="text-2xl font-bold mb-4">가이드를 찾을 수 없습니다</h1>
+          <Link to="/guides" className="text-primary hover:underline">
+            가이드 목록으로 돌아가기
+          </Link>
+        </div>
+        <TravelFooter />
+      </div>
+    );
+  }
+
+  const [likes, setLikes] = useState(guide.likes);
 
   const handleLikeToggle = () => {
     setIsLiked(!isLiked);
     setLikes(prev => isLiked ? prev - 1 : prev + 1);
-  };
-
-  const guide = {
-    title: "항공료 50% 절약하는 예약 타이밍과 팁",
-    category: "교통",
-    difficulty: "초급",
-    readTime: "8분",
-    author: "여행 전문가 김철수",
-    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=400&fit=crop",
-    content: [
-      {
-        title: "1. 최적의 예약 타이밍",
-        content: "국내선의 경우 출발 1-2개월 전, 국제선은 2-3개월 전이 가장 저렴합니다. 화요일 오후 3시경이 항공료가 가장 낮은 시간대입니다."
-      },
-      {
-        title: "2. 항공사 선택 요령", 
-        content: "LCC(저비용항공사) vs FSC(일반항공사) 비교시 수하물 정책, 좌석 선택비, 기내식 등 부가비용까지 계산해서 총 비용을 비교하세요."
-      },
-      {
-        title: "3. 할인 혜택 활용법",
-        content: "항공사 멤버십, 신용카드 적립, 마일리지 활용, 얼리버드/라스트미닛 특가 등을 적극 활용하면 50% 이상 절약 가능합니다."
-      }
-    ],
-    tips: ["주중 출발이 주말보다 20-30% 저렴", "직항보다 경유가 더 저렴할 수 있음", "취소 가능한 항공권도 고려해보세요"]
   };
 
   return (
@@ -62,7 +60,12 @@ const GuideDetail = () => {
             <h1 className="text-3xl font-bold mb-2">{guide.title}</h1>
             <div className="flex items-center gap-4 mb-4">
               <span className="text-sm text-muted-foreground">by {guide.author}</span>
+              {guide.readTime && <span className="text-sm text-muted-foreground">읽기 시간: {guide.readTime}</span>}
+              {guide.publishDate && <span className="text-sm text-muted-foreground">발행일: {guide.publishDate}</span>}
             </div>
+            {guide.description && (
+              <p className="text-muted-foreground mb-4">{guide.description}</p>
+            )}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Button
@@ -89,19 +92,63 @@ const GuideDetail = () => {
               </Card>
             ))}
 
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">💡 핵심 팁</h3>
-                <ul className="space-y-2">
-                  {guide.tips.map((tip, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span>{tip}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            {guide.tips && guide.tips.length > 0 && (
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">💡 핵심 팁</h3>
+                  <ul className="space-y-2">
+                    {guide.tips.map((tip, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Additional Info Sections */}
+            {guide.targetAudience && (
+              <Card className="mt-6">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">🎯 대상자</h3>
+                  <p>{guide.targetAudience}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {guide.requirements && guide.requirements.length > 0 && (
+              <Card className="mt-6">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">📋 필요 조건</h3>
+                  <ul className="space-y-2">
+                    {guide.requirements.map((req, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {guide.whatYouWillLearn && guide.whatYouWillLearn.length > 0 && (
+              <Card className="mt-6">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">🎓 배울 내용</h3>
+                  <ul className="space-y-2">
+                    {guide.whatYouWillLearn.map((item, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </article>
       </div>

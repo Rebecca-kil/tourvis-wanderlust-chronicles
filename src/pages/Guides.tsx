@@ -1,18 +1,20 @@
+
 import { useState } from "react";
-import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Filter, Clock, Heart } from "lucide-react";
+import { Compass, Plane, Calendar, Package, TrendingUp, HelpCircle, Search, Clock, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useBlog } from "@/contexts/BlogContext";
 
 const Guides = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [likedGuides, setLikedGuides] = useState<Set<number>>(new Set());
+  const [likedGuides, setLikedGuides] = useState<Set<string>>(new Set());
+  const { guides } = useBlog();
 
   const categories = ["전체", "교통", "일정", "준비물", "팁", "FAQ"];
 
@@ -61,104 +63,6 @@ const Guides = () => {
     }
   ];
 
-  const guides = [
-    {
-      id: 1,
-      title: "항공료 50% 절약하는 예약 타이밍과 팁",
-      category: "교통",
-      readTime: "8분",
-      difficulty: "초급",
-      tags: ["항공료", "예약", "절약", "팁"],
-      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=240&fit=crop",
-      summary: "항공료를 최대 50%까지 절약할 수 있는 예약 타이밍, 항공사 선택 요령, 숨겨진 할인 혜택 활용법까지 완벽 정리",
-      author: "여행 전문가 김철수",
-      
-      likes: "856",
-      content: {
-        sections: [
-          {
-            title: "1. 최적의 예약 타이밍",
-            content: "국내선: 출발 1-2개월 전, 국제선: 2-3개월 전이 가장 저렴합니다. 화요일 오후 3시경이 항공료가 가장 낮은 시간대입니다."
-          },
-          {
-            title: "2. 항공사 선택 요령",
-            content: "LCC(저비용항공사) vs FSC(일반항공사) 비교, 수하물 정책, 좌석 선택비, 기내식 등 부가비용까지 계산해서 총 비용을 비교하세요."
-          },
-          {
-            title: "3. 할인 혜택 활용법",
-            content: "항공사 멤버십, 신용카드 적립, 마일리지 활용, 얼리버드/라스트미닛 특가 등을 적극 활용하면 50% 이상 절약 가능합니다."
-          }
-        ],
-        tips: ["주중 출발이 주말보다 20-30% 저렴", "직항보다 경유가 더 저렴할 수 있음", "취소 가능한 항공권도 고려해보세요"]
-      }
-    },
-    {
-      id: 2,
-      title: "3박 4일 일본 여행 완벽 일정표 (도쿄-오사카)",
-      category: "일정",
-      readTime: "12분",
-      difficulty: "중급",
-      tags: ["일본", "일정", "도쿄", "오사카"],
-      image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=240&fit=crop",
-      summary: "첫 일본 여행자를 위한 최적화된 3박 4일 일정표. 교통패스, 숙소 위치, 맛집까지 상세히 안내",
-      author: "일본 여행 전문가 이영희",
-      
-      likes: "1.2k"
-    },
-    {
-      id: 3,
-      title: "유럽 배낭여행 짐싸기 완벽 가이드 (체크리스트 포함)",
-      category: "준비물",
-      readTime: "10분",
-      difficulty: "초급",
-      tags: ["유럽", "배낭여행", "짐싸기", "체크리스트"],
-      image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=240&fit=crop",
-      summary: "20일 유럽 배낭여행에 필요한 모든 준비물을 정리. 계절별 의류, 전자기기, 약품까지 놓치지 말아야 할 필수템들",
-      author: "배낭여행러 박민수",
-      
-      likes: "967"
-    },
-    {
-      id: 4,
-      title: "해외여행 시 꼭 알아야 할 현지 문화 에티켓 10가지",
-      category: "팁",
-      readTime: "6분",
-      difficulty: "초급",
-      tags: ["문화", "에티켓", "매너", "팁"],
-      image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=240&fit=crop",
-      summary: "여행지에서 실수하지 않기 위한 기본 문화 에티켓. 아시아, 유럽, 아메리카 대륙별 주의사항과 팁",
-      author: "문화 연구가 최지원",
-      
-      likes: "634"
-    },
-    {
-      id: 5,
-      title: "2024년 뜨는 여행 트렌드: 웰니스 여행과 디지털 디톡스",
-      category: "트렌드",
-      readTime: "7분",
-      difficulty: "초급",
-      tags: ["2024", "트렌드", "웰니스", "디지털디톡스"],
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop",
-      summary: "올해 가장 주목받는 여행 트렌드들을 분석. 웰니스 여행, 지속 가능한 여행, 디지털 디톡스 여행의 모든 것",
-      author: "트렌드 분석가 정서연",
-      
-      likes: "423"
-    },
-    {
-      id: 6,
-      title: "여행 보험 가입 시 체크해야 할 필수 항목들",
-      category: "FAQ",
-      readTime: "9분",
-      difficulty: "중급",
-      tags: ["보험", "안전", "체크리스트", "필수"],
-      image: "https://images.unsplash.com/photo-1454391304352-2bf4678b1a7a?w=400&h=240&fit=crop",
-      summary: "여행 보험의 모든 것. 보장 범위, 보험료 비교, 실제 사례를 통한 필수 체크 포인트까지",
-      author: "보험 전문가 한진우",
-      
-      likes: "789"
-    }
-  ];
-
   const filteredGuides = guides.filter(guide => {
     const matchesCategory = selectedCategory === "전체" || guide.category === selectedCategory;
     const matchesSearch = guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -166,7 +70,7 @@ const Guides = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const handleLikeToggle = (guideId: number) => {
+  const handleLikeToggle = (guideId: string) => {
     setLikedGuides(prev => {
       const newSet = new Set(prev);
       if (newSet.has(guideId)) {
@@ -296,11 +200,17 @@ const Guides = () => {
                     </h3>
                     
                     <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
-                      {guide.summary}
+                      {guide.description}
                     </p>
                     
                     <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                       <span className="text-xs">by {guide.author}</span>
+                      {guide.readTime && (
+                        <div className="flex items-center">
+                          <Clock className="w-4 h-4 mr-1" />
+                          <span className="text-xs">{guide.readTime}</span>
+                        </div>
+                      )}
                     </div>
                     
                     <div className="flex items-center justify-between">
@@ -310,14 +220,12 @@ const Guides = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
+                          handleLikeToggle(guide.id);
                         }}
-                        className="text-muted-foreground hover:text-red-500"
-                        asChild
+                        className={`flex items-center gap-2 ${likedGuides.has(guide.id) ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500`}
                       >
-                        <Link to={`/guides/${guide.id}`} className="flex items-center">
-                          <Heart className={`w-4 h-4 mr-1 ${likedGuides.has(guide.id) ? 'fill-red-500 text-red-500' : ''}`} />
-                          {guide.likes}
-                        </Link>
+                        <Heart className={`w-4 h-4 ${likedGuides.has(guide.id) ? 'fill-current' : ''}`} />
+                        <span className="text-sm font-medium">{guide.likes}</span>
                       </Button>
                       <Button variant="cta" size="sm">
                         읽어보기

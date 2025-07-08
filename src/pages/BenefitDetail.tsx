@@ -1,54 +1,42 @@
+
 import { useState } from "react";
 import { ArrowLeft, Clock, CheckCircle, AlertCircle, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
 import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useBlog } from "@/contexts/BlogContext";
 
 const BenefitDetail = () => {
+  const { id } = useParams();
+  const { benefits } = useBlog();
   const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(234);
+
+  const benefit = benefits.find(b => b.id === id);
+
+  if (!benefit) {
+    return (
+      <div className="min-h-screen">
+        <TravelHeader />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <h1 className="text-2xl font-bold mb-4">혜택을 찾을 수 없습니다</h1>
+          <Link to="/benefits" className="text-primary hover:underline">
+            혜택 목록으로 돌아가기
+          </Link>
+        </div>
+        <TravelFooter />
+      </div>
+    );
+  }
+
+  const [likes, setLikes] = useState(benefit.likes);
 
   const handleLikeToggle = () => {
     setIsLiked(!isLiked);
     setLikes(prev => isLiked ? prev - 1 : prev + 1);
-  };
-
-  const benefit = {
-    title: "제주항공 국내선 항공료 30% 할인",
-    category: "항공",
-    type: "할인",
-    discount: "30%",
-    originalPrice: "150,000원",
-    salePrice: "105,000원",
-    validUntil: "2024.03.31",
-    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=400&fit=crop",
-    description: "제주항공 국내선 전 노선 30% 할인! 김포-제주, 김포-부산 등 인기 노선 포함. 3월 말까지 한정 특가",
-    isHot: true,
-    stock: "87%",
-    features: [
-      "국내선 전 노선 30% 할인",
-      "김포-제주, 김포-부산 등 인기 노선 포함",
-      "3월 말까지 한정 특가",
-      "좌석 선택 무료",
-      "수하물 15kg 포함"
-    ],
-    conditions: [
-      "예약 기간: ~2024.03.31",
-      "탑승 기간: ~2024.04.30", 
-      "좌석 한정 (선착순)",
-      "환불/변경 수수료 별도",
-      "중복 할인 불가"
-    ],
-    howToUse: [
-      "제주항공 공식 홈페이지 접속",
-      "원하는 항공편 선택",
-      "예약 페이지에서 할인코드 입력",
-      "할인 적용 확인 후 결제 완료"
-    ]
   };
 
   return (
@@ -106,21 +94,23 @@ const BenefitDetail = () => {
             </Card>
 
             {/* How to Use */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">📋 이용 방법</h3>
-                <ol className="space-y-3">
-                  {benefit.howToUse.map((step, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm mr-3 flex-shrink-0">
-                        {idx + 1}
-                      </span>
-                      <span>{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </CardContent>
-            </Card>
+            {benefit.howToUse && benefit.howToUse.length > 0 && (
+              <Card className="mb-6">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">📋 이용 방법</h3>
+                  <ol className="space-y-3">
+                    {benefit.howToUse.map((step, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm mr-3 flex-shrink-0">
+                          {idx + 1}
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Terms */}
             <Card>
@@ -136,6 +126,23 @@ const BenefitDetail = () => {
                 </ul>
               </CardContent>
             </Card>
+
+            {/* Restrictions */}
+            {benefit.restrictions && benefit.restrictions.length > 0 && (
+              <Card className="mt-6">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">🚫 제한 사항</h3>
+                  <ul className="space-y-2">
+                    {benefit.restrictions.map((restriction, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <AlertCircle className="w-5 h-5 text-red-500 mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{restriction}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -144,25 +151,35 @@ const BenefitDetail = () => {
             <Card>
               <CardContent className="p-6">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-red-600 mb-2">{benefit.discount} OFF</div>
+                  {benefit.discount && (
+                    <div className="text-4xl font-bold text-red-600 mb-2">{benefit.discount} OFF</div>
+                  )}
                   <div className="flex items-center justify-center space-x-2 mb-4">
-                    <span className="text-xl line-through text-muted-foreground">{benefit.originalPrice}</span>
-                    <span className="text-2xl font-bold text-red-600">{benefit.salePrice}</span>
+                    {benefit.originalPrice && (
+                      <span className="text-xl line-through text-muted-foreground">{benefit.originalPrice}</span>
+                    )}
+                    {benefit.salePrice && (
+                      <span className="text-2xl font-bold text-red-600">{benefit.salePrice}</span>
+                    )}
                   </div>
-                  <div className="flex items-center justify-center text-sm text-muted-foreground mb-4">
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>~{benefit.validUntil}</span>
-                  </div>
-                  <div className="mb-4">
-                    <div className="text-sm text-muted-foreground mb-1">남은 수량</div>
-                    <div className="w-full bg-muted rounded-full h-2 mb-2">
-                      <div 
-                        className="bg-green-600 h-2 rounded-full" 
-                        style={{ width: benefit.stock }}
-                      ></div>
+                  {benefit.validUntil && (
+                    <div className="flex items-center justify-center text-sm text-muted-foreground mb-4">
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span>~{benefit.validUntil}</span>
                     </div>
-                    <div className="text-sm font-medium">{benefit.stock} 남음</div>
-                  </div>
+                  )}
+                  {benefit.stock && (
+                    <div className="mb-4">
+                      <div className="text-sm text-muted-foreground mb-1">남은 수량</div>
+                      <div className="w-full bg-muted rounded-full h-2 mb-2">
+                        <div 
+                          className="bg-green-600 h-2 rounded-full" 
+                          style={{ width: benefit.stock }}
+                        ></div>
+                      </div>
+                      <div className="text-sm font-medium">{benefit.stock} 남음</div>
+                    </div>
+                  )}
                   <Button variant="cta" size="lg" className="w-full">
                     지금 예약하기
                   </Button>
@@ -175,6 +192,15 @@ const BenefitDetail = () => {
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-3">문의하기</h3>
                 <div className="space-y-2 text-sm">
+                  {benefit.contactInfo && <div>{benefit.contactInfo}</div>}
+                  {benefit.provider && <div>제공업체: {benefit.provider}</div>}
+                  {benefit.website && (
+                    <div>
+                      <a href={benefit.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                        웹사이트 방문
+                      </a>
+                    </div>
+                  )}
                   <div>📞 고객센터: 1588-1234</div>
                   <div>⏰ 운영시간: 09:00~18:00</div>
                   <div>📧 이메일: help@tourvis.com</div>

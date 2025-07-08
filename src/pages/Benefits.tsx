@@ -1,17 +1,20 @@
+
 import { useState } from "react";
-import { Gift, Percent, Calendar, Ticket, Search, Filter, Clock, AlertCircle } from "lucide-react";
+import { Gift, Percent, Calendar, Ticket, Search, Clock, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useBlog } from "@/contexts/BlogContext";
 
 const Benefits = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
+  const { benefits } = useBlog();
 
   const categories = ["전체", "항공", "숙박", "투어", "렌터카", "액티비티", "쇼핑"];
 
@@ -22,7 +25,7 @@ const Benefits = () => {
       icon: Percent,
       description: "국내외 항공료 최대 50% 할인 혜택",
       color: "from-travel-ocean to-travel-sky",
-      count: "45개"
+      count: `${benefits.filter(b => b.category === '항공').length}개`
     },
     {
       id: "hotel",
@@ -30,7 +33,7 @@ const Benefits = () => {
       icon: Gift,
       description: "호텔, 펜션, 리조트 특가 이벤트",
       color: "from-travel-sunset to-travel-sand",
-      count: "128개"
+      count: `${benefits.filter(b => b.category === '숙박').length}개`
     },
     {
       id: "tour",
@@ -38,7 +41,7 @@ const Benefits = () => {
       icon: Ticket,
       description: "현지 투어 및 체험 활동 할인 쿠폰",
       color: "from-travel-forest to-travel-sky",
-      count: "73개"
+      count: `${benefits.filter(b => b.category === '투어').length}개`
     },
     {
       id: "seasonal",
@@ -46,106 +49,7 @@ const Benefits = () => {
       icon: Calendar,
       description: "계절별 한정 특가 상품 모음",
       color: "from-secondary to-travel-sunset",
-      count: "92개"
-    }
-  ];
-
-  const benefits = [
-    {
-      id: 1,
-      title: "제주항공 국내선 항공료 30% 할인",
-      category: "항공",
-      type: "할인",
-      discount: "30%",
-      originalPrice: "150,000원",
-      salePrice: "105,000원",
-      validUntil: "2024.03.31",
-      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=240&fit=crop",
-      description: "제주항공 국내선 전 노선 30% 할인! 김포-제주, 김포-부산 등 인기 노선 포함. 3월 말까지 한정 특가",
-      conditions: ["예약 기간: ~2024.03.31", "탑승 기간: ~2024.04.30", "좌석 한정"],
-      isHot: true,
-      isLimited: true,
-      stock: "87%"
-    },
-    {
-      id: 2,
-      title: "부산 해운대 오션뷰 호텔 50% 특가",
-      category: "숙박",
-      type: "특가",
-      discount: "50%",
-      originalPrice: "200,000원",
-      salePrice: "100,000원",
-      validUntil: "2024.02.29",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=240&fit=crop",
-      description: "해운대 정면 오션뷰가 보이는 프리미엄 호텔! 조식 포함, 수영장 이용 가능. 2월 한정 반값 특가",
-      conditions: ["체크인: 2024.02.01~28", "조식 포함", "수영장/스파 무료 이용"],
-      isHot: true,
-      isLimited: false,
-      stock: "43%"
-    },
-    {
-      id: 3,
-      title: "방콕 시내 투어 + 태국 마사지 패키지",
-      category: "투어",
-      type: "쿠폰",
-      discount: "25%",
-      originalPrice: "80,000원",
-      salePrice: "60,000원",
-      validUntil: "2024.04.15",
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=240&fit=crop",
-      description: "방콕 주요 명소 투어 + 2시간 전통 태국 마사지가 포함된 패키지 상품. 한국어 가이드 포함",
-      conditions: ["최소 2인 예약", "한국어 가이드", "픽업/드롭 서비스"],
-      isHot: false,
-      isLimited: true,
-      stock: "22%"
-    },
-    {
-      id: 4,
-      title: "전국 렌터카 봄맞이 할인 이벤트",
-      category: "렌터카",
-      type: "시즌특가",
-      discount: "40%",
-      originalPrice: "60,000원/일",
-      salePrice: "36,000원/일",
-      validUntil: "2024.05.31",
-      image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=240&fit=crop",
-      description: "봄 여행 시즌 맞이 렌터카 할인! 소형차부터 SUV까지 다양한 차종. 보험료 포함 가격",
-      conditions: ["최소 2일 대여", "보험료 포함", "무제한 주행"],
-      isHot: false,
-      isLimited: false,
-      stock: "76%"
-    },
-    {
-      id: 5,
-      title: "유럽 패키지 여행 얼리버드 30% 할인",
-      category: "투어",
-      type: "얼리버드",
-      discount: "30%",
-      originalPrice: "1,500,000원",
-      salePrice: "1,050,000원",
-      validUntil: "2024.02.20",
-      image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=240&fit=crop",
-      description: "5월 출발 유럽 5개국 8일 패키지 여행 얼리버드 특가! 항공료, 숙박, 식사, 가이드 모두 포함",
-      conditions: ["5월 출발", "항공료 포함", "전 일정 한국어 가이드"],
-      isHot: true,
-      isLimited: true,
-      stock: "12%"
-    },
-    {
-      id: 6,
-      title: "일본 온천 리조트 겨울 특가 패키지",
-      category: "숙박",
-      type: "시즌특가",
-      discount: "35%",
-      originalPrice: "300,000원",
-      salePrice: "195,000원",
-      validUntil: "2024.02.28",
-      image: "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400&h=240&fit=crop",
-      description: "일본 유명 온천 리조트 겨울 마지막 특가! 노천온천, 카이세키 요리, 료칸 체험까지",
-      conditions: ["2박 3일 패키지", "카이세키 요리 포함", "온천 무제한 이용"],
-      isHot: false,
-      isLimited: true,
-      stock: "67%"
+      count: `${benefits.filter(b => b.type === '시즌특가').length}개`
     }
   ];
 
@@ -156,7 +60,8 @@ const Benefits = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const getStockColor = (stock: string) => {
+  const getStockColor = (stock?: string) => {
+    if (!stock) return "text-gray-600";
     const percentage = parseInt(stock);
     if (percentage > 50) return "text-green-600";
     if (percentage > 20) return "text-yellow-600";
@@ -185,7 +90,7 @@ const Benefits = () => {
           <Alert className="border-red-200 bg-red-50 dark:bg-red-950/50">
             <AlertCircle className="h-4 w-4 text-red-600" />
             <AlertDescription className="text-red-800 dark:text-red-200">
-              🔥 <strong>긴급 특가!</strong> 제주항공 30% 할인 마감 임박 (23시간 남음) • 유럽 패키지 85% 마감
+              🔥 <strong>긴급 특가!</strong> 현재 등록된 혜택들을 놓치지 마세요!
             </AlertDescription>
           </Alert>
         </div>
@@ -272,13 +177,6 @@ const Benefits = () => {
                     </Badge>
                   </div>
                 )}
-                {benefit.isLimited && (
-                  <div className="absolute top-4 right-4 z-10">
-                    <Badge variant="outline" className="bg-white/90 text-xs">
-                      한정수량
-                    </Badge>
-                  </div>
-                )}
                 
                 <div className="relative overflow-hidden">
                   <img 
@@ -299,9 +197,11 @@ const Benefits = () => {
                       {benefit.type}
                     </Badge>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-red-600">
-                        {benefit.discount} OFF
-                      </div>
+                      {benefit.discount && (
+                        <div className="text-2xl font-bold text-red-600">
+                          {benefit.discount} OFF
+                        </div>
+                      )}
                     </div>
                   </div>
                   
@@ -311,12 +211,16 @@ const Benefits = () => {
                   
                   <div className="mb-4">
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-lg line-through text-muted-foreground">
-                        {benefit.originalPrice}
-                      </span>
-                      <span className="text-xl font-bold text-red-600">
-                        {benefit.salePrice}
-                      </span>
+                      {benefit.originalPrice && (
+                        <span className="text-lg line-through text-muted-foreground">
+                          {benefit.originalPrice}
+                        </span>
+                      )}
+                      {benefit.salePrice && (
+                        <span className="text-xl font-bold text-red-600">
+                          {benefit.salePrice}
+                        </span>
+                      )}
                     </div>
                   </div>
                   
@@ -338,9 +242,11 @@ const Benefits = () => {
                       <Clock className="w-4 h-4 mr-1 text-muted-foreground" />
                       <span className="text-muted-foreground">~{benefit.validUntil}</span>
                     </div>
-                    <div className={`flex items-center ${getStockColor(benefit.stock)}`}>
-                      <span className="text-xs">재고 {benefit.stock}</span>
-                    </div>
+                    {benefit.stock && (
+                      <div className={`flex items-center ${getStockColor(benefit.stock)}`}>
+                        <span className="text-xs">재고 {benefit.stock}</span>
+                      </div>
+                    )}
                   </div>
                   
                   <Button variant="cta" size="lg" className="w-full">
