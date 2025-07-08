@@ -148,33 +148,6 @@ const DestinationDetail = () => {
       <TravelFooter />
     </div>
   );
-
-      {/* Hero Section */}
-      <section className="relative h-[60vh] overflow-hidden">
-        <img 
-          src={destination.image} 
-          alt={destination.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40 flex items-end">
-          <div className="container mx-auto px-4 pb-8">
-            <Link to="/destinations" className="inline-flex items-center text-white mb-4 hover:text-white/80">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              여행지 목록으로 돌아가기
-            </Link>
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{destination.name}</h1>
-                <p className="text-xl text-white/90 mb-4">{destination.country}</p>
-                <div className="flex items-center space-x-4 text-white/80">
-                  <div className="flex items-center">
-                    <Star className="w-5 h-5 mr-1 fill-yellow-400 text-yellow-400" />
-                    <span>{destination.rating}</span>
-                  </div>
-                  <span>•</span>
-                  <span>{destination.reviewCount} 리뷰</span>
-                  <span>•</span>
-                  <span>{destination.region}</span>
                 </div>
               </div>
               <div className="flex-shrink-0 ml-4">
