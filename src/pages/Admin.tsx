@@ -52,11 +52,29 @@ const Admin = () => {
   });
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  // Travel tips state
+  const [travelTips, setTravelTips] = useState<string[]>([]);
+  const [newTip, setNewTip] = useState("");
+
   const handleSubmit = (e: React.FormEvent, contentType: string) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     
     if (contentType === "여행지") {
+      // Parse daily budget if provided
+      let dailyBudget = undefined;
+      const accommodation = formData.get('dest-accommodation') as string;
+      const food = formData.get('dest-food') as string;
+      const transport = formData.get('dest-transport') as string;
+      
+      if (accommodation || food || transport) {
+        dailyBudget = {
+          accommodation: accommodation || "",
+          food: food || "",
+          transport: transport || ""
+        };
+      }
+
       addDestination({
         title: formData.get('dest-title') as string,
         city: formData.get('dest-city') as string,
@@ -64,8 +82,14 @@ const Admin = () => {
         description: formData.get('dest-description') as string,
         price: formData.get('dest-price') ? Number(formData.get('dest-price')) : undefined,
         duration: formData.get('dest-duration') as string || undefined,
+        quickInfo: formData.get('dest-quick-info') as string || undefined,
+        travelTips: travelTips.length > 0 ? travelTips : undefined,
+        dailyBudget,
         tags: selectedTags
       });
+      
+      // Reset travel tips
+      setTravelTips([]);
     } else if (contentType === "가이드") {
       const contentText = formData.get('guide-content') as string;
       const tipsText = formData.get('guide-tips') as string;
@@ -121,6 +145,7 @@ const Admin = () => {
     }
     
     setSelectedTags([]);
+    setTravelTips([]);
     (e.target as HTMLFormElement).reset();
     
     toast({
@@ -158,6 +183,17 @@ const Admin = () => {
     );
   };
 
+  const addTravelTip = () => {
+    if (newTip.trim() && !travelTips.includes(newTip.trim())) {
+      setTravelTips(prev => [...prev, newTip.trim()]);
+      setNewTip("");
+    }
+  };
+
+  const removeTravelTip = (tipToRemove: string) => {
+    setTravelTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
   return (
     <div className="min-h-screen">
       <TravelHeader />
@@ -183,14 +219,14 @@ const Admin = () => {
             <TabsTrigger value="manage">데이터 관리</TabsTrigger>
           </TabsList>
 
-          {/* Destinations Form */}
+          {/* Enhanced Destinations Form */}
           <TabsContent value="destinations">
             <Card>
               <CardHeader>
                 <CardTitle>새 여행지 추가</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={(e) => handleSubmit(e, "여행지")} className="space-y-4">
+                <form onSubmit={(e) => handleSubmit(e, "여행지")} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="dest-title">제목</Label>
@@ -201,14 +237,22 @@ const Admin = () => {
                       <Input id="dest-city" name="dest-city" placeholder="서울, 대한민국" required />
                     </div>
                   </div>
+                  
                   <div>
                     <Label htmlFor="dest-image">이미지 URL</Label>
                     <Input id="dest-image" name="dest-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
+                  
                   <div>
                     <Label htmlFor="dest-description">설명</Label>
-                    <Textarea id="dest-description" name="dest-description" placeholder="여행지에 대한 상세 설명..." required />
+                    <Textarea id="dest-description" name="dest-description" placeholder="여행지에 대한 상세 설명..." rows={4} required />
                   </div>
+
+                  <div>
+                    <Label htmlFor="dest-quick-info">한줄 소개</Label>
+                    <Input id="dest-quick-info" name="dest-quick-info" placeholder="여행지의 매력을 한 줄로 표현해주세요" />
+                  </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="dest-price">가격 (원)</Label>
@@ -219,6 +263,53 @@ const Admin = () => {
                       <Input id="dest-duration" name="dest-duration" placeholder="3박 4일" />
                     </div>
                   </div>
+
+                  {/* Daily Budget Section */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">일일 예산</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <Label htmlFor="dest-accommodation">숙박비</Label>
+                        <Input id="dest-accommodation" name="dest-accommodation" placeholder="50,000원" />
+                      </div>
+                      <div>
+                        <Label htmlFor="dest-food">식비</Label>
+                        <Input id="dest-food" name="dest-food" placeholder="30,000원" />
+                      </div>
+                      <div>
+                        <Label htmlFor="dest-transport">교통비</Label>
+                        <Input id="dest-transport" name="dest-transport" placeholder="20,000원" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Travel Tips Section */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">여행 팁</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newTip}
+                        onChange={(e) => setNewTip(e.target.value)}
+                        placeholder="새로운 여행 팁을 입력하세요"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTravelTip())}
+                      />
+                      <Button type="button" onClick={addTravelTip} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {travelTips.map((tip, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {tip}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeTravelTip(tip)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
                   <div>
                     <Label>카테고리 태그</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
@@ -234,6 +325,7 @@ const Admin = () => {
                       ))}
                     </div>
                   </div>
+                  
                   <Button type="submit" className="w-full">
                     <Plus className="w-4 h-4 mr-2" />
                     여행지 추가

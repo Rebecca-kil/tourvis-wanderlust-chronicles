@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Edit, Eye, Trash2, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -25,6 +25,7 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState<any>({});
+  const [newTip, setNewTip] = useState("");
 
   const handleEdit = (item: any) => {
     setSelectedItem(item);
@@ -55,6 +56,22 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
         description: "데이터가 성공적으로 삭제되었습니다.",
       });
     }
+  };
+
+  const addTravelTip = () => {
+    if (newTip.trim() && editData.travelTips) {
+      const updatedTips = [...(editData.travelTips || []), newTip.trim()];
+      setEditData({ ...editData, travelTips: updatedTips });
+      setNewTip("");
+    } else if (newTip.trim()) {
+      setEditData({ ...editData, travelTips: [newTip.trim()] });
+      setNewTip("");
+    }
+  };
+
+  const removeTravelTip = (tipToRemove: string) => {
+    const updatedTips = editData.travelTips?.filter((tip: string) => tip !== tipToRemove) || [];
+    setEditData({ ...editData, travelTips: updatedTips });
   };
 
   const getColumns = () => {
@@ -154,6 +171,93 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
                 value={editData.duration || ''}
                 onChange={(e) => setEditData({ ...editData, duration: e.target.value })}
               />
+            </div>
+            <div>
+              <Label htmlFor="edit-quick-info">한줄 소개</Label>
+              <Input
+                id="edit-quick-info"
+                value={editData.quickInfo || ''}
+                onChange={(e) => setEditData({ ...editData, quickInfo: e.target.value })}
+              />
+            </div>
+            
+            {/* Daily Budget Section */}
+            <div className="space-y-2">
+              <Label className="font-semibold">일일 예산</Label>
+              <div className="grid grid-cols-1 gap-2">
+                <div>
+                  <Label htmlFor="edit-accommodation">숙박비</Label>
+                  <Input
+                    id="edit-accommodation"
+                    value={editData.dailyBudget?.accommodation || ''}
+                    onChange={(e) => setEditData({ 
+                      ...editData, 
+                      dailyBudget: { 
+                        ...editData.dailyBudget, 
+                        accommodation: e.target.value 
+                      } 
+                    })}
+                    placeholder="50,000원"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-food">식비</Label>
+                  <Input
+                    id="edit-food"
+                    value={editData.dailyBudget?.food || ''}
+                    onChange={(e) => setEditData({ 
+                      ...editData, 
+                      dailyBudget: { 
+                        ...editData.dailyBudget, 
+                        food: e.target.value 
+                      } 
+                    })}
+                    placeholder="30,000원"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-transport">교통비</Label>
+                  <Input
+                    id="edit-transport"
+                    value={editData.dailyBudget?.transport || ''}
+                    onChange={(e) => setEditData({ 
+                      ...editData, 
+                      dailyBudget: { 
+                        ...editData.dailyBudget, 
+                        transport: e.target.value 
+                      } 
+                    })}
+                    placeholder="20,000원"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Travel Tips Section */}
+            <div className="space-y-2">
+              <Label className="font-semibold">여행 팁</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newTip}
+                  onChange={(e) => setNewTip(e.target.value)}
+                  placeholder="새로운 여행 팁"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTravelTip())}
+                />
+                <Button type="button" onClick={addTravelTip} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.travelTips?.map((tip: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {tip}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeTravelTip(tip)}
+                    />
+                  </Badge>
+                ))}
+              </div>
             </div>
           </>
         )}
@@ -264,10 +368,45 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
           </div>
         )}
 
+        {selectedItem.quickInfo && (
+          <div>
+            <Label className="font-semibold">한줄 소개</Label>
+            <p className="mt-1">{selectedItem.quickInfo}</p>
+          </div>
+        )}
+
         <div>
           <Label className="font-semibold">설명</Label>
           <p className="mt-1">{selectedItem.description}</p>
         </div>
+
+        {selectedItem.dailyBudget && (
+          <div>
+            <Label className="font-semibold">일일 예산</Label>
+            <div className="mt-1 space-y-1">
+              {selectedItem.dailyBudget.accommodation && (
+                <p className="text-sm">숙박비: {selectedItem.dailyBudget.accommodation}</p>
+              )}
+              {selectedItem.dailyBudget.food && (
+                <p className="text-sm">식비: {selectedItem.dailyBudget.food}</p>
+              )}
+              {selectedItem.dailyBudget.transport && (
+                <p className="text-sm">교통비: {selectedItem.dailyBudget.transport}</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {selectedItem.travelTips && selectedItem.travelTips.length > 0 && (
+          <div>
+            <Label className="font-semibold">여행 팁</Label>
+            <ul className="mt-1 space-y-1">
+              {selectedItem.travelTips.map((tip: string, index: number) => (
+                <li key={index} className="text-sm">• {tip}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {selectedItem.tags && selectedItem.tags.length > 0 && (
           <div>
