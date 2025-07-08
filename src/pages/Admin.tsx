@@ -830,37 +830,4 @@ const handleEditSave = (updated) => {
   setModalOpen(false);
 };
 
-// 여행지 목록 UI (여행지 탭 하단에 추가)
-{activeTab === "destinations" && (
-  <div className="mt-8">
-    <h2 className="text-xl font-semibold mb-4">여행지 목록</h2>
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b">제목</th>
-            <th className="px-4 py-2 border-b">도시/국가</th>
-            <th className="px-4 py-2 border-b">Quick Info</th>
-            <th className="px-4 py-2 border-b">상세</th>
-            <th className="px-4 py-2 border-b">수정</th>
-          </tr>
-        </thead>
-        <tbody>
-          {destinations.length === 0 ? (
-            <tr>
-              <td colSpan={5} className="text-center py-4 text-muted-foreground">등록된 여행지가 없습니다.</td>
-            </tr>
-          ) : (
-            destinations.map(dest => (
-              <tr key={dest.id} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{dest.title}</td>
-                <td className="px-4 py-2">{dest.city}</td>
-                <td className="px-4 py-2">{dest.quickInfo || '-'}</td>
-                <td className="px-4 py-2">
-                  <Button size="sm" variant="outline" onClick={() => { setSelectedDestination(dest); setEditMode(false); setModalOpen(true); }}>상세보기</Button>
-                </td>
-                <td className="px-4 py-2">
-                  <Button size="sm" variant="secondary" onClick={() => { setSelectedDestination(dest); setEditMode(true); setModalOpen(true); }}>수정</Button>
-                </td>
-              </tr>
 export default Admin;
