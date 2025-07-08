@@ -109,6 +109,7 @@ const DestinationDetail = () => {
 
   // 이하 렌더링은 destinationData를 기준으로 진행
 
+  console.log('destinationData:', destinationData);
   return (
     <div className="min-h-screen">
       <TravelHeader />
