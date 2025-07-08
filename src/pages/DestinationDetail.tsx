@@ -7,11 +7,12 @@ import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useBlog } from "@/contexts/BlogContext";
 
 const DestinationDetail = () => {
   const { id } = useParams();
 
-  // Mock data - 실제로는 API에서 가져올 데이터
+{/* Mock data - 실제로는 API에서 가져올 데이터
   const destination = {
     id: 1,
     name: "제주도",
@@ -51,6 +52,25 @@ const DestinationDetail = () => {
       }
     }
   };
+*/}
+
+  // Context에서 여행지 목록 불러오기
+  const { destinations } = useBlog();
+  const destination = destinations.find(
+    (dest) => String(dest.id) === String(id)
+  );
+
+  if (!destination) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <TravelHeader />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-xl text-muted-foreground">여행지 정보를 찾을 수 없습니다.</div>
+        </div>
+        <TravelFooter />
+      </div>
+    );
+  } 
 
   return (
     <div className="min-h-screen">
