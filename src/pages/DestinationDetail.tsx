@@ -148,47 +148,8 @@ const DestinationDetail = () => {
       <TravelFooter />
     </div>
   );
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
-                <h3 className="font-semibold mb-1">최적 시기</h3>
-                <p className="text-sm text-muted-foreground">{destinationData.bestTime}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <MapPin className="w-8 h-8 mx-auto mb-2 text-primary" />
-                <h3 className="font-semibold mb-1">교통</h3>
-                <p className="text-sm text-muted-foreground">{destinationData.detailInfo.transportation || '항공 1.5시간'}</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Content */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Description */}
-              <div>
-                <h2 className="text-2xl font-bold mb-4">여행지 소개</h2>
-                <p className="text-muted-foreground leading-relaxed mb-4">{destination.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {destination.tags.map((tag, idx) => (
-                    <Badge key={idx} variant="secondary">#{tag}</Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Attractions */}
-              <div>
-                <h2 className="text-2xl font-bold mb-4">주요 명소</h2>
-                <div className="space-y-4">
-                  {destination.detailInfo.attractions.map((attraction, idx) => (
+                  {destinationData.detailInfo.attractions.map((attraction, idx) => (
                     <Card key={idx}>
                       <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-2">
@@ -212,7 +173,7 @@ const DestinationDetail = () => {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3">
-                      {destination.detailInfo.tips.map((tip, idx) => (
+                      {destinationData.detailInfo.tips.map((tip, idx) => (
                         <div key={idx} className="flex items-start">
                           <Info className="w-4 h-4 mr-3 mt-1 text-primary flex-shrink-0" />
                           <p className="text-sm">{tip}</p>
@@ -233,19 +194,19 @@ const DestinationDetail = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-sm">숙박</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.accommodation}</span>
+                      <span className="text-sm font-medium">{destinationData.detailInfo.dailyBudget.accommodation}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">식비</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.food}</span>
+                      <span className="text-sm font-medium">{destinationData.detailInfo.dailyBudget.food}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">교통</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.transport}</span>
+                      <span className="text-sm font-medium">{destinationData.detailInfo.dailyBudget.transport}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">액티비티</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.activity}</span>
+                      <span className="text-sm font-medium">{destinationData.detailInfo.dailyBudget.activity}</span>
                     </div>
                   </div>
                 </CardContent>
