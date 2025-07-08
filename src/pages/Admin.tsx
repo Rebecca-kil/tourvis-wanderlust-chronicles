@@ -40,7 +40,7 @@ const Admin = () => {
   // Tags management
   const [tags, setTags] = useState({
     destinations: ["국내", "해외", "아시아", "유럽", "미국", "일본"],
-    guides: ["교통", "숙박", "관광", "음식", "쇼핑", "팁"],
+    guides: ["교통", "일정", "준비물", "팁", "트렌드", "FAQ"],
     stories: ["국내여행", "해외여행", "배낭여행", "가족여행", "혼행", "커플여행"],
     benefits: ["항공", "숙박", "관광", "쇼핑", "카드", "포인트"]
   });
@@ -486,9 +486,10 @@ const Admin = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="교통">교통</SelectItem>
-                          <SelectItem value="숙박">숙박</SelectItem>
-                          <SelectItem value="관광">관광</SelectItem>
-                          <SelectItem value="음식">음식</SelectItem>
+                          <SelectItem value="일정">일정</SelectItem>
+                          <SelectItem value="준비물">준비물</SelectItem>
+                          <SelectItem value="팁">팁</SelectItem>
+                          <SelectItem value="FAQ">FAQ</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
