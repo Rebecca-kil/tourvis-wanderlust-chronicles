@@ -46,7 +46,14 @@ const Admin = () => {
         description: formData.get('dest-description') as string,
         price: formData.get('dest-price') ? Number(formData.get('dest-price')) : undefined,
         duration: formData.get('dest-duration') as string || undefined,
-        tags: selectedTags
+        tags: selectedTags,
+        quickInfo: formData.get('dest-quickinfo') as string,
+        travelTips: (formData.get('dest-tips') as string)?.split('\n').map(tip => tip.trim()).filter(Boolean),
+        dailyBudget: {
+          accommodation: formData.get('dest-budget-accommodation') as string,
+          food: formData.get('dest-budget-food') as string,
+          transport: formData.get('dest-budget-transport') as string
+        }
       });
     } else if (contentType === "가이드") {
       const contentText = formData.get('guide-content') as string;
