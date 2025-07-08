@@ -12,11 +12,24 @@ export interface Destination {
   quickInfo?: string;
   travelTips?: string[];
   dailyBudget?: {
-  accommodation: string;
-  food: string;
-  transport: string;
+    accommodation: string;
+    food: string;
+    transport: string;
   };
 }
+
+export interface BlogContextType {
+  destinations: Destination[];
+  setDestinations: React.Dispatch<React.SetStateAction<Destination[]>>;
+  guides: Guide[];
+  stories: Story[];
+  benefits: Benefit[];
+  addDestination: (destination: Omit<Destination, 'id'>) => void;
+  addGuide: (guide: Omit<Guide, 'id'>) => void;
+  addStory: (story: Omit<Story, 'id'>) => void;
+  addBenefit: (benefit: Omit<Benefit, 'id'>) => void;
+}
+
 
 export interface Guide {
   id: string;
@@ -64,16 +77,7 @@ export interface Benefit {
   stock?: string;
 }
 
-interface BlogContextType {
-  destinations: Destination[];
-  guides: Guide[];
-  stories: Story[];
-  benefits: Benefit[];
-  addDestination: (destination: Omit<Destination, 'id'>) => void;
-  addGuide: (guide: Omit<Guide, 'id' | 'likes'>) => void;
-  addStory: (story: Omit<Story, 'id' | 'likes' | 'comments'>) => void;
-  addBenefit: (benefit: Omit<Benefit, 'id' | 'likes'>) => void;
-}
+
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
 
@@ -160,77 +164,53 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const savedGuides = localStorage.getItem('blogGuides');
     const savedStories = localStorage.getItem('blogStories');
     const savedBenefits = localStorage.getItem('blogBenefits');
-
-    setDestinations(savedDestinations ? JSON.parse(savedDestinations) : defaultDestinations);
-    setGuides(savedGuides ? JSON.parse(savedGuides) : defaultGuides);
-    setStories(savedStories ? JSON.parse(savedStories) : defaultStories);
-    setBenefits(savedBenefits ? JSON.parse(savedBenefits) : defaultBenefits);
+    if (savedDestinations) setDestinations(JSON.parse(savedDestinations));
+    if (savedGuides) setGuides(JSON.parse(savedGuides));
+    if (savedStories) setStories(JSON.parse(savedStories));
+    if (savedBenefits) setBenefits(JSON.parse(savedBenefits));
   }, []);
 
-  // Save to localStorage whenever data changes
+  // Save data to localStorage on change
   useEffect(() => {
-    if (destinations.length > 0) {
-      localStorage.setItem('blogDestinations', JSON.stringify(destinations));
-    }
+    localStorage.setItem('blogDestinations', JSON.stringify(destinations));
   }, [destinations]);
 
   useEffect(() => {
-    if (guides.length > 0) {
-      localStorage.setItem('blogGuides', JSON.stringify(guides));
-    }
+    localStorage.setItem('blogGuides', JSON.stringify(guides));
   }, [guides]);
 
   useEffect(() => {
-    if (stories.length > 0) {
-      localStorage.setItem('blogStories', JSON.stringify(stories));
-    }
+    localStorage.setItem('blogStories', JSON.stringify(stories));
   }, [stories]);
 
   useEffect(() => {
-    if (benefits.length > 0) {
-      localStorage.setItem('blogBenefits', JSON.stringify(benefits));
-    }
+    localStorage.setItem('blogBenefits', JSON.stringify(benefits));
   }, [benefits]);
 
+  // 여행지 추가 함수
   const addDestination = (destination: Omit<Destination, 'id'>) => {
-    const newDestination = {
-      ...destination,
-      id: Date.now().toString()
-    };
-    setDestinations(prev => [...prev, newDestination]);
+    setDestinations(prev => [...prev, { ...destination, id: Date.now().toString() }]);
   };
 
-  const addGuide = (guide: Omit<Guide, 'id' | 'likes'>) => {
-    const newGuide = {
-      ...guide,
-      id: Date.now().toString(),
-      likes: 0
-    };
-    setGuides(prev => [...prev, newGuide]);
+  // 가이드 추가 함수
+  const addGuide = (guide: Omit<Guide, 'id'>) => {
+    setGuides(prev => [...prev, { ...guide, id: Date.now().toString() }]);
   };
 
-  const addStory = (story: Omit<Story, 'id' | 'likes' | 'comments'>) => {
-    const newStory = {
-      ...story,
-      id: Date.now().toString(),
-      likes: 0,
-      comments: 0
-    };
-    setStories(prev => [...prev, newStory]);
+  // 여행 이야기 추가 함수
+  const addStory = (story: Omit<Story, 'id'>) => {
+    setStories(prev => [...prev, { ...story, id: Date.now().toString() }]);
   };
 
-  const addBenefit = (benefit: Omit<Benefit, 'id' | 'likes'>) => {
-    const newBenefit = {
-      ...benefit,
-      id: Date.now().toString(),
-      likes: 0
-    };
-    setBenefits(prev => [...prev, newBenefit]);
+  // 혜택 추가 함수
+  const addBenefit = (benefit: Omit<Benefit, 'id'>) => {
+    setBenefits(prev => [...prev, { ...benefit, id: Date.now().toString() }]);
   };
 
   return (
     <BlogContext.Provider value={{
       destinations,
+      setDestinations, // 여행지 목록 직접 수정 가능 (수정/삭제 등)
       guides,
       stories,
       benefits,
@@ -249,5 +229,5 @@ export const useBlog = () => {
   if (context === undefined) {
     throw new Error('useBlog must be used within a BlogProvider');
   }
-  return context;
+  return context as BlogContextType;
 };
