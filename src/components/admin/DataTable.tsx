@@ -32,6 +32,19 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
     rating: 4.5
   });
 
+  // New states for managing complex fields
+  const [newGuideSection, setNewGuideSection] = useState({ title: "", content: "" });
+  const [newGuideTip, setNewGuideTip] = useState("");
+  const [newRequirement, setNewRequirement] = useState("");
+  const [newLearning, setNewLearning] = useState("");
+  const [newHighlight, setNewHighlight] = useState("");
+  const [newChallenge, setNewChallenge] = useState("");
+  const [newRecommendation, setNewRecommendation] = useState("");
+  const [newFeature, setNewFeature] = useState("");
+  const [newCondition, setNewCondition] = useState("");
+  const [newHowToUse, setNewHowToUse] = useState("");
+  const [newRestriction, setNewRestriction] = useState("");
+
   const handleEdit = (item: any) => {
     setSelectedItem(item);
     setEditData({ ...item });
@@ -100,6 +113,152 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
   const removeAttractionFromEdit = (index: number) => {
     const updatedAttractions = editData.attractions?.filter((_: any, i: number) => i !== index) || [];
     setEditData({ ...editData, attractions: updatedAttractions });
+  };
+
+  // Guide-specific functions
+  const addGuideSectionToEdit = () => {
+    if (newGuideSection.title.trim() && newGuideSection.content.trim()) {
+      const updatedContent = [...(editData.content || []), newGuideSection];
+      setEditData({ ...editData, content: updatedContent });
+      setNewGuideSection({ title: "", content: "" });
+    }
+  };
+
+  const removeGuideSectionFromEdit = (index: number) => {
+    const updatedContent = editData.content?.filter((_: any, i: number) => i !== index) || [];
+    setEditData({ ...editData, content: updatedContent });
+  };
+
+  const addGuideTipToEdit = () => {
+    if (newGuideTip.trim()) {
+      const updatedTips = [...(editData.tips || []), newGuideTip.trim()];
+      setEditData({ ...editData, tips: updatedTips });
+      setNewGuideTip("");
+    }
+  };
+
+  const removeGuideTipFromEdit = (tipToRemove: string) => {
+    const updatedTips = editData.tips?.filter((tip: string) => tip !== tipToRemove) || [];
+    setEditData({ ...editData, tips: updatedTips });
+  };
+
+  const addRequirementToEdit = () => {
+    if (newRequirement.trim()) {
+      const updatedRequirements = [...(editData.requirements || []), newRequirement.trim()];
+      setEditData({ ...editData, requirements: updatedRequirements });
+      setNewRequirement("");
+    }
+  };
+
+  const removeRequirementFromEdit = (reqToRemove: string) => {
+    const updatedRequirements = editData.requirements?.filter((req: string) => req !== reqToRemove) || [];
+    setEditData({ ...editData, requirements: updatedRequirements });
+  };
+
+  const addLearningToEdit = () => {
+    if (newLearning.trim()) {
+      const updatedLearning = [...(editData.whatYouWillLearn || []), newLearning.trim()];
+      setEditData({ ...editData, whatYouWillLearn: updatedLearning });
+      setNewLearning("");
+    }
+  };
+
+  const removeLearningFromEdit = (learningToRemove: string) => {
+    const updatedLearning = editData.whatYouWillLearn?.filter((learning: string) => learning !== learningToRemove) || [];
+    setEditData({ ...editData, whatYouWillLearn: updatedLearning });
+  };
+
+  // Story-specific functions
+  const addHighlightToEdit = () => {
+    if (newHighlight.trim()) {
+      const updatedHighlights = [...(editData.highlights || []), newHighlight.trim()];
+      setEditData({ ...editData, highlights: updatedHighlights });
+      setNewHighlight("");
+    }
+  };
+
+  const removeHighlightFromEdit = (highlightToRemove: string) => {
+    const updatedHighlights = editData.highlights?.filter((highlight: string) => highlight !== highlightToRemove) || [];
+    setEditData({ ...editData, highlights: updatedHighlights });
+  };
+
+  const addChallengeToEdit = () => {
+    if (newChallenge.trim()) {
+      const updatedChallenges = [...(editData.challenges || []), newChallenge.trim()];
+      setEditData({ ...editData, challenges: updatedChallenges });
+      setNewChallenge("");
+    }
+  };
+
+  const removeChallengeFromEdit = (challengeToRemove: string) => {
+    const updatedChallenges = editData.challenges?.filter((challenge: string) => challenge !== challengeToRemove) || [];
+    setEditData({ ...editData, challenges: updatedChallenges });
+  };
+
+  const addRecommendationToEdit = () => {
+    if (newRecommendation.trim()) {
+      const updatedRecommendations = [...(editData.recommendations || []), newRecommendation.trim()];
+      setEditData({ ...editData, recommendations: updatedRecommendations });
+      setNewRecommendation("");
+    }
+  };
+
+  const removeRecommendationFromEdit = (recToRemove: string) => {
+    const updatedRecommendations = editData.recommendations?.filter((rec: string) => rec !== recToRemove) || [];
+    setEditData({ ...editData, recommendations: updatedRecommendations });
+  };
+
+  // Benefit-specific functions
+  const addFeatureToEdit = () => {
+    if (newFeature.trim()) {
+      const updatedFeatures = [...(editData.features || []), newFeature.trim()];
+      setEditData({ ...editData, features: updatedFeatures });
+      setNewFeature("");
+    }
+  };
+
+  const removeFeatureFromEdit = (featureToRemove: string) => {
+    const updatedFeatures = editData.features?.filter((feature: string) => feature !== featureToRemove) || [];
+    setEditData({ ...editData, features: updatedFeatures });
+  };
+
+  const addConditionToEdit = () => {
+    if (newCondition.trim()) {
+      const updatedConditions = [...(editData.conditions || []), newCondition.trim()];
+      setEditData({ ...editData, conditions: updatedConditions });
+      setNewCondition("");
+    }
+  };
+
+  const removeConditionFromEdit = (conditionToRemove: string) => {
+    const updatedConditions = editData.conditions?.filter((condition: string) => condition !== conditionToRemove) || [];
+    setEditData({ ...editData, conditions: updatedConditions });
+  };
+
+  const addHowToUseToEdit = () => {
+    if (newHowToUse.trim()) {
+      const updatedHowToUse = [...(editData.howToUse || []), newHowToUse.trim()];
+      setEditData({ ...editData, howToUse: updatedHowToUse });
+      setNewHowToUse("");
+    }
+  };
+
+  const removeHowToUseFromEdit = (stepToRemove: string) => {
+    const updatedHowToUse = editData.howToUse?.filter((step: string) => step !== stepToRemove) || [];
+    setEditData({ ...editData, howToUse: updatedHowToUse });
+  };
+
+  const addRestrictionToEdit = () => {
+    if (newRestriction.trim()) {
+      const updatedRestrictions = [...(editData.restrictions || []), newRestriction.trim()];
+      setEditData({ ...editData, restrictions: updatedRestrictions });
+      setNewRestriction("");
+    }
+  };
+
+  const removeRestrictionFromEdit = (restrictionToRemove: string) => {
+    const updatedRestrictions = editData.restrictions?.filter((restriction: string) => restriction !== restrictionToRemove) || [];
+    setEditData({ ...editData, restrictions: updatedRestrictions });
   };
 
   const getColumns = () => {
@@ -173,6 +332,27 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
           />
         </div>
 
+        {/* Common fields */}
+        <div>
+          <Label htmlFor="edit-description">설명</Label>
+          <Textarea
+            id="edit-description"
+            value={editData.description || ''}
+            onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+            rows={3}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="edit-image">이미지 URL</Label>
+          <Input
+            id="edit-image"
+            value={editData.image || ''}
+            onChange={(e) => setEditData({ ...editData, image: e.target.value })}
+          />
+        </div>
+
+        {/* Destination-specific fields */}
         {type === 'destinations' && (
           <>
             <div>
@@ -209,7 +389,6 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
               />
             </div>
 
-            {/* 새로운 필드들 추가 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
               <div>
                 <Label htmlFor="edit-budget-level">예산 수준</Label>
@@ -240,7 +419,6 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
               </div>
             </div>
             
-            {/* Daily Budget Section */}
             <div className="space-y-2">
               <Label className="font-semibold">일일 예산</Label>
               <div className="grid grid-cols-1 gap-2">
@@ -292,7 +470,6 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
               </div>
             </div>
 
-            {/* Attractions Section */}
             <div className="space-y-2">
               <Label className="font-semibold">주요 명소</Label>
               <div className="grid grid-cols-2 gap-2">
@@ -341,7 +518,6 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
               </div>
             </div>
 
-            {/* Travel Tips Section */}
             <div className="space-y-2">
               <Label className="font-semibold">여행 팁</Label>
               <div className="flex gap-2">
@@ -370,77 +546,576 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
           </>
         )}
 
-        {(type === 'guides' || type === 'stories') && (
-          <div>
-            <Label htmlFor="edit-author">작성자</Label>
-            <Input
-              id="edit-author"
-              value={editData.author || ''}
-              onChange={(e) => setEditData({ ...editData, author: e.target.value })}
-            />
-          </div>
-        )}
-
+        {/* Guide-specific fields */}
         {type === 'guides' && (
-          <div>
-            <Label htmlFor="edit-difficulty">난이도</Label>
-            <Select value={editData.difficulty || ''} onValueChange={(value) => setEditData({ ...editData, difficulty: value })}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="초급">초급</SelectItem>
-                <SelectItem value="중급">중급</SelectItem>
-                <SelectItem value="고급">고급</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
-        {type === 'benefits' && (
           <>
             <div>
-              <Label htmlFor="edit-discount">할인율</Label>
+              <Label htmlFor="edit-author">작성자</Label>
               <Input
-                id="edit-discount"
-                value={editData.discount || ''}
-                onChange={(e) => setEditData({ ...editData, discount: e.target.value })}
+                id="edit-author"
+                value={editData.author || ''}
+                onChange={(e) => setEditData({ ...editData, author: e.target.value })}
               />
             </div>
-            <div>
-              <Label htmlFor="edit-type">타입</Label>
-              <Select value={editData.type || ''} onValueChange={(value) => setEditData({ ...editData, type: value })}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="할인">할인</SelectItem>
-                  <SelectItem value="적립">적립</SelectItem>
-                  <SelectItem value="무료">무료</SelectItem>
-                </SelectContent>
-              </Select>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-category">카테고리</Label>
+                <Input
+                  id="edit-category"
+                  value={editData.category || ''}
+                  onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-difficulty">난이도</Label>
+                <Select value={editData.difficulty || ''} onValueChange={(value) => setEditData({ ...editData, difficulty: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="초급">초급</SelectItem>
+                    <SelectItem value="중급">중급</SelectItem>
+                    <SelectItem value="고급">고급</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="edit-read-time">읽기 시간</Label>
+                <Input
+                  id="edit-read-time"
+                  value={editData.readTime || ''}
+                  onChange={(e) => setEditData({ ...editData, readTime: e.target.value })}
+                  placeholder="5분"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-target-audience">대상 독자</Label>
+                <Input
+                  id="edit-target-audience"
+                  value={editData.targetAudience || ''}
+                  onChange={(e) => setEditData({ ...editData, targetAudience: e.target.value })}
+                  placeholder="초보 여행자"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-publish-date">발행일</Label>
+                <Input
+                  id="edit-publish-date"
+                  type="date"
+                  value={editData.publishDate || ''}
+                  onChange={(e) => setEditData({ ...editData, publishDate: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Guide Content Sections */}
+            <div className="space-y-2">
+              <Label className="font-semibold">가이드 내용 섹션</Label>
+              <div className="space-y-2">
+                <Input
+                  value={newGuideSection.title}
+                  onChange={(e) => setNewGuideSection(prev => ({...prev, title: e.target.value}))}
+                  placeholder="섹션 제목"
+                />
+                <Textarea
+                  value={newGuideSection.content}
+                  onChange={(e) => setNewGuideSection(prev => ({...prev, content: e.target.value}))}
+                  placeholder="섹션 내용"
+                  rows={2}
+                />
+                <Button type="button" onClick={addGuideSectionToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="space-y-2 max-h-32 overflow-y-auto">
+                {editData.content?.map((section: any, index: number) => (
+                  <div key={index} className="border p-2 rounded text-sm">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h5 className="font-medium text-xs">{section.title}</h5>
+                        <p className="text-xs text-muted-foreground">{section.content.substring(0, 50)}...</p>
+                      </div>
+                      <X 
+                        className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                        onClick={() => removeGuideSectionFromEdit(index)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Guide Tips */}
+            <div className="space-y-2">
+              <Label className="font-semibold">핵심 팁</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newGuideTip}
+                  onChange={(e) => setNewGuideTip(e.target.value)}
+                  placeholder="새로운 팁"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addGuideTipToEdit())}
+                />
+                <Button type="button" onClick={addGuideTipToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.tips?.map((tip: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {tip}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeGuideTipFromEdit(tip)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Requirements */}
+            <div className="space-y-2">
+              <Label className="font-semibold">필요 조건</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newRequirement}
+                  onChange={(e) => setNewRequirement(e.target.value)}
+                  placeholder="새로운 필요 조건"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRequirementToEdit())}
+                />
+                <Button type="button" onClick={addRequirementToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.requirements?.map((req: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {req}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeRequirementFromEdit(req)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* What You Will Learn */}
+            <div className="space-y-2">
+              <Label className="font-semibold">배울 내용</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newLearning}
+                  onChange={(e) => setNewLearning(e.target.value)}
+                  placeholder="배울 수 있는 내용"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLearningToEdit())}
+                />
+                <Button type="button" onClick={addLearningToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.whatYouWillLearn?.map((learning: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {learning}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeLearningFromEdit(learning)}
+                    />
+                  </Badge>
+                ))}
+              </div>
             </div>
           </>
         )}
 
-        <div>
-          <Label htmlFor="edit-description">설명</Label>
-          <Textarea
-            id="edit-description"
-            value={editData.description || ''}
-            onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-            rows={3}
-          />
-        </div>
+        {/* Story-specific fields */}
+        {type === 'stories' && (
+          <>
+            <div>
+              <Label htmlFor="edit-author">작성자</Label>
+              <Input
+                id="edit-author"
+                value={editData.author || ''}
+                onChange={(e) => setEditData({ ...editData, author: e.target.value })}
+              />
+            </div>
 
-        <div>
-          <Label htmlFor="edit-image">이미지 URL</Label>
-          <Input
-            id="edit-image"
-            value={editData.image || ''}
-            onChange={(e) => setEditData({ ...editData, image: e.target.value })}
-          />
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-city">도시/국가</Label>
+                <Input
+                  id="edit-city"
+                  value={editData.city || ''}
+                  onChange={(e) => setEditData({ ...editData, city: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-category">카테고리</Label>
+                <Input
+                  id="edit-category"
+                  value={editData.category || ''}
+                  onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="edit-excerpt">요약</Label>
+              <Textarea
+                id="edit-excerpt"
+                value={editData.excerpt || ''}
+                onChange={(e) => setEditData({ ...editData, excerpt: e.target.value })}
+                rows={2}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-content">본문</Label>
+              <Textarea
+                id="edit-content"
+                value={editData.content || ''}
+                onChange={(e) => setEditData({ ...editData, content: e.target.value })}
+                rows={4}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <Label htmlFor="edit-publish-date">발행일</Label>
+                <Input
+                  id="edit-publish-date"
+                  type="date"
+                  value={editData.publishDate || ''}
+                  onChange={(e) => setEditData({ ...editData, publishDate: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-read-time">읽기 시간</Label>
+                <Input
+                  id="edit-read-time"
+                  value={editData.readTime || ''}
+                  onChange={(e) => setEditData({ ...editData, readTime: e.target.value })}
+                  placeholder="8분"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-travel-date">여행 날짜</Label>
+                <Input
+                  id="edit-travel-date"
+                  value={editData.travelDate || ''}
+                  onChange={(e) => setEditData({ ...editData, travelDate: e.target.value })}
+                  placeholder="2024년 3월"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-budget">예산</Label>
+                <Input
+                  id="edit-budget"
+                  value={editData.budget || ''}
+                  onChange={(e) => setEditData({ ...editData, budget: e.target.value })}
+                  placeholder="100만원"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="edit-companions">동행자</Label>
+              <Input
+                id="edit-companions"
+                value={editData.companions || ''}
+                onChange={(e) => setEditData({ ...editData, companions: e.target.value })}
+                placeholder="혼자 / 친구 2명 / 가족"
+              />
+            </div>
+
+            {/* Story Highlights */}
+            <div className="space-y-2">
+              <Label className="font-semibold">여행 하이라이트</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newHighlight}
+                  onChange={(e) => setNewHighlight(e.target.value)}
+                  placeholder="특별했던 순간"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHighlightToEdit())}
+                />
+                <Button type="button" onClick={addHighlightToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.highlights?.map((highlight: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {highlight}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeHighlightFromEdit(highlight)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Story Challenges */}
+            <div className="space-y-2">
+              <Label className="font-semibold">어려웠던 점</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newChallenge}
+                  onChange={(e) => setNewChallenge(e.target.value)}
+                  placeholder="어려웠던 점"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addChallengeToEdit())}
+                />
+                <Button type="button" onClick={addChallengeToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.challenges?.map((challenge: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {challenge}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeChallengeFromEdit(challenge)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Story Recommendations */}
+            <div className="space-y-2">
+              <Label className="font-semibold">추천 사항</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newRecommendation}
+                  onChange={(e) => setNewRecommendation(e.target.value)}
+                  placeholder="추천하고 싶은 것"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRecommendationToEdit())}
+                />
+                <Button type="button" onClick={addRecommendationToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.recommendations?.map((rec: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {rec}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeRecommendationFromEdit(rec)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Benefit-specific fields */}
+        {type === 'benefits' && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="edit-category">카테고리</Label>
+                <Input
+                  id="edit-category"
+                  value={editData.category || ''}
+                  onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-type">타입</Label>
+                <Select value={editData.type || ''} onValueChange={(value) => setEditData({ ...editData, type: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="할인">할인</SelectItem>
+                    <SelectItem value="적립">적립</SelectItem>
+                    <SelectItem value="무료">무료</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="edit-discount">할인율</Label>
+                <Input
+                  id="edit-discount"
+                  value={editData.discount || ''}
+                  onChange={(e) => setEditData({ ...editData, discount: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-original-price">원가</Label>
+                <Input
+                  id="edit-original-price"
+                  value={editData.originalPrice || ''}
+                  onChange={(e) => setEditData({ ...editData, originalPrice: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-sale-price">할인가</Label>
+                <Input
+                  id="edit-sale-price"
+                  value={editData.salePrice || ''}
+                  onChange={(e) => setEditData({ ...editData, salePrice: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-valid-until">유효기간</Label>
+                <Input
+                  id="edit-valid-until"
+                  value={editData.validUntil || ''}
+                  onChange={(e) => setEditData({ ...editData, validUntil: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-provider">제공업체</Label>
+                <Input
+                  id="edit-provider"
+                  value={editData.provider || ''}
+                  onChange={(e) => setEditData({ ...editData, provider: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-contact-info">연락처</Label>
+                <Input
+                  id="edit-contact-info"
+                  value={editData.contactInfo || ''}
+                  onChange={(e) => setEditData({ ...editData, contactInfo: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-website">웹사이트</Label>
+                <Input
+                  id="edit-website"
+                  value={editData.website || ''}
+                  onChange={(e) => setEditData({ ...editData, website: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Benefit Features */}
+            <div className="space-y-2">
+              <Label className="font-semibold">주요 혜택</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  placeholder="새로운 혜택"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addFeatureToEdit())}
+                />
+                <Button type="button" onClick={addFeatureToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.features?.map((feature: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {feature}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeFeatureFromEdit(feature)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Benefit Conditions */}
+            <div className="space-y-2">
+              <Label className="font-semibold">이용 조건</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newCondition}
+                  onChange={(e) => setNewCondition(e.target.value)}
+                  placeholder="새로운 조건"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addConditionToEdit())}
+                />
+                <Button type="button" onClick={addConditionToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.conditions?.map((condition: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {condition}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeConditionFromEdit(condition)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* How to Use */}
+            <div className="space-y-2">
+              <Label className="font-semibold">이용 방법</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newHowToUse}
+                  onChange={(e) => setNewHowToUse(e.target.value)}
+                  placeholder="이용 방법 단계"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHowToUseToEdit())}
+                />
+                <Button type="button" onClick={addHowToUseToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.howToUse?.map((step: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {step}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeHowToUseFromEdit(step)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Restrictions */}
+            <div className="space-y-2">
+              <Label className="font-semibold">제한 사항</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newRestriction}
+                  onChange={(e) => setNewRestriction(e.target.value)}
+                  placeholder="제한 사항"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRestrictionToEdit())}
+                />
+                <Button type="button" onClick={addRestrictionToEdit} size="sm">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editData.restrictions?.map((restriction: string, index: number) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {restriction}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                      onClick={() => removeRestrictionFromEdit(restriction)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   };
@@ -455,102 +1130,395 @@ export const DataTable = ({ data, type, onUpdate, onDelete }: DataTableProps) =>
           <p className="mt-1">{selectedItem.title}</p>
         </div>
 
-        {selectedItem.city && (
+        {selectedItem.description && (
           <div>
-            <Label className="font-semibold">도시</Label>
-            <p className="mt-1">{selectedItem.city}</p>
+            <Label className="font-semibold">설명</Label>
+            <p className="mt-1">{selectedItem.description}</p>
           </div>
         )}
 
-        {selectedItem.budgetLevel && (
-          <div>
-            <Label className="font-semibold">예산 수준</Label>
-            <p className="mt-1">{selectedItem.budgetLevel}</p>
-          </div>
-        )}
+        {/* Destination-specific view */}
+        {type === 'destinations' && (
+          <>
+            {selectedItem.city && (
+              <div>
+                <Label className="font-semibold">도시</Label>
+                <p className="mt-1">{selectedItem.city}</p>
+              </div>
+            )}
 
-        {selectedItem.bestTime && (
-          <div>
-            <Label className="font-semibold">최적 시기</Label>
-            <p className="mt-1">{selectedItem.bestTime}</p>
-          </div>
-        )}
+            {selectedItem.budgetLevel && (
+              <div>
+                <Label className="font-semibold">예산 수준</Label>
+                <p className="mt-1">{selectedItem.budgetLevel}</p>
+              </div>
+            )}
 
-        {selectedItem.transportation && (
-          <div>
-            <Label className="font-semibold">교통 정보</Label>
-            <p className="mt-1">{selectedItem.transportation}</p>
-          </div>
-        )}
+            {selectedItem.bestTime && (
+              <div>
+                <Label className="font-semibold">최적 시기</Label>
+                <p className="mt-1">{selectedItem.bestTime}</p>
+              </div>
+            )}
 
-        {selectedItem.attractions && selectedItem.attractions.length > 0 && (
-          <div>
-            <Label className="font-semibold">주요 명소</Label>
-            <div className="mt-1 space-y-2">
-              {selectedItem.attractions.map((attraction: any, index: number) => (
-                <div key={index} className="text-sm border-l-2 border-muted pl-2">
-                  <p className="font-medium">{attraction.name}</p>
-                  <p className="text-muted-foreground">{attraction.description}</p>
-                  {attraction.time && <p className="text-xs">소요시간: {attraction.time}</p>}
-                  {attraction.rating && <p className="text-xs">평점: ⭐{attraction.rating}</p>}
+            {selectedItem.transportation && (
+              <div>
+                <Label className="font-semibold">교통 정보</Label>
+                <p className="mt-1">{selectedItem.transportation}</p>
+              </div>
+            )}
+
+            {selectedItem.attractions && selectedItem.attractions.length > 0 && (
+              <div>
+                <Label className="font-semibold">주요 명소</Label>
+                <div className="mt-1 space-y-2">
+                  {selectedItem.attractions.map((attraction: any, index: number) => (
+                    <div key={index} className="text-sm border-l-2 border-muted pl-2">
+                      <p className="font-medium">{attraction.name}</p>
+                      <p className="text-muted-foreground">{attraction.description}</p>
+                      {attraction.time && <p className="text-xs">소요시간: {attraction.time}</p>}
+                      {attraction.rating && <p className="text-xs">평점: ⭐{attraction.rating}</p>}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            )}
+
+            {selectedItem.quickInfo && (
+              <div>
+                <Label className="font-semibold">한줄 소개</Label>
+                <p className="mt-1">{selectedItem.quickInfo}</p>
+              </div>
+            )}
+
+            {selectedItem.dailyBudget && (
+              <div>
+                <Label className="font-semibold">일일 예산</Label>
+                <div className="mt-1 space-y-1">
+                  {selectedItem.dailyBudget.accommodation && (
+                    <p className="text-sm">숙박비: {selectedItem.dailyBudget.accommodation}</p>
+                  )}
+                  {selectedItem.dailyBudget.food && (
+                    <p className="text-sm">식비: {selectedItem.dailyBudget.food}</p>
+                  )}
+                  {selectedItem.dailyBudget.transport && (
+                    <p className="text-sm">교통비: {selectedItem.dailyBudget.transport}</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedItem.travelTips && selectedItem.travelTips.length > 0 && (
+              <div>
+                <Label className="font-semibold">여행 팁</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.travelTips.map((tip: string, index: number) => (
+                    <li key={index} className="text-sm">• {tip}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
 
-        {selectedItem.author && (
-          <div>
-            <Label className="font-semibold">작성자</Label>
-            <p className="mt-1">{selectedItem.author}</p>
-          </div>
+        {/* Guide-specific view */}
+        {type === 'guides' && (
+          <>
+            {selectedItem.author && (
+              <div>
+                <Label className="font-semibold">작성자</Label>
+                <p className="mt-1">{selectedItem.author}</p>
+              </div>
+            )}
+
+            {selectedItem.category && (
+              <div>
+                <Label className="font-semibold">카테고리</Label>
+                <p className="mt-1">{selectedItem.category}</p>
+              </div>
+            )}
+
+            {selectedItem.difficulty && (
+              <div>
+                <Label className="font-semibold">난이도</Label>
+                <p className="mt-1">{selectedItem.difficulty}</p>
+              </div>
+            )}
+
+            {selectedItem.readTime && (
+              <div>
+                <Label className="font-semibold">읽기 시간</Label>
+                <p className="mt-1">{selectedItem.readTime}</p>
+              </div>
+            )}
+
+            {selectedItem.targetAudience && (
+              <div>
+                <Label className="font-semibold">대상 독자</Label>
+                <p className="mt-1">{selectedItem.targetAudience}</p>
+              </div>
+            )}
+
+            {selectedItem.content && selectedItem.content.length > 0 && (
+              <div>
+                <Label className="font-semibold">가이드 내용</Label>
+                <div className="mt-1 space-y-2">
+                  {selectedItem.content.map((section: any, index: number) => (
+                    <div key={index} className="text-sm border-l-2 border-muted pl-2">
+                      <p className="font-medium">{section.title}</p>
+                      <p className="text-muted-foreground">{section.content}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedItem.tips && selectedItem.tips.length > 0 && (
+              <div>
+                <Label className="font-semibold">핵심 팁</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.tips.map((tip: string, index: number) => (
+                    <li key={index} className="text-sm">• {tip}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.requirements && selectedItem.requirements.length > 0 && (
+              <div>
+                <Label className="font-semibold">필요 조건</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.requirements.map((req: string, index: number) => (
+                    <li key={index} className="text-sm">• {req}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.whatYouWillLearn && selectedItem.whatYouWillLearn.length > 0 && (
+              <div>
+                <Label className="font-semibold">배울 내용</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.whatYouWillLearn.map((learning: string, index: number) => (
+                    <li key={index} className="text-sm">• {learning}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
 
-        {selectedItem.category && (
-          <div>
-            <Label className="font-semibold">카테고리</Label>
-            <p className="mt-1">{selectedItem.category}</p>
-          </div>
+        {/* Story-specific view */}
+        {type === 'stories' && (
+          <>
+            {selectedItem.author && (
+              <div>
+                <Label className="font-semibold">작성자</Label>
+                <p className="mt-1">{selectedItem.author}</p>
+              </div>
+            )}
+
+            {selectedItem.city && (
+              <div>
+                <Label className="font-semibold">도시/국가</Label>
+                <p className="mt-1">{selectedItem.city}</p>
+              </div>
+            )}
+
+            {selectedItem.category && (
+              <div>
+                <Label className="font-semibold">카테고리</Label>
+                <p className="mt-1">{selectedItem.category}</p>
+              </div>
+            )}
+
+            {selectedItem.excerpt && (
+              <div>
+                <Label className="font-semibold">요약</Label>
+                <p className="mt-1">{selectedItem.excerpt}</p>
+              </div>
+            )}
+
+            {selectedItem.readTime && (
+              <div>
+                <Label className="font-semibold">읽기 시간</Label>
+                <p className="mt-1">{selectedItem.readTime}</p>
+              </div>
+            )}
+
+            {selectedItem.travelDate && (
+              <div>
+                <Label className="font-semibold">여행 날짜</Label>
+                <p className="mt-1">{selectedItem.travelDate}</p>
+              </div>
+            )}
+
+            {selectedItem.budget && (
+              <div>
+                <Label className="font-semibold">예산</Label>
+                <p className="mt-1">{selectedItem.budget}</p>
+              </div>
+            )}
+
+            {selectedItem.companions && (
+              <div>
+                <Label className="font-semibold">동행자</Label>
+                <p className="mt-1">{selectedItem.companions}</p>
+              </div>
+            )}
+
+            {selectedItem.highlights && selectedItem.highlights.length > 0 && (
+              <div>
+                <Label className="font-semibold">여행 하이라이트</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.highlights.map((highlight: string, index: number) => (
+                    <li key={index} className="text-sm">• {highlight}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.challenges && selectedItem.challenges.length > 0 && (
+              <div>
+                <Label className="font-semibold">어려웠던 점</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.challenges.map((challenge: string, index: number) => (
+                    <li key={index} className="text-sm">• {challenge}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.recommendations && selectedItem.recommendations.length > 0 && (
+              <div>
+                <Label className="font-semibold">추천 사항</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.recommendations.map((rec: string, index: number) => (
+                    <li key={index} className="text-sm">• {rec}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.content && (
+              <div>
+                <Label className="font-semibold">본문</Label>
+                <p className="mt-1 text-sm">{selectedItem.content.substring(0, 200)}...</p>
+              </div>
+            )}
+          </>
         )}
 
-        {selectedItem.quickInfo && (
-          <div>
-            <Label className="font-semibold">한줄 소개</Label>
-            <p className="mt-1">{selectedItem.quickInfo}</p>
-          </div>
-        )}
+        {/* Benefit-specific view */}
+        {type === 'benefits' && (
+          <>
+            {selectedItem.category && (
+              <div>
+                <Label className="font-semibold">카테고리</Label>
+                <p className="mt-1">{selectedItem.category}</p>
+              </div>
+            )}
 
-        <div>
-          <Label className="font-semibold">설명</Label>
-          <p className="mt-1">{selectedItem.description}</p>
-        </div>
+            {selectedItem.type && (
+              <div>
+                <Label className="font-semibold">타입</Label>
+                <p className="mt-1">{selectedItem.type}</p>
+              </div>
+            )}
 
-        {selectedItem.dailyBudget && (
-          <div>
-            <Label className="font-semibold">일일 예산</Label>
-            <div className="mt-1 space-y-1">
-              {selectedItem.dailyBudget.accommodation && (
-                <p className="text-sm">숙박비: {selectedItem.dailyBudget.accommodation}</p>
-              )}
-              {selectedItem.dailyBudget.food && (
-                <p className="text-sm">식비: {selectedItem.dailyBudget.food}</p>
-              )}
-              {selectedItem.dailyBudget.transport && (
-                <p className="text-sm">교통비: {selectedItem.dailyBudget.transport}</p>
-              )}
-            </div>
-          </div>
-        )}
+            {selectedItem.discount && (
+              <div>
+                <Label className="font-semibold">할인율</Label>
+                <p className="mt-1">{selectedItem.discount}</p>
+              </div>
+            )}
 
-        {selectedItem.travelTips && selectedItem.travelTips.length > 0 && (
-          <div>
-            <Label className="font-semibold">여행 팁</Label>
-            <ul className="mt-1 space-y-1">
-              {selectedItem.travelTips.map((tip: string, index: number) => (
-                <li key={index} className="text-sm">• {tip}</li>
-              ))}
-            </ul>
-          </div>
+            {selectedItem.originalPrice && (
+              <div>
+                <Label className="font-semibold">원가</Label>
+                <p className="mt-1">{selectedItem.originalPrice}</p>
+              </div>
+            )}
+
+            {selectedItem.salePrice && (
+              <div>
+                <Label className="font-semibold">할인가</Label>
+                <p className="mt-1">{selectedItem.salePrice}</p>
+              </div>
+            )}
+
+            {selectedItem.validUntil && (
+              <div>
+                <Label className="font-semibold">유효기간</Label>
+                <p className="mt-1">{selectedItem.validUntil}</p>
+              </div>
+            )}
+
+            {selectedItem.provider && (
+              <div>
+                <Label className="font-semibold">제공업체</Label>
+                <p className="mt-1">{selectedItem.provider}</p>
+              </div>
+            )}
+
+            {selectedItem.contactInfo && (
+              <div>
+                <Label className="font-semibold">연락처</Label>
+                <p className="mt-1">{selectedItem.contactInfo}</p>
+              </div>
+            )}
+
+            {selectedItem.website && (
+              <div>
+                <Label className="font-semibold">웹사이트</Label>
+                <p className="mt-1">{selectedItem.website}</p>
+              </div>
+            )}
+
+            {selectedItem.features && selectedItem.features.length > 0 && (
+              <div>
+                <Label className="font-semibold">주요 혜택</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.features.map((feature: string, index: number) => (
+                    <li key={index} className="text-sm">• {feature}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.conditions && selectedItem.conditions.length > 0 && (
+              <div>
+                <Label className="font-semibold">이용 조건</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.conditions.map((condition: string, index: number) => (
+                    <li key={index} className="text-sm">• {condition}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.howToUse && selectedItem.howToUse.length > 0 && (
+              <div>
+                <Label className="font-semibold">이용 방법</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.howToUse.map((step: string, index: number) => (
+                    <li key={index} className="text-sm">{index + 1}. {step}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {selectedItem.restrictions && selectedItem.restrictions.length > 0 && (
+              <div>
+                <Label className="font-semibold">제한 사항</Label>
+                <ul className="mt-1 space-y-1">
+                  {selectedItem.restrictions.map((restriction: string, index: number) => (
+                    <li key={index} className="text-sm">• {restriction}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
 
         {selectedItem.tags && selectedItem.tags.length > 0 && (

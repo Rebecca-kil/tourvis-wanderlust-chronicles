@@ -65,6 +65,32 @@ const Admin = () => {
     rating: 4.5
   });
 
+  // New states for guides, stories, and benefits
+  const [guideContent, setGuideContent] = useState<Array<{title: string; content: string}>>([]);
+  const [newGuideSection, setNewGuideSection] = useState({ title: "", content: "" });
+  const [guideTips, setGuideTips] = useState<string[]>([]);
+  const [newGuideTip, setNewGuideTip] = useState("");
+  const [requirements, setRequirements] = useState<string[]>([]);
+  const [newRequirement, setNewRequirement] = useState("");
+  const [whatYouWillLearn, setWhatYouWillLearn] = useState<string[]>([]);
+  const [newLearning, setNewLearning] = useState("");
+  
+  const [storyHighlights, setStoryHighlights] = useState<string[]>([]);
+  const [newHighlight, setNewHighlight] = useState("");
+  const [storyChallenges, setStoryChallenges] = useState<string[]>([]);
+  const [newChallenge, setNewChallenge] = useState("");
+  const [storyRecommendations, setStoryRecommendations] = useState<string[]>([]);
+  const [newRecommendation, setNewRecommendation] = useState("");
+
+  const [benefitFeatures, setBenefitFeatures] = useState<string[]>([]);
+  const [newFeature, setNewFeature] = useState("");
+  const [benefitConditions, setBenefitConditions] = useState<string[]>([]);
+  const [newCondition, setNewCondition] = useState("");
+  const [howToUse, setHowToUse] = useState<string[]>([]);
+  const [newHowToUse, setNewHowToUse] = useState("");
+  const [restrictions, setRestrictions] = useState<string[]>([]);
+  const [newRestriction, setNewRestriction] = useState("");
+
   const addAttraction = () => {
     if (newAttraction.name.trim() && newAttraction.description.trim()) {
       setAttractions(prev => [...prev, {
@@ -84,6 +110,130 @@ const Admin = () => {
 
   const removeAttraction = (index: number) => {
     setAttractions(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // New helper functions for guides
+  const addGuideSection = () => {
+    if (newGuideSection.title.trim() && newGuideSection.content.trim()) {
+      setGuideContent(prev => [...prev, newGuideSection]);
+      setNewGuideSection({ title: "", content: "" });
+    }
+  };
+
+  const removeGuideSection = (index: number) => {
+    setGuideContent(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const addGuideTip = () => {
+    if (newGuideTip.trim() && !guideTips.includes(newGuideTip.trim())) {
+      setGuideTips(prev => [...prev, newGuideTip.trim()]);
+      setNewGuideTip("");
+    }
+  };
+
+  const removeGuideTip = (tipToRemove: string) => {
+    setGuideTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
+  const addRequirement = () => {
+    if (newRequirement.trim() && !requirements.includes(newRequirement.trim())) {
+      setRequirements(prev => [...prev, newRequirement.trim()]);
+      setNewRequirement("");
+    }
+  };
+
+  const removeRequirement = (reqToRemove: string) => {
+    setRequirements(prev => prev.filter(req => req !== reqToRemove));
+  };
+
+  const addLearning = () => {
+    if (newLearning.trim() && !whatYouWillLearn.includes(newLearning.trim())) {
+      setWhatYouWillLearn(prev => [...prev, newLearning.trim()]);
+      setNewLearning("");
+    }
+  };
+
+  const removeLearning = (learningToRemove: string) => {
+    setWhatYouWillLearn(prev => prev.filter(learning => learning !== learningToRemove));
+  };
+
+  // New helper functions for stories
+  const addHighlight = () => {
+    if (newHighlight.trim() && !storyHighlights.includes(newHighlight.trim())) {
+      setStoryHighlights(prev => [...prev, newHighlight.trim()]);
+      setNewHighlight("");
+    }
+  };
+
+  const removeHighlight = (highlightToRemove: string) => {
+    setStoryHighlights(prev => prev.filter(highlight => highlight !== highlightToRemove));
+  };
+
+  const addChallenge = () => {
+    if (newChallenge.trim() && !storyChallenges.includes(newChallenge.trim())) {
+      setStoryChallenges(prev => [...prev, newChallenge.trim()]);
+      setNewChallenge("");
+    }
+  };
+
+  const removeChallenge = (challengeToRemove: string) => {
+    setStoryChallenges(prev => prev.filter(challenge => challenge !== challengeToRemove));
+  };
+
+  const addRecommendation = () => {
+    if (newRecommendation.trim() && !storyRecommendations.includes(newRecommendation.trim())) {
+      setStoryRecommendations(prev => [...prev, newRecommendation.trim()]);
+      setNewRecommendation("");
+    }
+  };
+
+  const removeRecommendation = (recToRemove: string) => {
+    setStoryRecommendations(prev => prev.filter(rec => rec !== recToRemove));
+  };
+
+  // New helper functions for benefits
+  const addFeature = () => {
+    if (newFeature.trim() && !benefitFeatures.includes(newFeature.trim())) {
+      setBenefitFeatures(prev => [...prev, newFeature.trim()]);
+      setNewFeature("");
+    }
+  };
+
+  const removeFeature = (featureToRemove: string) => {
+    setBenefitFeatures(prev => prev.filter(feature => feature !== featureToRemove));
+  };
+
+  const addCondition = () => {
+    if (newCondition.trim() && !benefitConditions.includes(newCondition.trim())) {
+      setBenefitConditions(prev => [...prev, newCondition.trim()]);
+      setNewCondition("");
+    }
+  };
+
+  const removeCondition = (conditionToRemove: string) => {
+    setBenefitConditions(prev => prev.filter(condition => condition !== conditionToRemove));
+  };
+
+  const addHowToUseStep = () => {
+    if (newHowToUse.trim() && !howToUse.includes(newHowToUse.trim())) {
+      setHowToUse(prev => [...prev, newHowToUse.trim()]);
+      setNewHowToUse("");
+    }
+  };
+
+  const removeHowToUseStep = (stepToRemove: string) => {
+    setHowToUse(prev => prev.filter(step => step !== stepToRemove));
+  };
+
+  const addRestriction = () => {
+    if (newRestriction.trim() && !restrictions.includes(newRestriction.trim())) {
+      setRestrictions(prev => [...prev, newRestriction.trim()]);
+      setNewRestriction("");
+    }
+  };
+
+  const removeRestriction = (restrictionToRemove: string) => {
+    setRestrictions(prev => prev.filter(restriction => restriction !== restrictionToRemove));
   };
 
   const handleSubmit = (e: React.FormEvent, contentType: string) => {
@@ -126,28 +276,27 @@ const Admin = () => {
       setTravelTips([]);
       setAttractions([]);
     } else if (contentType === "가이드") {
-      const contentText = formData.get('guide-content') as string;
-      const tipsText = formData.get('guide-tips') as string;
-      
-      // Parse content sections
-      const contentSections = contentText.split('\n\n').map(section => {
-        const lines = section.trim().split('\n');
-        return {
-          title: lines[0],
-          content: lines.slice(1).join(' ')
-        };
-      }).filter(section => section.title && section.content);
-      
       addGuide({
         title: formData.get('guide-title') as string,
         author: formData.get('guide-author') as string,
         category: formData.get('guide-category') as string,
         difficulty: formData.get('guide-difficulty') as string,
         image: formData.get('guide-image') as string,
-        content: contentSections,
-        tips: tipsText.split(',').map(tip => tip.trim()).filter(tip => tip),
+        description: formData.get('guide-description') as string || undefined,
+        readTime: formData.get('guide-read-time') as string || undefined,
+        targetAudience: formData.get('guide-target-audience') as string || undefined,
+        publishDate: formData.get('guide-publish-date') as string || undefined,
+        content: guideContent.length > 0 ? guideContent : [],
+        tips: guideTips.length > 0 ? guideTips : [],
+        requirements: requirements.length > 0 ? requirements : undefined,
+        whatYouWillLearn: whatYouWillLearn.length > 0 ? whatYouWillLearn : undefined,
         tags: selectedTags
       });
+      
+      setGuideContent([]);
+      setGuideTips([]);
+      setRequirements([]);
+      setWhatYouWillLearn([]);
     } else if (contentType === "여행 이야기") {
       addStory({
         title: formData.get('story-title') as string,
@@ -157,12 +306,22 @@ const Admin = () => {
         image: formData.get('story-image') as string,
         excerpt: formData.get('story-excerpt') as string,
         content: formData.get('story-content') as string,
+        description: formData.get('story-description') as string || undefined,
+        publishDate: formData.get('story-publish-date') as string || undefined,
+        readTime: formData.get('story-read-time') as string || undefined,
+        travelDate: formData.get('story-travel-date') as string || undefined,
+        budget: formData.get('story-budget') as string || undefined,
+        companions: formData.get('story-companions') as string || undefined,
+        highlights: storyHighlights.length > 0 ? storyHighlights : undefined,
+        challenges: storyChallenges.length > 0 ? storyChallenges : undefined,
+        recommendations: storyRecommendations.length > 0 ? storyRecommendations : undefined,
         tags: selectedTags
       });
-    } else if (contentType === "혜택") {
-      const featuresText = formData.get('benefit-features') as string;
-      const conditionsText = formData.get('benefit-conditions') as string;
       
+      setStoryHighlights([]);
+      setStoryChallenges([]);
+      setStoryRecommendations([]);
+    } else if (contentType === "혜택") {
       addBenefit({
         title: formData.get('benefit-title') as string,
         category: formData.get('benefit-category') as string,
@@ -173,10 +332,20 @@ const Admin = () => {
         validUntil: formData.get('benefit-valid-until') as string || undefined,
         image: formData.get('benefit-image') as string,
         description: formData.get('benefit-description') as string,
-        features: featuresText.split(',').map(feature => feature.trim()).filter(feature => feature),
-        conditions: conditionsText.split(',').map(condition => condition.trim()).filter(condition => condition),
+        provider: formData.get('benefit-provider') as string || undefined,
+        contactInfo: formData.get('benefit-contact-info') as string || undefined,
+        website: formData.get('benefit-website') as string || undefined,
+        features: benefitFeatures.length > 0 ? benefitFeatures : [],
+        conditions: benefitConditions.length > 0 ? benefitConditions : [],
+        howToUse: howToUse.length > 0 ? howToUse : undefined,
+        restrictions: restrictions.length > 0 ? restrictions : undefined,
         tags: selectedTags
       });
+      
+      setBenefitFeatures([]);
+      setBenefitConditions([]);
+      setHowToUse([]);
+      setRestrictions([]);
     }
     
     setSelectedTags([]);
@@ -459,14 +628,14 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* Guides Form */}
+          {/* Enhanced Guides Form */}
           <TabsContent value="guides">
             <Card>
               <CardHeader>
                 <CardTitle>새 가이드 추가</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={(e) => handleSubmit(e, "가이드")} className="space-y-4">
+                <form onSubmit={(e) => handleSubmit(e, "가이드")} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="guide-title">제목</Label>
@@ -512,13 +681,143 @@ const Admin = () => {
                     <Input id="guide-image" name="guide-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
                   <div>
-                    <Label htmlFor="guide-content">가이드 내용 (섹션별로 구분해서 작성)</Label>
-                    <Textarea id="guide-content" name="guide-content" placeholder="1. 첫 번째 섹션 제목&#10;내용 설명...&#10;&#10;2. 두 번째 섹션 제목&#10;내용 설명..." rows={8} required />
+                    <Label htmlFor="guide-description">가이드 설명</Label>
+                    <Textarea id="guide-description" name="guide-description" placeholder="가이드에 대한 간단한 설명..." rows={3} />
                   </div>
-                  <div>
-                    <Label htmlFor="guide-tips">핵심 팁 (쉼표로 구분)</Label>
-                    <Textarea id="guide-tips" name="guide-tips" placeholder="팁1, 팁2, 팁3" rows={3} />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="guide-read-time">예상 읽기 시간</Label>
+                      <Input id="guide-read-time" name="guide-read-time" placeholder="5분" />
+                    </div>
+                    <div>
+                      <Label htmlFor="guide-target-audience">대상 독자</Label>
+                      <Input id="guide-target-audience" name="guide-target-audience" placeholder="초보 여행자" />
+                    </div>
+                    <div>
+                      <Label htmlFor="guide-publish-date">발행일</Label>
+                      <Input id="guide-publish-date" name="guide-publish-date" type="date" />
+                    </div>
                   </div>
+
+                  {/* Guide Content Sections */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">가이드 내용 섹션</Label>
+                    <div className="space-y-2">
+                      <Input
+                        value={newGuideSection.title}
+                        onChange={(e) => setNewGuideSection(prev => ({...prev, title: e.target.value}))}
+                        placeholder="섹션 제목"
+                      />
+                      <Textarea
+                        value={newGuideSection.content}
+                        onChange={(e) => setNewGuideSection(prev => ({...prev, content: e.target.value}))}
+                        placeholder="섹션 내용"
+                        rows={3}
+                      />
+                      <Button type="button" onClick={addGuideSection} size="sm">
+                        <Plus className="w-4 h-4 mr-2" />
+                        섹션 추가
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      {guideContent.map((section, index) => (
+                        <div key={index} className="border p-3 rounded">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <h4 className="font-medium">{section.title}</h4>
+                              <p className="text-sm text-muted-foreground mt-1">{section.content}</p>
+                            </div>
+                            <X 
+                              className="w-4 h-4 cursor-pointer hover:text-red-500 ml-2" 
+                              onClick={() => removeGuideSection(index)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Guide Tips */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">핵심 팁</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newGuideTip}
+                        onChange={(e) => setNewGuideTip(e.target.value)}
+                        placeholder="새로운 팁"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addGuideTip())}
+                      />
+                      <Button type="button" onClick={addGuideTip} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {guideTips.map((tip, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {tip}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeGuideTip(tip)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Requirements */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">필요 조건</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newRequirement}
+                        onChange={(e) => setNewRequirement(e.target.value)}
+                        placeholder="새로운 필요 조건"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRequirement())}
+                      />
+                      <Button type="button" onClick={addRequirement} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {requirements.map((req, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {req}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeRequirement(req)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* What You Will Learn */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">배울 내용</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newLearning}
+                        onChange={(e) => setNewLearning(e.target.value)}
+                        placeholder="배울 수 있는 내용"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLearning())}
+                      />
+                      <Button type="button" onClick={addLearning} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {whatYouWillLearn.map((learning, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {learning}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeLearning(learning)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
                   <div>
                     <Label>추가 태그</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
@@ -534,6 +833,7 @@ const Admin = () => {
                       ))}
                     </div>
                   </div>
+
                   <Button type="submit" className="w-full">
                     <Plus className="w-4 h-4 mr-2" />
                     가이드 추가
@@ -543,14 +843,14 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* Stories Form */}
+          {/* Enhanced Stories Form */}
           <TabsContent value="stories">
             <Card>
               <CardHeader>
                 <CardTitle>새 여행 이야기 추가</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={(e) => handleSubmit(e, "여행 이야기")} className="space-y-4">
+                <form onSubmit={(e) => handleSubmit(e, "여행 이야기")} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="story-title">제목</Label>
@@ -588,6 +888,10 @@ const Admin = () => {
                     <Input id="story-image" name="story-image" type="url" placeholder="https://example.com/image.jpg" required />
                   </div>
                   <div>
+                    <Label htmlFor="story-description">이야기 설명</Label>
+                    <Textarea id="story-description" name="story-description" placeholder="이야기에 대한 간단한 설명..." rows={2} />
+                  </div>
+                  <div>
                     <Label htmlFor="story-excerpt">요약</Label>
                     <Textarea id="story-excerpt" name="story-excerpt" placeholder="여행 이야기의 간단한 요약..." rows={3} required />
                   </div>
@@ -595,6 +899,110 @@ const Admin = () => {
                     <Label htmlFor="story-content">본문</Label>
                     <Textarea id="story-content" name="story-content" placeholder="여행 이야기의 상세한 내용을 작성해주세요..." rows={10} required />
                   </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                      <Label htmlFor="story-publish-date">발행일</Label>
+                      <Input id="story-publish-date" name="story-publish-date" type="date" />
+                    </div>
+                    <div>
+                      <Label htmlFor="story-read-time">예상 읽기 시간</Label>
+                      <Input id="story-read-time" name="story-read-time" placeholder="8분" />
+                    </div>
+                    <div>
+                      <Label htmlFor="story-travel-date">여행 날짜</Label>
+                      <Input id="story-travel-date" name="story-travel-date" placeholder="2024년 3월" />
+                    </div>
+                    <div>
+                      <Label htmlFor="story-budget">예산</Label>
+                      <Input id="story-budget" name="story-budget" placeholder="100만원" />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="story-companions">동행자</Label>
+                    <Input id="story-companions" name="story-companions" placeholder="혼자 / 친구 2명 / 가족" />
+                  </div>
+
+                  {/* Story Highlights */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">여행 하이라이트</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newHighlight}
+                        onChange={(e) => setNewHighlight(e.target.value)}
+                        placeholder="특별했던 순간"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHighlight())}
+                      />
+                      <Button type="button" onClick={addHighlight} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {storyHighlights.map((highlight, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {highlight}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeHighlight(highlight)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Story Challenges */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">여행 중 어려웠던 점</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newChallenge}
+                        onChange={(e) => setNewChallenge(e.target.value)}
+                        placeholder="어려웠던 점"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addChallenge())}
+                      />
+                      <Button type="button" onClick={addChallenge} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {storyChallenges.map((challenge, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {challenge}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeChallenge(challenge)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Story Recommendations */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">추천 사항</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newRecommendation}
+                        onChange={(e) => setNewRecommendation(e.target.value)}
+                        placeholder="다른 여행자들에게 추천하고 싶은 것"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRecommendation())}
+                      />
+                      <Button type="button" onClick={addRecommendation} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {storyRecommendations.map((rec, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {rec}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeRecommendation(rec)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
                   <div>
                     <Label>카테고리 태그</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
@@ -610,6 +1018,7 @@ const Admin = () => {
                       ))}
                     </div>
                   </div>
+
                   <Button type="submit" className="w-full">
                     <Plus className="w-4 h-4 mr-2" />
                     이야기 추가
@@ -619,14 +1028,14 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* Benefits Form */}
+          {/* Enhanced Benefits Form */}
           <TabsContent value="benefits">
             <Card>
               <CardHeader>
                 <CardTitle>새 혜택 추가</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={(e) => handleSubmit(e, "혜택")} className="space-y-4">
+                <form onSubmit={(e) => handleSubmit(e, "혜택")} className="space-y-6">
                   <div>
                     <Label htmlFor="benefit-title">제목</Label>
                     <Input id="benefit-title" name="benefit-title" placeholder="혜택 제목" required />
@@ -674,9 +1083,15 @@ const Admin = () => {
                       <Input id="benefit-sale-price" name="benefit-sale-price" placeholder="105,000원" />
                     </div>
                   </div>
-                  <div>
-                    <Label htmlFor="benefit-valid-until">유효기간</Label>
-                    <Input id="benefit-valid-until" name="benefit-valid-until" placeholder="2024.03.31" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="benefit-valid-until">유효기간</Label>
+                      <Input id="benefit-valid-until" name="benefit-valid-until" placeholder="2024.03.31" />
+                    </div>
+                    <div>
+                      <Label htmlFor="benefit-provider">제공업체</Label>
+                      <Input id="benefit-provider" name="benefit-provider" placeholder="제주항공" />
+                    </div>
                   </div>
                   <div>
                     <Label htmlFor="benefit-image">이미지 URL</Label>
@@ -686,14 +1101,125 @@ const Admin = () => {
                     <Label htmlFor="benefit-description">설명</Label>
                     <Textarea id="benefit-description" name="benefit-description" placeholder="혜택에 대한 상세 설명..." required />
                   </div>
-                  <div>
-                    <Label htmlFor="benefit-features">주요 혜택 (쉼표로 구분)</Label>
-                    <Textarea id="benefit-features" name="benefit-features" placeholder="혜택1, 혜택2, 혜택3" rows={3} />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="benefit-contact-info">연락처</Label>
+                      <Input id="benefit-contact-info" name="benefit-contact-info" placeholder="1588-1234" />
+                    </div>
+                    <div>
+                      <Label htmlFor="benefit-website">웹사이트</Label>
+                      <Input id="benefit-website" name="benefit-website" type="url" placeholder="https://example.com" />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="benefit-conditions">이용 조건 (쉼표로 구분)</Label>
-                    <Textarea id="benefit-conditions" name="benefit-conditions" placeholder="조건1, 조건2, 조건3" rows={3} />
+
+                  {/* Benefit Features */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">주요 혜택</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newFeature}
+                        onChange={(e) => setNewFeature(e.target.value)}
+                        placeholder="새로운 혜택"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addFeature())}
+                      />
+                      <Button type="button" onClick={addFeature} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {benefitFeatures.map((feature, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {feature}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeFeature(feature)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* Benefit Conditions */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">이용 조건</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newCondition}
+                        onChange={(e) => setNewCondition(e.target.value)}
+                        placeholder="새로운 조건"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCondition())}
+                      />
+                      <Button type="button" onClick={addCondition} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {benefitConditions.map((condition, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {condition}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeCondition(condition)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* How to Use */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">이용 방법</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newHowToUse}
+                        onChange={(e) => setNewHowToUse(e.target.value)}
+                        placeholder="이용 방법 단계"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHowToUseStep())}
+                      />
+                      <Button type="button" onClick={addHowToUseStep} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {howToUse.map((step, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {step}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeHowToUseStep(step)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Restrictions */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">제한 사항</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newRestriction}
+                        onChange={(e) => setNewRestriction(e.target.value)}
+                        placeholder="제한 사항"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRestriction())}
+                      />
+                      <Button type="button" onClick={addRestriction} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {restrictions.map((restriction, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {restriction}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeRestriction(restriction)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
                   <div>
                     <Label>카테고리 태그</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
@@ -709,6 +1235,7 @@ const Admin = () => {
                       ))}
                     </div>
                   </div>
+
                   <Button type="submit" className="w-full">
                     <Plus className="w-4 h-4 mr-2" />
                     혜택 추가

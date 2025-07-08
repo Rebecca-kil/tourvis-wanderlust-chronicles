@@ -38,6 +38,12 @@ export interface Guide {
   tips: string[];
   tags: string[];
   likes: number;
+  description?: string;
+  readTime?: string;
+  targetAudience?: string;
+  requirements?: string[];
+  whatYouWillLearn?: string[];
+  publishDate?: string;
 }
 
 export interface Story {
@@ -52,6 +58,15 @@ export interface Story {
   tags: string[];
   likes: number;
   comments: number;
+  description?: string;
+  publishDate?: string;
+  readTime?: string;
+  travelDate?: string;
+  budget?: string;
+  companions?: string;
+  highlights?: string[];
+  challenges?: string[];
+  recommendations?: string[];
 }
 
 export interface Benefit {
@@ -71,6 +86,11 @@ export interface Benefit {
   likes: number;
   isHot?: boolean;
   stock?: string;
+  provider?: string;
+  howToUse?: string[];
+  restrictions?: string[];
+  contactInfo?: string;
+  website?: string;
 }
 
 interface BlogContextType {
@@ -94,7 +114,7 @@ interface BlogContextType {
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
 
-// Default data
+// Default data with enhanced fields
 const defaultDestinations: Destination[] = [
   {
     id: '1',
@@ -124,7 +144,10 @@ const defaultGuides: Guide[] = [
     ],
     tips: ['주중 출발이 주말보다 20-30% 저렴', '직항보다 경유가 더 저렴할 수 있음'],
     tags: ['교통', '절약'],
-    likes: 856
+    likes: 856,
+    description: '항공료를 절약할 수 있는 실용적인 팁들을 소개합니다.',
+    readTime: '5분',
+    targetAudience: '항공료 절약을 원하는 모든 여행자'
   }
 ];
 
@@ -140,7 +163,10 @@ const defaultStories: Story[] = [
     content: '파리에서의 혼자 여행은 정말 특별한 경험이었습니다...',
     tags: ['해외여행', '혼행'],
     likes: 1234,
-    comments: 89
+    comments: 89,
+    description: '파리에서의 혼자 여행 경험담',
+    readTime: '8분',
+    travelDate: '2024년 3월'
   }
 ];
 
@@ -161,7 +187,8 @@ const defaultBenefits: Benefit[] = [
     tags: ['항공', '할인'],
     likes: 234,
     isHot: true,
-    stock: '87%'
+    stock: '87%',
+    provider: '제주항공'
   }
 ];
 
