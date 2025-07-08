@@ -215,6 +215,28 @@ const Admin = () => {
                       ))}
                     </div>
                   </div>
+                  <div>
+    <Label htmlFor="dest-quickinfo">Quick Info</Label>
+  <Textarea id="dest-quickinfo" name="dest-quickinfo" placeholder="간단 정보 (예: 현지 팁, 주의사항 등)" />
+</div>
+<div>
+  <Label htmlFor="dest-tips">Travel Tips (한 줄에 하나씩)</Label>
+  <Textarea id="dest-tips" name="dest-tips" placeholder="여행 꿀팁을 한 줄에 하나씩 입력하세요." />
+</div>
+<div className="grid grid-cols-3 gap-4">
+  <div>
+    <Label htmlFor="dest-budget-accommodation">숙박</Label>
+    <Input id="dest-budget-accommodation" name="dest-budget-accommodation" placeholder="예: 50000원/1박" />
+  </div>
+  <div>
+    <Label htmlFor="dest-budget-food">식비</Label>
+    <Input id="dest-budget-food" name="dest-budget-food" placeholder="예: 30000원/1일" />
+  </div>
+  <div>
+    <Label htmlFor="dest-budget-transport">교통</Label>
+    <Input id="dest-budget-transport" name="dest-budget-transport" placeholder="예: 20000원/1일" />
+  </div>
+</div>
                   <Button type="submit" className="w-full">
                     <Plus className="w-4 h-4 mr-2" />
                     여행지 추가
