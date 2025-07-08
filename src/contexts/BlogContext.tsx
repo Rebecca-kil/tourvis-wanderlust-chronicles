@@ -12,9 +12,9 @@ export interface Destination {
   quickInfo?: string;
   travelTips?: string[];
   dailyBudget?: {
-  accommodation: string;
-  food: string;
-  transport: string;
+    accommodation: string;
+    food: string;
+    transport: string;
   };
 }
 
