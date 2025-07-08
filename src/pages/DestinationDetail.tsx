@@ -105,6 +105,50 @@ const DestinationDetail = () => {
 
   // 이하 렌더링은 destinationData를 기준으로 진행
 
+  return (
+    <div className="min-h-screen">
+      <TravelHeader />
+      {/* Hero Section */}
+      <section className="relative h-[60vh] overflow-hidden">
+        <img 
+          src={destinationData.image} 
+          alt={destinationData.name}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 flex items-end">
+          <div className="container mx-auto px-4 pb-8">
+            <Link to="/destinations" className="inline-flex items-center text-white mb-4 hover:text-white/80">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              여행지 목록으로 돌아가기
+            </Link>
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{destinationData.name}</h1>
+                <p className="text-xl text-white/90 mb-4">{destinationData.country}</p>
+                <div className="flex items-center space-x-4 text-white/80">
+                  <div className="flex items-center">
+                    <Star className="w-5 h-5 mr-1 fill-yellow-400 text-yellow-400" />
+                    <span>{destinationData.rating}</span>
+                  </div>
+                  <span>•</span>
+                  <span>{destinationData.reviewCount} 리뷰</span>
+                  <span>•</span>
+                  <span>{destinationData.region}</span>
+                </div>
+              </div>
+              <div className="flex-shrink-0 ml-4">
+                <ShareButtons title={destinationData.name} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* 이하 기존 JSX 렌더링 코드 유지 (destinationData 기준) */}
+      {/* ... (생략) ... */}
+      <TravelFooter />
+    </div>
+  );
+
     <div className="min-h-screen">
       <TravelHeader />
       
