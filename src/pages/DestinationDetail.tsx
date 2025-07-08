@@ -151,8 +151,27 @@ const DestinationDetail = () => {
           </div>
         </div>
       </section>
-      {/* 이하 기존 JSX 렌더링 코드 유지 (destinationData 기준) */}
-      {/* ... (생략) ... */}
+      {/* 본문: 여행지 상세 정보 */}
+      <section className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold mb-4">여행지 소개</h2>
+        <p className="mb-6">{destinationData.description}</p>
+        {destinationData.detailInfo.tips && destinationData.detailInfo.tips.length > 0 && (
+          <>
+            <h3 className="text-xl font-semibold mb-2">여행 팁</h3>
+            <ul className="list-disc list-inside mb-6">
+              {destinationData.detailInfo.tips.map((tip, idx) => (
+                <li key={idx}>{tip}</li>
+              ))}
+            </ul>
+          </>
+        )}
+        <h3 className="text-xl font-semibold mb-2">예상 경비</h3>
+        <ul>
+          <li>숙박: {destinationData.detailInfo.dailyBudget.accommodation}</li>
+          <li>음식: {destinationData.detailInfo.dailyBudget.food}</li>
+          <li>교통: {destinationData.detailInfo.dailyBudget.transport}</li>
+        </ul>
+      </section>
       <TravelFooter />
     </div>
   );
