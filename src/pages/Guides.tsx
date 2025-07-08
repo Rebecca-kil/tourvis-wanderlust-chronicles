@@ -121,7 +121,7 @@ const Guides = () => {
     {
       id: 4,
       title: "해외여행 시 꼭 알아야 할 현지 문화 에티켓 10가지",
-      category: "실용 팁",
+      category: "팁",
       readTime: "6분",
       difficulty: "초급",
       tags: ["문화", "에티켓", "매너", "팁"],
