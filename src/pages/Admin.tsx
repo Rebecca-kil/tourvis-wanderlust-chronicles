@@ -56,6 +56,36 @@ const Admin = () => {
   const [travelTips, setTravelTips] = useState<string[]>([]);
   const [newTip, setNewTip] = useState("");
 
+  // Attractions management
+  const [attractions, setAttractions] = useState<Array<{name: string; description: string; time?: string; rating?: number}>>([]);
+  const [newAttraction, setNewAttraction] = useState({
+    name: "",
+    description: "",
+    time: "",
+    rating: 4.5
+  });
+
+  const addAttraction = () => {
+    if (newAttraction.name.trim() && newAttraction.description.trim()) {
+      setAttractions(prev => [...prev, {
+        name: newAttraction.name.trim(),
+        description: newAttraction.description.trim(),
+        time: newAttraction.time.trim() || undefined,
+        rating: newAttraction.rating
+      }]);
+      setNewAttraction({
+        name: "",
+        description: "",
+        time: "",
+        rating: 4.5
+      });
+    }
+  };
+
+  const removeAttraction = (index: number) => {
+    setAttractions(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = (e: React.FormEvent, contentType: string) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -83,13 +113,18 @@ const Admin = () => {
         price: formData.get('dest-price') ? Number(formData.get('dest-price')) : undefined,
         duration: formData.get('dest-duration') as string || undefined,
         quickInfo: formData.get('dest-quick-info') as string || undefined,
+        budgetLevel: formData.get('dest-budget-level') as string || undefined,
+        bestTime: formData.get('dest-best-time') as string || undefined,
+        transportation: formData.get('dest-transportation') as string || undefined,
         travelTips: travelTips.length > 0 ? travelTips : undefined,
+        attractions: attractions.length > 0 ? attractions : undefined,
         dailyBudget,
         tags: selectedTags
       });
       
-      // Reset travel tips
+      // Reset all states
       setTravelTips([]);
+      setAttractions([]);
     } else if (contentType === "가이드") {
       const contentText = formData.get('guide-content') as string;
       const tipsText = formData.get('guide-tips') as string;
@@ -146,6 +181,7 @@ const Admin = () => {
     
     setSelectedTags([]);
     setTravelTips([]);
+    setAttractions([]);
     (e.target as HTMLFormElement).reset();
     
     toast({
@@ -264,6 +300,32 @@ const Admin = () => {
                     </div>
                   </div>
 
+                  {/* 새로운 필드들 추가 */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="dest-budget-level">예산 수준</Label>
+                      <Select name="dest-budget-level">
+                        <SelectTrigger>
+                          <SelectValue placeholder="예산 수준 선택" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="저렴">저렴</SelectItem>
+                          <SelectItem value="중간">중간</SelectItem>
+                          <SelectItem value="높음">높음</SelectItem>
+                          <SelectItem value="럭셔리">럭셔리</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="dest-best-time">최적 시기</Label>
+                      <Input id="dest-best-time" name="dest-best-time" placeholder="4-6월, 9-11월" />
+                    </div>
+                    <div>
+                      <Label htmlFor="dest-transportation">교통 정보</Label>
+                      <Input id="dest-transportation" name="dest-transportation" placeholder="항공 1.5시간" />
+                    </div>
+                  </div>
+
                   {/* Daily Budget Section */}
                   <div className="space-y-4">
                     <Label className="text-lg font-semibold">일일 예산</Label>
@@ -280,6 +342,68 @@ const Admin = () => {
                         <Label htmlFor="dest-transport">교통비</Label>
                         <Input id="dest-transport" name="dest-transport" placeholder="20,000원" />
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Attractions Section */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">주요 명소</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="attraction-name">명소 이름</Label>
+                        <Input
+                          id="attraction-name"
+                          value={newAttraction.name}
+                          onChange={(e) => setNewAttraction(prev => ({...prev, name: e.target.value}))}
+                          placeholder="명소 이름"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="attraction-time">소요시간</Label>
+                        <Input
+                          id="attraction-time"
+                          value={newAttraction.time}
+                          onChange={(e) => setNewAttraction(prev => ({...prev, time: e.target.value}))}
+                          placeholder="2시간"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="attraction-description">명소 설명</Label>
+                      <Textarea
+                        id="attraction-description"
+                        value={newAttraction.description}
+                        onChange={(e) => setNewAttraction(prev => ({...prev, description: e.target.value}))}
+                        placeholder="명소에 대한 설명"
+                        rows={2}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="attraction-rating">평점</Label>
+                      <Input
+                        id="attraction-rating"
+                        type="number"
+                        min="1"
+                        max="5"
+                        step="0.1"
+                        value={newAttraction.rating}
+                        onChange={(e) => setNewAttraction(prev => ({...prev, rating: Number(e.target.value)}))}
+                        className="w-24"
+                      />
+                      <Button type="button" onClick={addAttraction} size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {attractions.map((attraction, index) => (
+                        <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                          {attraction.name} ({attraction.time}) ⭐{attraction.rating}
+                          <X 
+                            className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeAttraction(index)}
+                          />
+                        </Badge>
+                      ))}
                     </div>
                   </div>
 

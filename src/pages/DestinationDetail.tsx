@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { MapPin, Star, Clock, Users, Calendar, DollarSign, Info, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -7,50 +8,30 @@ import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useBlog } from "@/contexts/BlogContext";
 
 const DestinationDetail = () => {
   const { id } = useParams();
+  const { destinations } = useBlog();
 
-  // Mock data - 실제로는 API에서 가져올 데이터
-  const destination = {
-    id: 1,
-    name: "제주도",
-    country: "대한민국",
-    region: "국내",
-    rating: 4.8,
-    reviewCount: 1247,
-    duration: "2-4일",
-    budget: "중간",
-    tags: ["자연", "힐링", "드라이브", "맛집"],
-    image: "https://images.unsplash.com/photo-1539650116574-75c0c6d73def?w=800&h=400&fit=crop",
-    description: "한국의 대표 힐링 여행지, 아름다운 자연과 독특한 문화가 어우러진 섬",
-    highlights: ["한라산", "성산일출봉", "우도", "협재해수욕장"],
-    bestTime: "4-6월, 9-11월",
-    detailInfo: {
-      transportation: "김포공항에서 1시간 30분, KTX + 버스 4시간",
-      accommodation: "리조트, 펜션, 게스트하우스 다양",
-      currency: "원화(KRW)",
-      language: "한국어",
-      attractions: [
-        { name: "한라산", description: "한국 최고봉으로 등반과 트레킹 코스가 유명", time: "6-8시간", rating: 4.9 },
-        { name: "성산일출봉", description: "유네스코 세계자연유산, 일출 명소", time: "2시간", rating: 4.8 },
-        { name: "우도", description: "제주 동쪽 작은 섬, 자전거 투어 인기", time: "반나절", rating: 4.7 },
-        { name: "협재해수욕장", description: "에메랄드빛 바다와 하얀 모래사장", time: "2-3시간", rating: 4.6 }
-      ],
-      tips: [
-        "렌터카 예약은 미리 하는 것이 좋습니다",
-        "날씨 변화가 심하니 여러 벌의 옷을 준비하세요",
-        "현지 흑돼지와 해산물을 꼭 맛보세요",
-        "성수기에는 숙박비가 2-3배 오를 수 있습니다"
-      ],
-      dailyBudget: {
-        accommodation: "50,000~150,000원",
-        food: "30,000~50,000원",
-        transport: "40,000~60,000원",
-        activity: "20,000~80,000원"
-      }
-    }
-  };
+  // 실제 데이터에서 해당 여행지 찾기
+  const destination = destinations.find(dest => dest.id === id);
+
+  // 데이터가 없으면 404 처리
+  if (!destination) {
+    return (
+      <div className="min-h-screen">
+        <TravelHeader />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <h1 className="text-2xl font-bold mb-4">여행지를 찾을 수 없습니다</h1>
+          <Link to="/destinations" className="text-primary hover:underline">
+            여행지 목록으로 돌아가기
+          </Link>
+        </div>
+        <TravelFooter />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -60,7 +41,7 @@ const DestinationDetail = () => {
       <section className="relative h-[60vh] overflow-hidden">
         <img 
           src={destination.image} 
-          alt={destination.name}
+          alt={destination.title}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40 flex items-end">
@@ -71,21 +52,21 @@ const DestinationDetail = () => {
             </Link>
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{destination.name}</h1>
-                <p className="text-xl text-white/90 mb-4">{destination.country}</p>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{destination.title}</h1>
+                <p className="text-xl text-white/90 mb-4">{destination.city}</p>
                 <div className="flex items-center space-x-4 text-white/80">
                   <div className="flex items-center">
                     <Star className="w-5 h-5 mr-1 fill-yellow-400 text-yellow-400" />
-                    <span>{destination.rating}</span>
+                    <span>4.8</span>
                   </div>
                   <span>•</span>
-                  <span>{destination.reviewCount} 리뷰</span>
+                  <span>1247 리뷰</span>
                   <span>•</span>
-                  <span>{destination.region}</span>
+                  <span>국내</span>
                 </div>
               </div>
               <div className="flex-shrink-0 ml-4">
-                <ShareButtons title={destination.name} />
+                <ShareButtons title={destination.title} />
               </div>
             </div>
           </div>
@@ -100,28 +81,28 @@ const DestinationDetail = () => {
               <CardContent className="p-4 text-center">
                 <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">추천 기간</h3>
-                <p className="text-sm text-muted-foreground">{destination.duration}</p>
+                <p className="text-sm text-muted-foreground">{destination.duration || "정보 없음"}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <DollarSign className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">예산 수준</h3>
-                <p className="text-sm text-muted-foreground">{destination.budget}</p>
+                <p className="text-sm text-muted-foreground">{destination.budgetLevel || "정보 없음"}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">최적 시기</h3>
-                <p className="text-sm text-muted-foreground">{destination.bestTime}</p>
+                <p className="text-sm text-muted-foreground">{destination.bestTime || "정보 없음"}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <MapPin className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">교통</h3>
-                <p className="text-sm text-muted-foreground">항공 1.5시간</p>
+                <p className="text-sm text-muted-foreground">{destination.transportation || "정보 없음"}</p>
               </CardContent>
             </Card>
           </div>
@@ -138,79 +119,90 @@ const DestinationDetail = () => {
               <div>
                 <h2 className="text-2xl font-bold mb-4">여행지 소개</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">{destination.description}</p>
+                {destination.quickInfo && (
+                  <p className="text-sm text-muted-foreground italic mb-4">{destination.quickInfo}</p>
+                )}
                 <div className="flex flex-wrap gap-2">
-                  {destination.tags.map((tag, idx) => (
+                  {destination.tags?.map((tag, idx) => (
                     <Badge key={idx} variant="secondary">#{tag}</Badge>
                   ))}
                 </div>
               </div>
 
               {/* Attractions */}
-              <div>
-                <h2 className="text-2xl font-bold mb-4">주요 명소</h2>
-                <div className="space-y-4">
-                  {destination.detailInfo.attractions.map((attraction, idx) => (
-                    <Card key={idx}>
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="text-lg font-semibold">{attraction.name}</h3>
-                          <div className="flex items-center">
-                            <Star className="w-4 h-4 mr-1 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm">{attraction.rating}</span>
+              {destination.attractions && destination.attractions.length > 0 && (
+                <div>
+                  <h2 className="text-2xl font-bold mb-4">주요 명소</h2>
+                  <div className="space-y-4">
+                    {destination.attractions.map((attraction, idx) => (
+                      <Card key={idx}>
+                        <CardContent className="p-6">
+                          <div className="flex justify-between items-start mb-2">
+                            <h3 className="text-lg font-semibold">{attraction.name}</h3>
+                            <div className="flex items-center">
+                              <Star className="w-4 h-4 mr-1 fill-yellow-400 text-yellow-400" />
+                              <span className="text-sm">{attraction.rating || "4.5"}</span>
+                            </div>
                           </div>
-                        </div>
-                        <p className="text-muted-foreground mb-3">{attraction.description}</p>
-                        <Badge variant="outline" className="text-xs">소요시간: {attraction.time}</Badge>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          <p className="text-muted-foreground mb-3">{attraction.description}</p>
+                          <Badge variant="outline" className="text-xs">소요시간: {attraction.time || "2시간"}</Badge>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Travel Tips */}
-              <div>
-                <h2 className="text-2xl font-bold mb-4">여행 팁</h2>
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="space-y-3">
-                      {destination.detailInfo.tips.map((tip, idx) => (
-                        <div key={idx} className="flex items-start">
-                          <Info className="w-4 h-4 mr-3 mt-1 text-primary flex-shrink-0" />
-                          <p className="text-sm">{tip}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              {destination.travelTips && destination.travelTips.length > 0 && (
+                <div>
+                  <h2 className="text-2xl font-bold mb-4">여행 팁</h2>
+                  <Card>
+                    <CardContent className="p-6">
+                      <div className="space-y-3">
+                        {destination.travelTips.map((tip, idx) => (
+                          <div key={idx} className="flex items-start">
+                            <Info className="w-4 h-4 mr-3 mt-1 text-primary flex-shrink-0" />
+                            <p className="text-sm">{tip}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
 
             {/* Right Sidebar */}
             <div className="space-y-6">
               {/* Budget Guide */}
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">1일 예산 가이드</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm">숙박</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.accommodation}</span>
+              {destination.dailyBudget && (
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold mb-4">1일 예산 가이드</h3>
+                    <div className="space-y-3">
+                      {destination.dailyBudget.accommodation && (
+                        <div className="flex justify-between">
+                          <span className="text-sm">숙박</span>
+                          <span className="text-sm font-medium">{destination.dailyBudget.accommodation}</span>
+                        </div>
+                      )}
+                      {destination.dailyBudget.food && (
+                        <div className="flex justify-between">
+                          <span className="text-sm">식비</span>
+                          <span className="text-sm font-medium">{destination.dailyBudget.food}</span>
+                        </div>
+                      )}
+                      {destination.dailyBudget.transport && (
+                        <div className="flex justify-between">
+                          <span className="text-sm">교통</span>
+                          <span className="text-sm font-medium">{destination.dailyBudget.transport}</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">식비</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.food}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">교통</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.transport}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">액티비티</span>
-                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.activity}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Book CTA */}
               <Card>

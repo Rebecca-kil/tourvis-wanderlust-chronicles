@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface Destination {
@@ -17,6 +16,15 @@ export interface Destination {
     food: string;
     transport: string;
   };
+  budgetLevel?: string;
+  bestTime?: string;
+  transportation?: string;
+  attractions?: Array<{
+    name: string;
+    description: string;
+    time?: string;
+    rating?: number;
+  }>;
 }
 
 export interface Guide {
