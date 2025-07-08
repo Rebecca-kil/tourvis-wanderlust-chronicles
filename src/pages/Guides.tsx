@@ -111,7 +111,7 @@ const Guides = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/*} <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {guideCategories.map((category) => (
               <Card key={category.id} className="group hover:shadow-travel-medium transition-travel cursor-pointer">
                 <CardContent className="p-6">
@@ -130,6 +130,7 @@ const Guides = () => {
               </Card>
             ))}
           </div>
+          */} 
         </div>
       </section>
 
