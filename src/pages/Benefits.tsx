@@ -96,7 +96,7 @@ const Benefits = () => {
         </div>
       </section>
 
-      {/* Category Overview */}
+      {/* Category Overview 
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -133,6 +133,7 @@ const Benefits = () => {
           </div>
         </div>
       </section>
+  */}
 
       {/* Search and Filter */}
       <section className="py-8 bg-muted/20">
