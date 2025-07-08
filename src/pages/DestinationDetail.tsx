@@ -7,14 +7,12 @@ import ShareButtons from "@/components/ShareButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useBlog } from "@/contexts/BlogContext";
 
 const DestinationDetail = () => {
   const { id } = useParams();
 
-  // 기존 mock data: 실제로는 API에서 가져올 데이터 (삭제 금지, 참고용)
-  /*
-  const mockDestination = {
+  // Mock data - 실제로는 API에서 가져올 데이터
+  const destination = {
     id: 1,
     name: "제주도",
     country: "대한민국",
@@ -53,78 +51,16 @@ const DestinationDetail = () => {
       }
     }
   };
-  */
 
-  // 실제 context 데이터 구조를 mock data와 통일 (필드가 없을 경우 fallback 값 적용)
-  const { destinations } = useBlog();
-  console.log('id param:', id);
-  console.log('destinations:', destinations);
-  const destinationRaw = destinations.find(
-    (dest) => String(dest.id) === String(id)
-  );
-  console.log('destinationRaw:', destinationRaw);
-
-  if (!destinationRaw) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <TravelHeader />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-xl text-muted-foreground">여행지 정보를 찾을 수 없습니다.</div>
-        </div>
-        <TravelFooter />
-      </div>
-    );
-  }
-
-  // 데이터 구조 통일: 모든 렌더링은 destinationData 객체만 사용
-  function normalizeDestination(raw) {
-    return {
-      id: raw.id,
-      name: raw.title || '-',
-      country: raw.city || '-',
-      region: raw.tags?.[0] || '-',
-      rating: 4.8,
-      reviewCount: 0,
-      duration: raw.duration || '-',
-      budget: raw.dailyBudget
-        ? `${raw.dailyBudget.accommodation || ''} / ${raw.dailyBudget.food || ''} / ${raw.dailyBudget.transport || ''}`
-        : '-',
-      tags: raw.tags || [],
-      image: raw.image || '',
-      description: raw.description || '',
-      highlights: raw.highlights || [],
-      bestTime: raw.quickInfo || '-',
-      detailInfo: {
-        transportation: raw.transportation || '-',
-        accommodation: raw.accommodation || '-',
-        currency: raw.currency || '-',
-        language: raw.language || '-',
-        attractions: raw.attractions || [],
-        tips: raw.travelTips || [],
-        dailyBudget: {
-          accommodation: raw.dailyBudget?.accommodation || '-',
-          food: raw.dailyBudget?.food || '-',
-          transport: raw.dailyBudget?.transport || '-',
-          activity: raw.dailyBudget?.activity || '-',
-        },
-      },
-    };
-  }
-
-  const destinationData = normalizeDestination(destinationRaw);
-
-
-  // 이하 렌더링은 destinationData를 기준으로 진행
-
-  console.log('destinationData:', destinationData);
   return (
     <div className="min-h-screen">
       <TravelHeader />
+      
       {/* Hero Section */}
       <section className="relative h-[60vh] overflow-hidden">
         <img 
-          src={destinationData.image} 
-          alt={destinationData.name}
+          src={destination.image} 
+          alt={destination.name}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40 flex items-end">
@@ -135,47 +71,165 @@ const DestinationDetail = () => {
             </Link>
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{destinationData.name}</h1>
-                <p className="text-xl text-white/90 mb-4">{destinationData.country}</p>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{destination.name}</h1>
+                <p className="text-xl text-white/90 mb-4">{destination.country}</p>
                 <div className="flex items-center space-x-4 text-white/80">
                   <div className="flex items-center">
                     <Star className="w-5 h-5 mr-1 fill-yellow-400 text-yellow-400" />
-                    <span>{destinationData.rating}</span>
+                    <span>{destination.rating}</span>
                   </div>
                   <span>•</span>
-                  <span>{destinationData.reviewCount} 리뷰</span>
+                  <span>{destination.reviewCount} 리뷰</span>
                   <span>•</span>
-                  <span>{destinationData.region}</span>
+                  <span>{destination.region}</span>
                 </div>
               </div>
               <div className="flex-shrink-0 ml-4">
-                <ShareButtons title={destinationData.name} />
+                <ShareButtons title={destination.name} />
               </div>
             </div>
           </div>
         </div>
       </section>
-      {/* 본문: 여행지 상세 정보 */}
-      <section className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-4">여행지 소개</h2>
-        <p className="mb-6">{destinationData.description}</p>
-        {destinationData.detailInfo.tips && destinationData.detailInfo.tips.length > 0 && (
-          <>
-            <h3 className="text-xl font-semibold mb-2">여행 팁</h3>
-            <ul className="list-disc list-inside mb-6">
-              {destinationData.detailInfo.tips.map((tip, idx) => (
-                <li key={idx}>{tip}</li>
-              ))}
-            </ul>
-          </>
-        )}
-        <h3 className="text-xl font-semibold mb-2">예상 경비</h3>
-        <ul>
-          <li>숙박: {destinationData.detailInfo.dailyBudget.accommodation}</li>
-          <li>음식: {destinationData.detailInfo.dailyBudget.food}</li>
-          <li>교통: {destinationData.detailInfo.dailyBudget.transport}</li>
-        </ul>
+
+      {/* Quick Info */}
+      <section className="py-8 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardContent className="p-4 text-center">
+                <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
+                <h3 className="font-semibold mb-1">추천 기간</h3>
+                <p className="text-sm text-muted-foreground">{destination.duration}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <DollarSign className="w-8 h-8 mx-auto mb-2 text-primary" />
+                <h3 className="font-semibold mb-1">예산 수준</h3>
+                <p className="text-sm text-muted-foreground">{destination.budget}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
+                <h3 className="font-semibold mb-1">최적 시기</h3>
+                <p className="text-sm text-muted-foreground">{destination.bestTime}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <MapPin className="w-8 h-8 mx-auto mb-2 text-primary" />
+                <h3 className="font-semibold mb-1">교통</h3>
+                <p className="text-sm text-muted-foreground">항공 1.5시간</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </section>
+
+      {/* Main Content */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Content */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Description */}
+              <div>
+                <h2 className="text-2xl font-bold mb-4">여행지 소개</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">{destination.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {destination.tags.map((tag, idx) => (
+                    <Badge key={idx} variant="secondary">#{tag}</Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Attractions */}
+              <div>
+                <h2 className="text-2xl font-bold mb-4">주요 명소</h2>
+                <div className="space-y-4">
+                  {destination.detailInfo.attractions.map((attraction, idx) => (
+                    <Card key={idx}>
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="text-lg font-semibold">{attraction.name}</h3>
+                          <div className="flex items-center">
+                            <Star className="w-4 h-4 mr-1 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm">{attraction.rating}</span>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground mb-3">{attraction.description}</p>
+                        <Badge variant="outline" className="text-xs">소요시간: {attraction.time}</Badge>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* Travel Tips */}
+              <div>
+                <h2 className="text-2xl font-bold mb-4">여행 팁</h2>
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="space-y-3">
+                      {destination.detailInfo.tips.map((tip, idx) => (
+                        <div key={idx} className="flex items-start">
+                          <Info className="w-4 h-4 mr-3 mt-1 text-primary flex-shrink-0" />
+                          <p className="text-sm">{tip}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Right Sidebar */}
+            <div className="space-y-6">
+              {/* Budget Guide */}
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">1일 예산 가이드</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm">숙박</span>
+                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.accommodation}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">식비</span>
+                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.food}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">교통</span>
+                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.transport}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">액티비티</span>
+                      <span className="text-sm font-medium">{destination.detailInfo.dailyBudget.activity}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Book CTA */}
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <h3 className="text-lg font-semibold mb-2">지금 예약하고 떠나세요!</h3>
+                  <p className="text-sm text-muted-foreground mb-4">최저가 항공권과 숙박을 한번에</p>
+                  <Button variant="cta" size="lg" className="w-full mb-2">
+                    항공권 검색
+                  </Button>
+                  <Button variant="outline" size="lg" className="w-full">
+                    숙박 검색
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <TravelFooter />
     </div>
   );
