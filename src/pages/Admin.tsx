@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Plus, X, Tag, Settings } from "lucide-react";
+import { ArrowLeft, Plus, X, Tag, Settings, Database } from "lucide-react";
 import { Link } from "react-router-dom";
 import TravelHeader from "@/components/TravelHeader";
 import TravelFooter from "@/components/TravelFooter";
@@ -13,11 +13,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useBlog } from "@/contexts/BlogContext";
+import { DataTable } from "@/components/admin/DataTable";
 
 const Admin = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("destinations");
-  const { addDestination, addGuide, addStory, addBenefit } = useBlog();
+  const { 
+    destinations, 
+    guides, 
+    stories, 
+    benefits,
+    addDestination, 
+    addGuide, 
+    addStory, 
+    addBenefit,
+    updateDestination,
+    updateGuide,
+    updateStory,
+    updateBenefit,
+    deleteDestination,
+    deleteGuide,
+    deleteStory,
+    deleteBenefit
+  } = useBlog();
   
   // Tags management
   const [tags, setTags] = useState({
@@ -156,12 +174,13 @@ const Admin = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="destinations">여행지</TabsTrigger>
             <TabsTrigger value="guides">가이드</TabsTrigger>
             <TabsTrigger value="stories">이야기</TabsTrigger>
             <TabsTrigger value="benefits">혜택</TabsTrigger>
             <TabsTrigger value="tags">태그 관리</TabsTrigger>
+            <TabsTrigger value="manage">데이터 관리</TabsTrigger>
           </TabsList>
 
           {/* Destinations Form */}
@@ -533,6 +552,66 @@ const Admin = () => {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </TabsContent>
+
+          {/* Data Management Tab */}
+          <TabsContent value="manage">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="w-5 h-5" />
+                    데이터 관리
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Tabs defaultValue="destinations-list" className="space-y-4">
+                    <TabsList className="grid w-full grid-cols-4">
+                      <TabsTrigger value="destinations-list">여행지 관리</TabsTrigger>
+                      <TabsTrigger value="guides-list">가이드 관리</TabsTrigger>
+                      <TabsTrigger value="stories-list">이야기 관리</TabsTrigger>
+                      <TabsTrigger value="benefits-list">혜택 관리</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="destinations-list">
+                      <DataTable
+                        data={destinations}
+                        type="destinations"
+                        onUpdate={updateDestination}
+                        onDelete={deleteDestination}
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="guides-list">
+                      <DataTable
+                        data={guides}
+                        type="guides"
+                        onUpdate={updateGuide}
+                        onDelete={deleteGuide}
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="stories-list">
+                      <DataTable
+                        data={stories}
+                        type="stories"
+                        onUpdate={updateStory}
+                        onDelete={deleteStory}
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="benefits-list">
+                      <DataTable
+                        data={benefits}
+                        type="benefits"
+                        onUpdate={updateBenefit}
+                        onDelete={deleteBenefit}
+                      />
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
         </Tabs>

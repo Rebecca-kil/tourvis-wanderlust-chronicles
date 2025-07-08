@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface Destination {
@@ -73,6 +74,14 @@ interface BlogContextType {
   addGuide: (guide: Omit<Guide, 'id' | 'likes'>) => void;
   addStory: (story: Omit<Story, 'id' | 'likes' | 'comments'>) => void;
   addBenefit: (benefit: Omit<Benefit, 'id' | 'likes'>) => void;
+  updateDestination: (id: string, destination: Partial<Destination>) => void;
+  updateGuide: (id: string, guide: Partial<Guide>) => void;
+  updateStory: (id: string, story: Partial<Story>) => void;
+  updateBenefit: (id: string, benefit: Partial<Benefit>) => void;
+  deleteDestination: (id: string) => void;
+  deleteGuide: (id: string) => void;
+  deleteStory: (id: string) => void;
+  deleteBenefit: (id: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -228,6 +237,48 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setBenefits(prev => [...prev, newBenefit]);
   };
 
+  // Update functions
+  const updateDestination = (id: string, updatedData: Partial<Destination>) => {
+    setDestinations(prev => prev.map(item => 
+      item.id === id ? { ...item, ...updatedData } : item
+    ));
+  };
+
+  const updateGuide = (id: string, updatedData: Partial<Guide>) => {
+    setGuides(prev => prev.map(item => 
+      item.id === id ? { ...item, ...updatedData } : item
+    ));
+  };
+
+  const updateStory = (id: string, updatedData: Partial<Story>) => {
+    setStories(prev => prev.map(item => 
+      item.id === id ? { ...item, ...updatedData } : item
+    ));
+  };
+
+  const updateBenefit = (id: string, updatedData: Partial<Benefit>) => {
+    setBenefits(prev => prev.map(item => 
+      item.id === id ? { ...item, ...updatedData } : item
+    ));
+  };
+
+  // Delete functions
+  const deleteDestination = (id: string) => {
+    setDestinations(prev => prev.filter(item => item.id !== id));
+  };
+
+  const deleteGuide = (id: string) => {
+    setGuides(prev => prev.filter(item => item.id !== id));
+  };
+
+  const deleteStory = (id: string) => {
+    setStories(prev => prev.filter(item => item.id !== id));
+  };
+
+  const deleteBenefit = (id: string) => {
+    setBenefits(prev => prev.filter(item => item.id !== id));
+  };
+
   return (
     <BlogContext.Provider value={{
       destinations,
@@ -237,7 +288,15 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
       addDestination,
       addGuide,
       addStory,
-      addBenefit
+      addBenefit,
+      updateDestination,
+      updateGuide,
+      updateStory,
+      updateBenefit,
+      deleteDestination,
+      deleteGuide,
+      deleteStory,
+      deleteBenefit
     }}>
       {children}
     </BlogContext.Provider>
