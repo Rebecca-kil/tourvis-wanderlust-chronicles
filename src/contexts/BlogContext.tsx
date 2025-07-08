@@ -18,6 +18,19 @@ export interface Destination {
   };
 }
 
+export interface BlogContextType {
+  destinations: Destination[];
+  setDestinations: React.Dispatch<React.SetStateAction<Destination[]>>;
+  guides: Guide[];
+  stories: Story[];
+  benefits: Benefit[];
+  addDestination: (destination: Omit<Destination, 'id'>) => void;
+  addGuide: (guide: Omit<Guide, 'id'>) => void;
+  addStory: (story: Omit<Story, 'id'>) => void;
+  addBenefit: (benefit: Omit<Benefit, 'id'>) => void;
+}
+
+
 export interface Guide {
   id: string;
   title: string;
@@ -64,16 +77,7 @@ export interface Benefit {
   stock?: string;
 }
 
-interface BlogContextType {
-  destinations: Destination[];
-  guides: Guide[];
-  stories: Story[];
-  benefits: Benefit[];
-  addDestination: (destination: Omit<Destination, 'id'>) => void;
-  addGuide: (guide: Omit<Guide, 'id' | 'likes'>) => void;
-  addStory: (story: Omit<Story, 'id' | 'likes' | 'comments'>) => void;
-  addBenefit: (benefit: Omit<Benefit, 'id' | 'likes'>) => void;
-}
+
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
 
@@ -192,45 +196,30 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [benefits]);
 
+  // 여행지 추가 함수
   const addDestination = (destination: Omit<Destination, 'id'>) => {
-    const newDestination = {
-      ...destination,
-      id: Date.now().toString()
-    };
-    setDestinations(prev => [...prev, newDestination]);
+    setDestinations(prev => [...prev, { ...destination, id: Date.now().toString() }]);
   };
 
-  const addGuide = (guide: Omit<Guide, 'id' | 'likes'>) => {
-    const newGuide = {
-      ...guide,
-      id: Date.now().toString(),
-      likes: 0
-    };
-    setGuides(prev => [...prev, newGuide]);
+  // 가이드 추가 함수
+  const addGuide = (guide: Omit<Guide, 'id'>) => {
+    setGuides(prev => [...prev, { ...guide, id: Date.now().toString() }]);
   };
 
-  const addStory = (story: Omit<Story, 'id' | 'likes' | 'comments'>) => {
-    const newStory = {
-      ...story,
-      id: Date.now().toString(),
-      likes: 0,
-      comments: 0
-    };
-    setStories(prev => [...prev, newStory]);
+  // 여행 이야기 추가 함수
+  const addStory = (story: Omit<Story, 'id'>) => {
+    setStories(prev => [...prev, { ...story, id: Date.now().toString() }]);
   };
 
-  const addBenefit = (benefit: Omit<Benefit, 'id' | 'likes'>) => {
-    const newBenefit = {
-      ...benefit,
-      id: Date.now().toString(),
-      likes: 0
-    };
-    setBenefits(prev => [...prev, newBenefit]);
+  // 혜택 추가 함수
+  const addBenefit = (benefit: Omit<Benefit, 'id'>) => {
+    setBenefits(prev => [...prev, { ...benefit, id: Date.now().toString() }]);
   };
 
   return (
     <BlogContext.Provider value={{
       destinations,
+      setDestinations, // 여행지 목록 직접 수정 가능 (수정/삭제 등)
       guides,
       stories,
       benefits,
@@ -249,5 +238,5 @@ export const useBlog = () => {
   if (context === undefined) {
     throw new Error('useBlog must be used within a BlogProvider');
   }
-  return context;
+  return context as BlogContextType;
 };
