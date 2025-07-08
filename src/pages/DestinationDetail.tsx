@@ -56,6 +56,7 @@ const DestinationDetail = () => {
   */
 
   // 실제 context 데이터 구조를 mock data와 통일 (필드가 없을 경우 fallback 값 적용)
+  const { destinations } = useBlog();
   const destinationRaw = destinations.find(
     (dest) => String(dest.id) === String(id)
   );
