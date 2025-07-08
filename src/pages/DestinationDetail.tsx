@@ -151,7 +151,7 @@ const DestinationDetail = () => {
                 </div>
               </div>
               <div className="flex-shrink-0 ml-4">
-                <ShareButtons title={destination.name} />
+                <ShareButtons title={destinationData.name} />
               </div>
             </div>
           </div>
@@ -166,28 +166,28 @@ const DestinationDetail = () => {
               <CardContent className="p-4 text-center">
                 <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">추천 기간</h3>
-                <p className="text-sm text-muted-foreground">{destination.duration}</p>
+                <p className="text-sm text-muted-foreground">{destinationData.duration}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <DollarSign className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">예산 수준</h3>
-                <p className="text-sm text-muted-foreground">{destination.budget}</p>
+                <p className="text-sm text-muted-foreground">{destinationData.budget}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">최적 시기</h3>
-                <p className="text-sm text-muted-foreground">{destination.bestTime}</p>
+                <p className="text-sm text-muted-foreground">{destinationData.bestTime}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <MapPin className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <h3 className="font-semibold mb-1">교통</h3>
-                <p className="text-sm text-muted-foreground">항공 1.5시간</p>
+                <p className="text-sm text-muted-foreground">{destinationData.detailInfo.transportation || '항공 1.5시간'}</p>
               </CardContent>
             </Card>
           </div>
