@@ -77,7 +77,41 @@ const DestinationDetail = () => {
   }
 
   // 데이터 구조 통일: 모든 렌더링은 destinationData 객체만 사용
-  const destinationData = {
+  function normalizeDestination(raw) {
+    return {
+      id: raw.id,
+      name: raw.title || '-',
+      country: raw.city || '-',
+      region: raw.tags?.[0] || '-',
+      rating: 4.8,
+      reviewCount: 0,
+      duration: raw.duration || '-',
+      budget: raw.dailyBudget
+        ? `${raw.dailyBudget.accommodation || ''} / ${raw.dailyBudget.food || ''} / ${raw.dailyBudget.transport || ''}`
+        : '-',
+      tags: raw.tags || [],
+      image: raw.image || '',
+      description: raw.description || '',
+      highlights: raw.highlights || [],
+      bestTime: raw.quickInfo || '-',
+      detailInfo: {
+        transportation: raw.transportation || '-',
+        accommodation: raw.accommodation || '-',
+        currency: raw.currency || '-',
+        language: raw.language || '-',
+        attractions: raw.attractions || [],
+        tips: raw.travelTips || [],
+        dailyBudget: {
+          accommodation: raw.dailyBudget?.accommodation || '-',
+          food: raw.dailyBudget?.food || '-',
+          transport: raw.dailyBudget?.transport || '-',
+          activity: raw.dailyBudget?.activity || '-',
+        },
+      },
+    };
+  }
+
+  const destinationData = normalizeDestination(destinationRaw);
     id: destinationRaw.id,
     name: destinationRaw.title || '-', // name → title
     country: destinationRaw.city || '-', // country → city
