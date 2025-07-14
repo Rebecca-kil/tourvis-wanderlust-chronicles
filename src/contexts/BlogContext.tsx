@@ -260,7 +260,11 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
       likes: 0,
       comments: 0
     };
-    setStories(prev => [...prev, newStory]);
+    setStories(prev => {
+      const updated = [...prev, newStory];
+      localStorage.setItem('blogStories', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const addBenefit = (benefit: Omit<Benefit, 'id' | 'likes'>) => {
