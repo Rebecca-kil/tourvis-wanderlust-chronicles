@@ -14,7 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blog_guid: {
+        Row: {
+          average_cost: number | null
+          best_season: string | null
+          best_tip: string | null
+          budget_level: string | null
+          country: string | null
+          daily_budget: Json | null
+          description: string | null
+          duration_recommended: string | null
+          id: number
+          image_url: string | null
+          main_attractions: Json | null
+          name: string | null
+          region: string | null
+          sub_description: string | null
+          tags: string[] | null
+        }
+        Insert: {
+          average_cost?: number | null
+          best_season?: string | null
+          best_tip?: string | null
+          budget_level?: string | null
+          country?: string | null
+          daily_budget?: Json | null
+          description?: string | null
+          duration_recommended?: string | null
+          id?: number
+          image_url?: string | null
+          main_attractions?: Json | null
+          name?: string | null
+          region?: string | null
+          sub_description?: string | null
+          tags?: string[] | null
+        }
+        Update: {
+          average_cost?: number | null
+          best_season?: string | null
+          best_tip?: string | null
+          budget_level?: string | null
+          country?: string | null
+          daily_budget?: Json | null
+          description?: string | null
+          duration_recommended?: string | null
+          id?: number
+          image_url?: string | null
+          main_attractions?: Json | null
+          name?: string | null
+          region?: string | null
+          sub_description?: string | null
+          tags?: string[] | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
