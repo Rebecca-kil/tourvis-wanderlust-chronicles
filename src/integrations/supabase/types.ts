@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       blog_guid: {
         Row: {
+          accommodation_booking_url: string | null
           average_cost: number | null
           best_season: string | null
           best_tip: string | null
@@ -24,6 +25,7 @@ export type Database = {
           daily_budget: Json | null
           description: string | null
           duration_recommended: string | null
+          flight_booking_url: string | null
           id: number
           image_url: string | null
           main_attractions: Json | null
@@ -31,8 +33,10 @@ export type Database = {
           region: string | null
           sub_description: string | null
           tags: string[] | null
+          tour_booking_url: string | null
         }
         Insert: {
+          accommodation_booking_url?: string | null
           average_cost?: number | null
           best_season?: string | null
           best_tip?: string | null
@@ -41,6 +45,7 @@ export type Database = {
           daily_budget?: Json | null
           description?: string | null
           duration_recommended?: string | null
+          flight_booking_url?: string | null
           id?: number
           image_url?: string | null
           main_attractions?: Json | null
@@ -48,8 +53,10 @@ export type Database = {
           region?: string | null
           sub_description?: string | null
           tags?: string[] | null
+          tour_booking_url?: string | null
         }
         Update: {
+          accommodation_booking_url?: string | null
           average_cost?: number | null
           best_season?: string | null
           best_tip?: string | null
@@ -58,6 +65,7 @@ export type Database = {
           daily_budget?: Json | null
           description?: string | null
           duration_recommended?: string | null
+          flight_booking_url?: string | null
           id?: number
           image_url?: string | null
           main_attractions?: Json | null
@@ -65,6 +73,7 @@ export type Database = {
           region?: string | null
           sub_description?: string | null
           tags?: string[] | null
+          tour_booking_url?: string | null
         }
         Relationships: []
       }

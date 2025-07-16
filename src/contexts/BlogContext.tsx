@@ -19,6 +19,9 @@ export interface Destination {
   budgetLevel?: string;
   bestTime?: string;
   transportation?: string;
+  flightBookingUrl?: string;
+  accommodationBookingUrl?: string;
+  tourBookingUrl?: string;
   attractions?: Array<{
     name: string;
     description: string;

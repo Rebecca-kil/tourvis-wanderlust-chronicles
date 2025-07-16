@@ -249,9 +249,9 @@ const Admin = () => {
       
       if (accommodation || food || transport) {
         dailyBudget = {
-          accommodation: accommodation || "",
-          food: food || "",
-          transport: transport || ""
+          accommodation: accommodation ? `${Number(accommodation).toLocaleString()}원` : "",
+          food: food ? `${Number(food).toLocaleString()}원` : "",
+          transport: transport ? `${Number(transport).toLocaleString()}원` : ""
         };
       }
 
@@ -266,6 +266,9 @@ const Admin = () => {
         budgetLevel: formData.get('dest-budget-level') as string || undefined,
         bestTime: formData.get('dest-best-time') as string || undefined,
         transportation: formData.get('dest-transportation') as string || undefined,
+        flightBookingUrl: formData.get('dest-flight-url') as string || undefined,
+        accommodationBookingUrl: formData.get('dest-accommodation-url') as string || undefined,
+        tourBookingUrl: formData.get('dest-tour-url') as string || undefined,
         travelTips: travelTips.length > 0 ? travelTips : undefined,
         attractions: attractions.length > 0 ? attractions : undefined,
         dailyBudget,
@@ -460,8 +463,17 @@ const Admin = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="dest-price">가격 (원)</Label>
-                      <Input id="dest-price" name="dest-price" type="number" placeholder="500000" />
+                      <Label htmlFor="dest-price">가격</Label>
+                      <div className="relative">
+                        <Input 
+                          id="dest-price" 
+                          name="dest-price" 
+                          type="number" 
+                          placeholder="500000"
+                          className="pr-8"
+                        />
+                        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">원</span>
+                      </div>
                     </div>
                     <div>
                       <Label htmlFor="dest-duration">소요 시간</Label>
@@ -495,21 +507,67 @@ const Admin = () => {
                     </div>
                   </div>
 
+                  {/* Booking URLs Section */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold">예약 링크</Label>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div>
+                        <Label htmlFor="dest-flight-url">항공권 검색 URL</Label>
+                        <Input id="dest-flight-url" name="dest-flight-url" type="url" placeholder="https://www.kayak.com/flights" />
+                      </div>
+                      <div>
+                        <Label htmlFor="dest-accommodation-url">숙박 검색 URL</Label>
+                        <Input id="dest-accommodation-url" name="dest-accommodation-url" type="url" placeholder="https://www.booking.com" />
+                      </div>
+                      <div>
+                        <Label htmlFor="dest-tour-url">투어티켓 검색 URL</Label>
+                        <Input id="dest-tour-url" name="dest-tour-url" type="url" placeholder="https://www.viator.com" />
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Daily Budget Section */}
                   <div className="space-y-4">
                     <Label className="text-lg font-semibold">일일 예산</Label>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="dest-accommodation">숙박비</Label>
-                        <Input id="dest-accommodation" name="dest-accommodation" placeholder="50,000원" />
+                        <div className="relative">
+                          <Input 
+                            id="dest-accommodation" 
+                            name="dest-accommodation" 
+                            type="number" 
+                            placeholder="50000"
+                            className="pr-8"
+                          />
+                          <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">원</span>
+                        </div>
                       </div>
                       <div>
                         <Label htmlFor="dest-food">식비</Label>
-                        <Input id="dest-food" name="dest-food" placeholder="30,000원" />
+                        <div className="relative">
+                          <Input 
+                            id="dest-food" 
+                            name="dest-food" 
+                            type="number" 
+                            placeholder="30000"
+                            className="pr-8"
+                          />
+                          <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">원</span>
+                        </div>
                       </div>
                       <div>
                         <Label htmlFor="dest-transport">교통비</Label>
-                        <Input id="dest-transport" name="dest-transport" placeholder="20,000원" />
+                        <div className="relative">
+                          <Input 
+                            id="dest-transport" 
+                            name="dest-transport" 
+                            type="number" 
+                            placeholder="20000"
+                            className="pr-8"
+                          />
+                          <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">원</span>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -209,12 +209,50 @@ const DestinationDetail = () => {
                 <CardContent className="p-6 text-center">
                   <h3 className="text-lg font-semibold mb-2">지금 예약하고 떠나세요!</h3>
                   <p className="text-sm text-muted-foreground mb-4">최저가 항공권과 숙박을 한번에</p>
-                  <Button variant="cta" size="lg" className="w-full mb-2">
-                    항공권 검색
-                  </Button>
-                  <Button variant="outline" size="lg" className="w-full">
-                    숙박 검색
-                  </Button>
+                  <div className="space-y-2">
+                    {destination.flightBookingUrl ? (
+                      <Button 
+                        variant="cta" 
+                        size="lg" 
+                        className="w-full"
+                        onClick={() => window.open(destination.flightBookingUrl, '_blank')}
+                      >
+                        항공권 검색
+                      </Button>
+                    ) : (
+                      <Button variant="cta" size="lg" className="w-full">
+                        항공권 검색
+                      </Button>
+                    )}
+                    {destination.accommodationBookingUrl ? (
+                      <Button 
+                        variant="outline" 
+                        size="lg" 
+                        className="w-full"
+                        onClick={() => window.open(destination.accommodationBookingUrl, '_blank')}
+                      >
+                        숙박 검색
+                      </Button>
+                    ) : (
+                      <Button variant="outline" size="lg" className="w-full">
+                        숙박 검색
+                      </Button>
+                    )}
+                    {destination.tourBookingUrl ? (
+                      <Button 
+                        variant="secondary" 
+                        size="lg" 
+                        className="w-full"
+                        onClick={() => window.open(destination.tourBookingUrl, '_blank')}
+                      >
+                        투어티켓 검색
+                      </Button>
+                    ) : (
+                      <Button variant="secondary" size="lg" className="w-full">
+                        투어티켓 검색
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </div>
