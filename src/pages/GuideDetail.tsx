@@ -16,7 +16,11 @@ const GuideDetail = () => {
   const { guides } = useBlog();
   const [isLiked, setIsLiked] = useState(false);
 
+  console.log('Guide ID from URL:', id);
+  console.log('All guides:', guides);
+  
   const guide = guides.find(g => g.id === id);
+  console.log('Found guide:', guide);
 
   if (!guide) {
     return (

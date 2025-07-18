@@ -259,6 +259,9 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const savedStories = localStorage.getItem('blogStories');
     const savedBenefits = localStorage.getItem('blogBenefits');
 
+    console.log('Loading from localStorage:');
+    console.log('savedGuides:', savedGuides);
+
     setDestinations(savedDestinations ? JSON.parse(savedDestinations) : defaultDestinations);
     setGuides(savedGuides ? JSON.parse(savedGuides) : defaultGuides);
     setStories(savedStories ? JSON.parse(savedStories) : defaultStories);
