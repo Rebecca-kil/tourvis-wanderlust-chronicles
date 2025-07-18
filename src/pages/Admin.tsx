@@ -113,6 +113,16 @@ const Admin = () => {
   const [culturalTips, setCulturalTips] = useState<string[]>([]);
   const [safeTips, setSafeTips] = useState<string[]>([]);
   const [moneyTips, setMoneyTips] = useState<string[]>([]);
+  const [ticketComparisons, setTicketComparisons] = useState<{
+    type: string;
+    options: {
+      name: string;
+      price: string;
+      features: string[];
+      pros: string[];
+      cons: string[];
+    }[];
+  }[]>([]);
   const [newLocalTip, setNewLocalTip] = useState("");
   const [newCulturalTip, setNewCulturalTip] = useState("");
   const [newSafeTip, setNewSafeTip] = useState("");

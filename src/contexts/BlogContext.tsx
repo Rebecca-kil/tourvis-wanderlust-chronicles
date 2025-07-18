@@ -81,6 +81,16 @@ export interface Guide {
   culturalTips?: string[];
   safeTips?: string[];
   moneyTips?: string[];
+  ticketComparisons?: {
+    type: string;
+    options: {
+      name: string;
+      price: string;
+      features: string[];
+      pros: string[];
+      cons: string[];
+    }[];
+  }[];
   
   // FAQ 카테고리 전용 필드
   faqs?: Array<{
