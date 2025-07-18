@@ -1441,6 +1441,159 @@ const Admin = () => {
                           </div>
                         </div>
                       </div>
+                      
+                      {/* Ticket Comparisons Section */}
+                      <div className="space-y-4 col-span-2">
+                        <Label className="text-lg font-semibold">티켓/상품 비교</Label>
+                        <div className="space-y-4">
+                          {ticketComparisons.map((comparison, idx) => (
+                            <Card key={idx} className="p-4">
+                              <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                  <Input
+                                    value={comparison.type}
+                                    onChange={(e) => {
+                                      const newComparisons = [...ticketComparisons];
+                                      newComparisons[idx].type = e.target.value;
+                                      setTicketComparisons(newComparisons);
+                                    }}
+                                    placeholder="비교 유형 (예: 교통패스, 입장권 등)"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => {
+                                      const newComparisons = ticketComparisons.filter((_, i) => i !== idx);
+                                      setTicketComparisons(newComparisons);
+                                    }}
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                                
+                                <div className="space-y-3">
+                                  {comparison.options.map((option, optIdx) => (
+                                    <div key={optIdx} className="border border-border rounded p-3 space-y-2">
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <Input
+                                          value={option.name}
+                                          onChange={(e) => {
+                                            const newComparisons = [...ticketComparisons];
+                                            newComparisons[idx].options[optIdx].name = e.target.value;
+                                            setTicketComparisons(newComparisons);
+                                          }}
+                                          placeholder="상품명"
+                                        />
+                                        <Input
+                                          value={option.price}
+                                          onChange={(e) => {
+                                            const newComparisons = [...ticketComparisons];
+                                            newComparisons[idx].options[optIdx].price = e.target.value;
+                                            setTicketComparisons(newComparisons);
+                                          }}
+                                          placeholder="가격"
+                                        />
+                                      </div>
+                                      
+                                      <div>
+                                        <Label className="text-sm">특징 (쉼표로 구분)</Label>
+                                        <Input
+                                          value={option.features.join(', ')}
+                                          onChange={(e) => {
+                                            const newComparisons = [...ticketComparisons];
+                                            newComparisons[idx].options[optIdx].features = e.target.value.split(',').map(s => s.trim()).filter(s => s);
+                                            setTicketComparisons(newComparisons);
+                                          }}
+                                          placeholder="특징들을 쉼표로 구분하여 입력"
+                                        />
+                                      </div>
+                                      
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                          <Label className="text-sm text-green-600">장점 (쉼표로 구분)</Label>
+                                          <Input
+                                            value={option.pros.join(', ')}
+                                            onChange={(e) => {
+                                              const newComparisons = [...ticketComparisons];
+                                              newComparisons[idx].options[optIdx].pros = e.target.value.split(',').map(s => s.trim()).filter(s => s);
+                                              setTicketComparisons(newComparisons);
+                                            }}
+                                            placeholder="장점들을 쉼표로 구분하여 입력"
+                                          />
+                                        </div>
+                                        <div>
+                                          <Label className="text-sm text-red-600">단점 (쉼표로 구분)</Label>
+                                          <Input
+                                            value={option.cons.join(', ')}
+                                            onChange={(e) => {
+                                              const newComparisons = [...ticketComparisons];
+                                              newComparisons[idx].options[optIdx].cons = e.target.value.split(',').map(s => s.trim()).filter(s => s);
+                                              setTicketComparisons(newComparisons);
+                                            }}
+                                            placeholder="단점들을 쉼표로 구분하여 입력"
+                                          />
+                                        </div>
+                                      </div>
+                                      
+                                      <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={() => {
+                                          const newComparisons = [...ticketComparisons];
+                                          newComparisons[idx].options = newComparisons[idx].options.filter((_, i) => i !== optIdx);
+                                          setTicketComparisons(newComparisons);
+                                        }}
+                                      >
+                                        옵션 삭제
+                                      </Button>
+                                    </div>
+                                  ))}
+                                  
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => {
+                                      const newComparisons = [...ticketComparisons];
+                                      newComparisons[idx].options.push({
+                                        name: '',
+                                        price: '',
+                                        features: [],
+                                        pros: [],
+                                        cons: []
+                                      });
+                                      setTicketComparisons(newComparisons);
+                                    }}
+                                  >
+                                    옵션 추가
+                                  </Button>
+                                </div>
+                              </div>
+                            </Card>
+                          ))}
+                          
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setTicketComparisons([...ticketComparisons, {
+                                type: '',
+                                options: [{
+                                  name: '',
+                                  price: '',
+                                  features: [],
+                                  pros: [],
+                                  cons: []
+                                }]
+                              }]);
+                            }}
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            비교 항목 추가
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   )}
 
