@@ -84,7 +84,8 @@ const GuideDetail = () => {
           </div>
 
           <div className="prose max-w-none">
-            {guide.content.map((section, idx) => (
+            {/* 기본 컨텐츠 섹션 */}
+            {guide.content && guide.content.length > 0 && guide.content.map((section, idx) => (
               <Card key={idx} className="mb-6">
                 <CardContent className="p-6">
                   <h2 className="text-xl font-semibold mb-3">{section.title}</h2>

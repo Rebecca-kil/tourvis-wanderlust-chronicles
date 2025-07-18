@@ -205,6 +205,37 @@ const Guides = () => {
                     <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
                       {guide.description}
                     </p>
+
+                    {/* 카테고리별 미리보기 정보 */}
+                    {guide.category === '교통' && guide.transportType && (
+                      <div className="mb-3 p-2 bg-muted/50 rounded-md">
+                        <span className="text-xs font-medium text-primary">교통수단: {guide.transportType}</span>
+                      </div>
+                    )}
+                    
+                    {guide.category === '일정' && guide.totalDuration && (
+                      <div className="mb-3 p-2 bg-muted/50 rounded-md">
+                        <span className="text-xs font-medium text-primary">총 기간: {guide.totalDuration}</span>
+                      </div>
+                    )}
+                    
+                    {guide.category === '준비물' && guide.packingList && guide.packingList.length > 0 && (
+                      <div className="mb-3 p-2 bg-muted/50 rounded-md">
+                        <span className="text-xs font-medium text-primary">준비물: {guide.packingList.slice(0, 2).map(item => item.category).join(', ')}{guide.packingList.length > 2 ? ' 외' : ''}</span>
+                      </div>
+                    )}
+                    
+                    {guide.category === '팁' && guide.ticketComparisons && guide.ticketComparisons.length > 0 && (
+                      <div className="mb-3 p-2 bg-muted/50 rounded-md">
+                        <span className="text-xs font-medium text-primary">비교 상품: {guide.ticketComparisons.length}개</span>
+                      </div>
+                    )}
+                    
+                    {guide.category === 'FAQ' && guide.faqs && guide.faqs.length > 0 && (
+                      <div className="mb-3 p-2 bg-muted/50 rounded-md">
+                        <span className="text-xs font-medium text-primary">FAQ: {guide.faqs.length}개 질문</span>
+                      </div>
+                    )}
                     
                     <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                       <span className="text-xs">by {guide.author}</span>
