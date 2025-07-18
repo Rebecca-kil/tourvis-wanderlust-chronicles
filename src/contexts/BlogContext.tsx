@@ -47,6 +47,47 @@ export interface Guide {
   requirements?: string[];
   whatYouWillLearn?: string[];
   publishDate?: string;
+  
+  // 교통 카테고리 전용 필드
+  transportType?: string; // 항공, 기차, 버스, 렌터카 등
+  bookingTips?: string[];
+  priceRange?: string;
+  reservationPeriod?: string;
+  
+  // 일정 카테고리 전용 필드
+  itineraryDays?: Array<{
+    day: number;
+    title: string;
+    activities: string[];
+    budget?: string;
+    tips?: string[];
+  }>;
+  totalDuration?: string;
+  budgetEstimate?: string;
+  
+  // 준비물 카테고리 전용 필드
+  packingList?: Array<{
+    category: string;
+    items: string[];
+    optional?: boolean;
+  }>;
+  seasonalItems?: Array<{
+    season: string;
+    items: string[];
+  }>;
+  
+  // 팁 카테고리 전용 필드
+  localTips?: string[];
+  culturalTips?: string[];
+  safeTips?: string[];
+  moneyTips?: string[];
+  
+  // FAQ 카테고리 전용 필드
+  faqs?: Array<{
+    question: string;
+    answer: string;
+    category?: string;
+  }>;
 }
 
 export interface Story {

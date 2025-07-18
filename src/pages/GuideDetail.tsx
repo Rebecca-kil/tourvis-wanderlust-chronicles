@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useBlog } from "@/contexts/BlogContext";
+import CategorySpecificView from "@/components/guide/CategorySpecificView";
 
 const GuideDetail = () => {
   const { id } = useParams();
@@ -91,6 +92,9 @@ const GuideDetail = () => {
                 </CardContent>
               </Card>
             ))}
+
+            {/* 카테고리별 특화 필드 렌더링 */}
+            <CategorySpecificView guide={guide} />
 
             {guide.tips && guide.tips.length > 0 && (
               <Card>

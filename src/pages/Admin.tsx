@@ -91,6 +91,37 @@ const Admin = () => {
   const [restrictions, setRestrictions] = useState<string[]>([]);
   const [newRestriction, setNewRestriction] = useState("");
 
+  // 가이드 카테고리별 state들
+  const [selectedGuideCategory, setSelectedGuideCategory] = useState("교통");
+  
+  // 교통 가이드 관련 state
+  const [transportBookingTips, setTransportBookingTips] = useState<string[]>([]);
+  const [newTransportTip, setNewTransportTip] = useState("");
+  
+  // 일정 가이드 관련 state
+  const [itineraryDays, setItineraryDays] = useState<Array<{day: number; title: string; activities: string[]; budget?: string; tips?: string[]}>>([]);
+  const [newItineraryDay, setNewItineraryDay] = useState({day: 1, title: "", activities: [""], budget: "", tips: [""]});
+  
+  // 준비물 가이드 관련 state
+  const [packingList, setPackingList] = useState<Array<{category: string; items: string[]; optional?: boolean}>>([]);
+  const [seasonalItems, setSeasonalItems] = useState<Array<{season: string; items: string[]}>>([]);
+  const [newPackingCategory, setNewPackingCategory] = useState({category: "", items: [""], optional: false});
+  const [newSeasonalItem, setNewSeasonalItem] = useState({season: "", items: [""]});
+  
+  // 팁 가이드 관련 state
+  const [localTips, setLocalTips] = useState<string[]>([]);
+  const [culturalTips, setCulturalTips] = useState<string[]>([]);
+  const [safeTips, setSafeTips] = useState<string[]>([]);
+  const [moneyTips, setMoneyTips] = useState<string[]>([]);
+  const [newLocalTip, setNewLocalTip] = useState("");
+  const [newCulturalTip, setNewCulturalTip] = useState("");
+  const [newSafeTip, setNewSafeTip] = useState("");
+  const [newMoneyTip, setNewMoneyTip] = useState("");
+  
+  // FAQ 가이드 관련 state
+  const [faqs, setFaqs] = useState<Array<{question: string; answer: string; category?: string}>>([]);
+  const [newFaq, setNewFaq] = useState({question: "", answer: "", category: ""});
+
   const addAttraction = () => {
     if (newAttraction.name.trim() && newAttraction.description.trim()) {
       setAttractions(prev => [...prev, {
@@ -236,6 +267,116 @@ const Admin = () => {
     setRestrictions(prev => prev.filter(restriction => restriction !== restrictionToRemove));
   };
 
+  // 카테고리별 가이드 헬퍼 함수들
+  const addTransportTip = () => {
+    if (newTransportTip.trim() && !transportBookingTips.includes(newTransportTip.trim())) {
+      setTransportBookingTips(prev => [...prev, newTransportTip.trim()]);
+      setNewTransportTip("");
+    }
+  };
+
+  const removeTransportTip = (tipToRemove: string) => {
+    setTransportBookingTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
+  const addItineraryDay = () => {
+    if (newItineraryDay.title.trim()) {
+      setItineraryDays(prev => [...prev, {
+        ...newItineraryDay,
+        activities: newItineraryDay.activities.filter(a => a.trim()),
+        tips: newItineraryDay.tips?.filter(t => t.trim())
+      }]);
+      setNewItineraryDay({day: newItineraryDay.day + 1, title: "", activities: [""], budget: "", tips: [""]});
+    }
+  };
+
+  const removeItineraryDay = (index: number) => {
+    setItineraryDays(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const addPackingCategory = () => {
+    if (newPackingCategory.category.trim()) {
+      setPackingList(prev => [...prev, {
+        ...newPackingCategory,
+        items: newPackingCategory.items.filter(i => i.trim())
+      }]);
+      setNewPackingCategory({category: "", items: [""], optional: false});
+    }
+  };
+
+  const removePackingCategory = (index: number) => {
+    setPackingList(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const addSeasonalItem = () => {
+    if (newSeasonalItem.season.trim()) {
+      setSeasonalItems(prev => [...prev, {
+        ...newSeasonalItem,
+        items: newSeasonalItem.items.filter(i => i.trim())
+      }]);
+      setNewSeasonalItem({season: "", items: [""]});
+    }
+  };
+
+  const removeSeasonalItem = (index: number) => {
+    setSeasonalItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const addLocalTip = () => {
+    if (newLocalTip.trim() && !localTips.includes(newLocalTip.trim())) {
+      setLocalTips(prev => [...prev, newLocalTip.trim()]);
+      setNewLocalTip("");
+    }
+  };
+
+  const removeLocalTip = (tipToRemove: string) => {
+    setLocalTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
+  const addCulturalTip = () => {
+    if (newCulturalTip.trim() && !culturalTips.includes(newCulturalTip.trim())) {
+      setCulturalTips(prev => [...prev, newCulturalTip.trim()]);
+      setNewCulturalTip("");
+    }
+  };
+
+  const removeCulturalTip = (tipToRemove: string) => {
+    setCulturalTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
+  const addSafeTip = () => {
+    if (newSafeTip.trim() && !safeTips.includes(newSafeTip.trim())) {
+      setSafeTips(prev => [...prev, newSafeTip.trim()]);
+      setNewSafeTip("");
+    }
+  };
+
+  const removeSafeTip = (tipToRemove: string) => {
+    setSafeTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
+  const addMoneyTip = () => {
+    if (newMoneyTip.trim() && !moneyTips.includes(newMoneyTip.trim())) {
+      setMoneyTips(prev => [...prev, newMoneyTip.trim()]);
+      setNewMoneyTip("");
+    }
+  };
+
+  const removeMoneyTip = (tipToRemove: string) => {
+    setMoneyTips(prev => prev.filter(tip => tip !== tipToRemove));
+  };
+
+  const addFaq = () => {
+    if (newFaq.question.trim() && newFaq.answer.trim()) {
+      setFaqs(prev => [...prev, newFaq]);
+      setNewFaq({question: "", answer: "", category: ""});
+    }
+  };
+
+  const removeFaq = (index: number) => {
+    setFaqs(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = (e: React.FormEvent, contentType: string) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -279,10 +420,12 @@ const Admin = () => {
       setTravelTips([]);
       setAttractions([]);
     } else if (contentType === "가이드") {
-      addGuide({
+      const category = formData.get('guide-category') as string;
+      
+      let guideData: any = {
         title: formData.get('guide-title') as string,
         author: formData.get('guide-author') as string,
-        category: formData.get('guide-category') as string,
+        category,
         difficulty: formData.get('guide-difficulty') as string,
         image: formData.get('guide-image') as string,
         description: formData.get('guide-description') as string || undefined,
@@ -294,12 +437,61 @@ const Admin = () => {
         requirements: requirements.length > 0 ? requirements : undefined,
         whatYouWillLearn: whatYouWillLearn.length > 0 ? whatYouWillLearn : undefined,
         tags: selectedTags
-      });
+      };
+
+      // 카테고리별 추가 데이터
+      if (category === '교통') {
+        guideData = {
+          ...guideData,
+          transportType: formData.get('transport-type') as string || undefined,
+          bookingTips: transportBookingTips.length > 0 ? transportBookingTips : undefined,
+          priceRange: formData.get('price-range') as string || undefined,
+          reservationPeriod: formData.get('reservation-period') as string || undefined,
+        };
+      } else if (category === '일정') {
+        guideData = {
+          ...guideData,
+          itineraryDays: itineraryDays.length > 0 ? itineraryDays : undefined,
+          totalDuration: formData.get('total-duration') as string || undefined,
+          budgetEstimate: formData.get('budget-estimate') as string || undefined,
+        };
+      } else if (category === '준비물') {
+        guideData = {
+          ...guideData,
+          packingList: packingList.length > 0 ? packingList : undefined,
+          seasonalItems: seasonalItems.length > 0 ? seasonalItems : undefined,
+        };
+      } else if (category === '팁') {
+        guideData = {
+          ...guideData,
+          localTips: localTips.length > 0 ? localTips : undefined,
+          culturalTips: culturalTips.length > 0 ? culturalTips : undefined,
+          safeTips: safeTips.length > 0 ? safeTips : undefined,
+          moneyTips: moneyTips.length > 0 ? moneyTips : undefined,
+        };
+      } else if (category === 'FAQ') {
+        guideData = {
+          ...guideData,
+          faqs: faqs.length > 0 ? faqs : undefined,
+        };
+      }
+
+      addGuide(guideData);
       
+      // Reset all guide-related states
       setGuideContent([]);
       setGuideTips([]);
       setRequirements([]);
       setWhatYouWillLearn([]);
+      setTransportBookingTips([]);
+      setItineraryDays([]);
+      setPackingList([]);
+      setSeasonalItems([]);
+      setLocalTips([]);
+      setCulturalTips([]);
+      setSafeTips([]);
+      setMoneyTips([]);
+      setFaqs([]);
     } else if (contentType === "여행 이야기") {
       addStory({
         title: formData.get('story-title') as string,
@@ -707,7 +899,7 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="guide-category">카테고리</Label>
-                      <Select name="guide-category">
+                      <Select name="guide-category" value={selectedGuideCategory} onValueChange={setSelectedGuideCategory}>
                         <SelectTrigger>
                           <SelectValue placeholder="카테고리 선택" />
                         </SelectTrigger>
@@ -875,6 +1067,423 @@ const Admin = () => {
                       ))}
                     </div>
                   </div>
+
+                  {/* 카테고리별 특화 필드들 */}
+                  {selectedGuideCategory === '교통' && (
+                    <div className="space-y-6 border-t pt-6">
+                      <h3 className="text-lg font-semibold text-primary">교통 가이드 전용 필드</h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="transport-type">교통수단 유형</Label>
+                          <Select name="transport-type">
+                            <SelectTrigger>
+                              <SelectValue placeholder="교통수단 선택" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="항공">항공</SelectItem>
+                              <SelectItem value="기차">기차</SelectItem>
+                              <SelectItem value="버스">버스</SelectItem>
+                              <SelectItem value="렌터카">렌터카</SelectItem>
+                              <SelectItem value="지하철">지하철</SelectItem>
+                              <SelectItem value="택시">택시</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="price-range">가격대</Label>
+                          <Input id="price-range" name="price-range" placeholder="예: 10만원-50만원" />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="reservation-period">예약 권장 기간</Label>
+                        <Input id="reservation-period" name="reservation-period" placeholder="예: 출발 2-3개월 전" />
+                      </div>
+
+                      <div className="space-y-4">
+                        <Label className="text-lg font-semibold">예약 꿀팁</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            value={newTransportTip}
+                            onChange={(e) => setNewTransportTip(e.target.value)}
+                            placeholder="교통수단별 예약 팁"
+                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTransportTip())}
+                          />
+                          <Button type="button" onClick={addTransportTip} size="sm">
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {transportBookingTips.map((tip, index) => (
+                            <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                              {tip}
+                              <X 
+                                className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                                onClick={() => removeTransportTip(tip)}
+                              />
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedGuideCategory === '일정' && (
+                    <div className="space-y-6 border-t pt-6">
+                      <h3 className="text-lg font-semibold text-primary">일정 가이드 전용 필드</h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="total-duration">총 여행 기간</Label>
+                          <Input id="total-duration" name="total-duration" placeholder="예: 3박 4일" />
+                        </div>
+                        <div>
+                          <Label htmlFor="budget-estimate">예산 예상</Label>
+                          <Input id="budget-estimate" name="budget-estimate" placeholder="예: 100만원 (1인 기준)" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <Label className="text-lg font-semibold">일정별 계획</Label>
+                        <div className="grid grid-cols-12 gap-2 items-end">
+                          <div className="col-span-1">
+                            <Label>Day</Label>
+                            <Input
+                              type="number"
+                              value={newItineraryDay.day}
+                              onChange={(e) => setNewItineraryDay(prev => ({...prev, day: Number(e.target.value)}))}
+                              min="1"
+                            />
+                          </div>
+                          <div className="col-span-3">
+                            <Label>제목</Label>
+                            <Input
+                              value={newItineraryDay.title}
+                              onChange={(e) => setNewItineraryDay(prev => ({...prev, title: e.target.value}))}
+                              placeholder="당일 테마"
+                            />
+                          </div>
+                          <div className="col-span-4">
+                            <Label>주요 활동</Label>
+                            <Input
+                              value={newItineraryDay.activities[0] || ""}
+                              onChange={(e) => setNewItineraryDay(prev => ({...prev, activities: [e.target.value]}))}
+                              placeholder="주요 활동 (쉼표로 구분)"
+                            />
+                          </div>
+                          <div className="col-span-2">
+                            <Label>예산</Label>
+                            <Input
+                              value={newItineraryDay.budget}
+                              onChange={(e) => setNewItineraryDay(prev => ({...prev, budget: e.target.value}))}
+                              placeholder="10만원"
+                            />
+                          </div>
+                          <div className="col-span-2">
+                            <Button type="button" onClick={addItineraryDay} size="sm" className="w-full">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          {itineraryDays.map((day, index) => (
+                            <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                              <div>
+                                <span className="font-semibold">Day {day.day}: {day.title}</span>
+                                <p className="text-sm text-muted-foreground">{day.activities.join(', ')}</p>
+                                {day.budget && <span className="text-xs text-primary">예산: {day.budget}</span>}
+                              </div>
+                              <Button 
+                                type="button" 
+                                onClick={() => removeItineraryDay(index)} 
+                                size="sm" 
+                                variant="ghost"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedGuideCategory === '준비물' && (
+                    <div className="space-y-6 border-t pt-6">
+                      <h3 className="text-lg font-semibold text-primary">준비물 가이드 전용 필드</h3>
+                      
+                      <div className="space-y-4">
+                        <Label className="text-lg font-semibold">카테고리별 준비물</Label>
+                        <div className="grid grid-cols-12 gap-2 items-end">
+                          <div className="col-span-3">
+                            <Label>카테고리</Label>
+                            <Input
+                              value={newPackingCategory.category}
+                              onChange={(e) => setNewPackingCategory(prev => ({...prev, category: e.target.value}))}
+                              placeholder="의류, 전자제품 등"
+                            />
+                          </div>
+                          <div className="col-span-6">
+                            <Label>아이템들</Label>
+                            <Input
+                              value={newPackingCategory.items[0] || ""}
+                              onChange={(e) => setNewPackingCategory(prev => ({...prev, items: [e.target.value]}))}
+                              placeholder="아이템들을 쉼표로 구분"
+                            />
+                          </div>
+                          <div className="col-span-1">
+                            <Label>선택</Label>
+                            <div className="flex items-center h-10">
+                              <input
+                                type="checkbox"
+                                checked={newPackingCategory.optional}
+                                onChange={(e) => setNewPackingCategory(prev => ({...prev, optional: e.target.checked}))}
+                                className="mr-2"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-span-2">
+                            <Button type="button" onClick={addPackingCategory} size="sm" className="w-full">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          {packingList.map((category, index) => (
+                            <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                              <div>
+                                <span className="font-semibold">{category.category} {category.optional && '(선택)'}</span>
+                                <p className="text-sm text-muted-foreground">{category.items.join(', ')}</p>
+                              </div>
+                              <Button 
+                                type="button" 
+                                onClick={() => removePackingCategory(index)} 
+                                size="sm" 
+                                variant="ghost"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <Label className="text-lg font-semibold">계절별 추가 아이템</Label>
+                        <div className="grid grid-cols-12 gap-2 items-end">
+                          <div className="col-span-2">
+                            <Label>계절</Label>
+                            <Select value={newSeasonalItem.season} onValueChange={(value) => setNewSeasonalItem(prev => ({...prev, season: value}))}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="계절" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="봄">봄</SelectItem>
+                                <SelectItem value="여름">여름</SelectItem>
+                                <SelectItem value="가을">가을</SelectItem>
+                                <SelectItem value="겨울">겨울</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="col-span-8">
+                            <Label>아이템들</Label>
+                            <Input
+                              value={newSeasonalItem.items[0] || ""}
+                              onChange={(e) => setNewSeasonalItem(prev => ({...prev, items: [e.target.value]}))}
+                              placeholder="계절별 필요 아이템들"
+                            />
+                          </div>
+                          <div className="col-span-2">
+                            <Button type="button" onClick={addSeasonalItem} size="sm" className="w-full">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          {seasonalItems.map((item, index) => (
+                            <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                              <div>
+                                <span className="font-semibold">{item.season}</span>
+                                <p className="text-sm text-muted-foreground">{item.items.join(', ')}</p>
+                              </div>
+                              <Button 
+                                type="button" 
+                                onClick={() => removeSeasonalItem(index)} 
+                                size="sm" 
+                                variant="ghost"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedGuideCategory === '팁' && (
+                    <div className="space-y-6 border-t pt-6">
+                      <h3 className="text-lg font-semibold text-primary">팁 가이드 전용 필드</h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <Label className="text-lg font-semibold">현지 생활 팁</Label>
+                          <div className="flex gap-2">
+                            <Input
+                              value={newLocalTip}
+                              onChange={(e) => setNewLocalTip(e.target.value)}
+                              placeholder="현지에서 유용한 팁"
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLocalTip())}
+                            />
+                            <Button type="button" onClick={addLocalTip} size="sm">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {localTips.map((tip, index) => (
+                              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                                {tip}
+                                <X 
+                                  className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                                  onClick={() => removeLocalTip(tip)}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <Label className="text-lg font-semibold">문화 에티켓</Label>
+                          <div className="flex gap-2">
+                            <Input
+                              value={newCulturalTip}
+                              onChange={(e) => setNewCulturalTip(e.target.value)}
+                              placeholder="문화적 주의사항"
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCulturalTip())}
+                            />
+                            <Button type="button" onClick={addCulturalTip} size="sm">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {culturalTips.map((tip, index) => (
+                              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                                {tip}
+                                <X 
+                                  className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                                  onClick={() => removeCulturalTip(tip)}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <Label className="text-lg font-semibold">안전 팁</Label>
+                          <div className="flex gap-2">
+                            <Input
+                              value={newSafeTip}
+                              onChange={(e) => setNewSafeTip(e.target.value)}
+                              placeholder="안전 관련 팁"
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSafeTip())}
+                            />
+                            <Button type="button" onClick={addSafeTip} size="sm">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {safeTips.map((tip, index) => (
+                              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                                {tip}
+                                <X 
+                                  className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                                  onClick={() => removeSafeTip(tip)}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <Label className="text-lg font-semibold">돈 관리 팁</Label>
+                          <div className="flex gap-2">
+                            <Input
+                              value={newMoneyTip}
+                              onChange={(e) => setNewMoneyTip(e.target.value)}
+                              placeholder="환전, 결제 관련 팁"
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addMoneyTip())}
+                            />
+                            <Button type="button" onClick={addMoneyTip} size="sm">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {moneyTips.map((tip, index) => (
+                              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                                {tip}
+                                <X 
+                                  className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                                  onClick={() => removeMoneyTip(tip)}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedGuideCategory === 'FAQ' && (
+                    <div className="space-y-6 border-t pt-6">
+                      <h3 className="text-lg font-semibold text-primary">FAQ 가이드 전용 필드</h3>
+                      
+                      <div className="space-y-4">
+                        <Label className="text-lg font-semibold">자주 묻는 질문</Label>
+                        <div className="grid grid-cols-12 gap-2 items-end">
+                          <div className="col-span-5">
+                            <Label>질문</Label>
+                            <Input
+                              value={newFaq.question}
+                              onChange={(e) => setNewFaq(prev => ({...prev, question: e.target.value}))}
+                              placeholder="자주 묻는 질문"
+                            />
+                          </div>
+                          <div className="col-span-5">
+                            <Label>답변</Label>
+                            <Input
+                              value={newFaq.answer}
+                              onChange={(e) => setNewFaq(prev => ({...prev, answer: e.target.value}))}
+                              placeholder="질문에 대한 답변"
+                            />
+                          </div>
+                          <div className="col-span-2">
+                            <Button type="button" onClick={addFaq} size="sm" className="w-full">
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          {faqs.map((faq, index) => (
+                            <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                              <div className="flex-1">
+                                <p className="font-semibold">Q: {faq.question}</p>
+                                <p className="text-sm text-muted-foreground">A: {faq.answer}</p>
+                              </div>
+                              <Button 
+                                type="button" 
+                                onClick={() => removeFaq(index)} 
+                                size="sm" 
+                                variant="ghost"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div>
                     <Label>추가 태그</Label>
